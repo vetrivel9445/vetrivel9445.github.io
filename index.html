@@ -3,74 +3,82 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Vetrivel K | Senior Salesforce Developer · AI-Powered Solutions</title>
-<meta name="description" content="Senior Salesforce Developer with 3+ years building enterprise Sales Cloud, Service Cloud & AI-powered CRM solutions. Chennai, India."/>
-<meta name="keywords" content="Salesforce Developer Chennai, Apex LWC Expert, Sales Cloud Developer, Salesforce Consultant India"/>
+<title>Vetrivel K — Salesforce Developer | 2x Certified | 3+ Years Experience</title>
+<meta name="description" content="Vetrivel K is a Salesforce Developer with 3+ years of experience in Sales Cloud, Apex, LWC, Flows, and integrations. Based in Chennai, India. Available for consulting."/>
+<meta name="keywords" content="Salesforce Developer, Apex, LWC, Sales Cloud, Service Cloud, CPQ, Chennai, Vetrivel K"/>
+<meta property="og:title" content="Vetrivel K — Salesforce Developer"/>
+<meta property="og:description" content="2x Certified Salesforce Developer specializing in Sales Cloud, Apex, LWC & Integrations."/>
+<meta property="og:type" content="website"/>
+<link rel="canonical" href="https://vetrivel9445.github.io"/>
+
+<!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet"/>
+
 <style>
 /* ═══════════════════════════════════════════
-   CSS VARIABLES & THEME
+   THEME VARIABLES
    ═══════════════════════════════════════════ */
 :root {
-  --sf-blue: #0070D2;
   --sf-navy: #061D41;
-  --sf-deep: #03112B;
-  --sf-cyan: #1ECBE1;
+  --sf-blue: #0070D2;
+  --sf-sky: #1B96FF;
   --sf-green: #00C896;
-  --sf-lavender: #9B8FFF;
-  --sf-coral: #FF6B6B;
+  --sf-green-dim: rgba(0,200,150,0.15);
 
-  --bg-primary: #030B1A;
-  --bg-card: rgba(6, 29, 65, 0.55);
-  --bg-card-hover: rgba(6, 29, 65, 0.75);
-  --bg-glass: rgba(255,255,255,0.04);
+  --bg-primary: #030A1A;
+  --bg-card: rgba(6,29,65,0.55);
+  --bg-card-solid: #071E42;
+  --bg-glass: rgba(6,29,65,0.35);
   --text-primary: #F0F4FF;
-  --text-secondary: #94A3C0;
-  --text-accent: #5EB5FF;
-  --border-glass: rgba(255,255,255,0.08);
+  --text-secondary: #94A3C4;
+  --text-accent: #1B96FF;
+  --border-color: rgba(27,150,255,0.12);
   --border-glow: rgba(0,112,210,0.35);
-  --shadow-deep: 0 24px 80px rgba(0,0,0,0.6);
-  --shadow-glow: 0 0 40px rgba(0,112,210,0.15);
+  --glow-blue: rgba(0,112,210,0.4);
+  --glow-green: rgba(0,200,150,0.35);
+  --shadow-card: 0 8px 32px rgba(0,0,0,0.4);
+  --shadow-hover: 0 16px 48px rgba(0,112,210,0.2);
 
   --font-display: 'Outfit', sans-serif;
   --font-body: 'DM Sans', sans-serif;
 
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out-expo: cubic-bezier(0.16,1,0.3,1);
+  --ease-spring: cubic-bezier(0.34,1.56,0.64,1);
 }
 
 html[data-theme="light"] {
   --bg-primary: #F0F4FA;
-  --bg-card: rgba(255,255,255,0.82);
-  --bg-card-hover: rgba(255,255,255,0.95);
-  --bg-glass: rgba(0,112,210,0.04);
-  --text-primary: #0A1628;
-  --text-secondary: #5A6A85;
-  --text-accent: #0058A8;
-  --border-glass: rgba(0,30,80,0.1);
-  --border-glow: rgba(0,112,210,0.2);
-  --shadow-deep: 0 24px 80px rgba(0,30,80,0.1);
-  --shadow-glow: 0 0 40px rgba(0,112,210,0.08);
+  --bg-card: rgba(255,255,255,0.85);
+  --bg-card-solid: #FFFFFF;
+  --bg-glass: rgba(255,255,255,0.6);
+  --text-primary: #061D41;
+  --text-secondary: #4A6085;
+  --text-accent: #0070D2;
+  --border-color: rgba(0,112,210,0.15);
+  --border-glow: rgba(0,112,210,0.25);
+  --glow-blue: rgba(0,112,210,0.15);
+  --glow-green: rgba(0,200,150,0.15);
+  --shadow-card: 0 4px 24px rgba(6,29,65,0.08);
+  --shadow-hover: 0 12px 40px rgba(0,112,210,0.12);
+  --sf-green-dim: rgba(0,200,150,0.1);
 }
 
 /* ═══════════════════════════════════════════
    RESET & BASE
    ═══════════════════════════════════════════ */
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
-html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+html { scroll-behavior:smooth; scroll-padding-top:80px; }
+
 body {
   font-family: var(--font-body);
   color: var(--text-primary);
   background: var(--bg-primary);
+  line-height: 1.6;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
-}
-
-::selection {
-  background: rgba(0,112,210,0.35);
-  color: #fff;
 }
 
 a { color: inherit; text-decoration: none; }
@@ -78,1138 +86,912 @@ img { max-width: 100%; display: block; }
 ul { list-style: none; }
 
 /* ═══════════════════════════════════════════
-   CANVAS & BACKGROUND
+   ANIMATED BACKGROUND
    ═══════════════════════════════════════════ */
-#particleCanvas {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.bg-gradient {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
+.bg-canvas {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
   background:
-    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(0,112,210,0.22), transparent),
-    radial-gradient(ellipse 70% 50% at 80% 85%, rgba(30,203,225,0.12), transparent),
-    radial-gradient(ellipse 50% 40% at 50% 50%, rgba(155,143,255,0.06), transparent),
-    var(--bg-primary);
-  transition: background 0.6s ease;
-}
-
-html[data-theme="light"] .bg-gradient {
-  background:
-    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(0,112,210,0.08), transparent),
-    radial-gradient(ellipse 70% 50% at 80% 85%, rgba(30,203,225,0.06), transparent),
+    radial-gradient(ellipse 80% 60% at 10% 0%, var(--glow-blue), transparent),
+    radial-gradient(ellipse 60% 50% at 90% 100%, var(--glow-green), transparent),
+    radial-gradient(ellipse 70% 40% at 50% 50%, rgba(0,112,210,0.06), transparent),
     var(--bg-primary);
 }
+
+.bg-grid {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background-image:
+    linear-gradient(var(--border-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 70% 50% at 50% 30%, black 20%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 50% at 50% 30%, black 20%, transparent 70%);
+  opacity: 0.45;
+}
+
+.orb {
+  position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: -1;
+  animation: orbFloat 20s ease-in-out infinite alternate;
+}
+.orb-1 { width:420px;height:420px;background:rgba(0,112,210,0.18);top:-100px;left:-80px; }
+.orb-2 { width:350px;height:350px;background:rgba(0,200,150,0.12);bottom:-80px;right:-60px;animation-delay:-7s;animation-duration:25s; }
+.orb-3 { width:280px;height:280px;background:rgba(27,150,255,0.1);top:40%;left:60%;animation-delay:-12s;animation-duration:28s; }
+
+@keyframes orbFloat {
+  0%   { transform: translate(0,0) scale(1); }
+  33%  { transform: translate(30px,-20px) scale(1.05); }
+  66%  { transform: translate(-20px,30px) scale(0.95); }
+  100% { transform: translate(15px,10px) scale(1.02); }
+}
+
+/* ═══════════════════════════════════════════
+   REVEAL ANIMATIONS
+   ═══════════════════════════════════════════ */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
 
 /* ═══════════════════════════════════════════
    NAVIGATION
    ═══════════════════════════════════════════ */
 .nav {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 100;
-  padding: 0 2rem;
-  transition: all 0.4s var(--ease-out-expo);
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 0 1.5rem;
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  background: var(--bg-glass);
+  border-bottom: 1px solid var(--border-color);
+  transition: background 0.3s, box-shadow 0.3s;
 }
-
 .nav.scrolled {
-  background: rgba(3,11,26,0.82);
-  backdrop-filter: blur(24px) saturate(1.4);
-  border-bottom: 1px solid var(--border-glass);
-}
-
-html[data-theme="light"] .nav.scrolled {
-  background: rgba(240,244,250,0.88);
+  background: var(--bg-card);
+  box-shadow: 0 4px 30px rgba(0,0,0,0.2);
 }
 
 .nav-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  height: 72px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 68px;
 }
 
 .nav-logo {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 1.4rem;
-  background: linear-gradient(135deg, var(--sf-blue), var(--sf-cyan));
+  font-size: 1.35rem;
+  background: linear-gradient(135deg, var(--sf-blue), var(--sf-green));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   letter-spacing: -0.02em;
 }
 
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
+.nav-links { display: flex; gap: 0.25rem; align-items: center; }
 
 .nav-link {
   font-family: var(--font-display);
-  font-weight: 500;
   font-size: 0.88rem;
-  padding: 0.5rem 1rem;
+  font-weight: 500;
+  padding: 0.45rem 0.9rem;
   border-radius: 10px;
   color: var(--text-secondary);
-  transition: all 0.25s ease;
+  transition: color 0.2s, background 0.2s;
   position: relative;
 }
-
-.nav-link:hover {
-  color: var(--text-primary);
-  background: var(--bg-glass);
-}
+.nav-link:hover { color: var(--text-primary); background: var(--bg-card); }
 
 .nav-cta {
-  margin-left: 0.5rem;
-  padding: 0.55rem 1.3rem;
-  background: linear-gradient(135deg, var(--sf-blue), #0090FF);
-  color: #fff !important;
-  border-radius: 10px;
+  font-family: var(--font-display);
   font-weight: 600;
   font-size: 0.85rem;
-  box-shadow: 0 4px 20px rgba(0,112,210,0.35);
-  transition: all 0.3s var(--ease-spring);
+  padding: 0.5rem 1.2rem;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--sf-blue), var(--sf-sky));
+  color: #fff;
+  border: none; cursor: pointer;
+  transition: transform 0.2s var(--ease-spring), box-shadow 0.2s;
+  box-shadow: 0 4px 16px var(--glow-blue);
 }
-
 .nav-cta:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(0,112,210,0.5);
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 24px var(--glow-blue);
 }
 
 .theme-btn {
-  width: 40px; height: 40px;
-  border-radius: 12px;
-  border: 1px solid var(--border-glass);
-  background: var(--bg-glass);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.1rem;
-  transition: all 0.25s ease;
-  margin-left: 0.5rem;
-  color: var(--text-secondary);
-}
-
-.theme-btn:hover {
-  border-color: var(--border-glow);
+  width: 38px; height: 38px; border-radius: 10px;
+  border: 1px solid var(--border-color);
   background: var(--bg-card);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  transition: border-color 0.2s, transform 0.2s;
+  margin-left: 0.4rem;
 }
+.theme-btn:hover { border-color: var(--sf-blue); transform: scale(1.08); }
 
-.mobile-toggle {
+/* Hamburger */
+.hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  background: none; border: none; cursor: pointer; padding: 6px;
+}
+.hamburger span {
+  width: 24px; height: 2px; background: var(--text-primary);
+  border-radius: 2px; transition: transform 0.3s, opacity 0.3s;
+}
+.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+.hamburger.active span:nth-child(2) { opacity: 0; }
+.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+/* Mobile nav */
+.mobile-menu {
   display: none;
-  width: 40px; height: 40px;
-  border: 1px solid var(--border-glass);
-  background: var(--bg-glass);
-  border-radius: 10px;
-  cursor: pointer;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
+  position: fixed; top: 68px; left: 0; right: 0; bottom: 0;
+  background: var(--bg-card-solid);
+  z-index: 99;
+  flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem;
+  opacity: 0;
+  transition: opacity 0.3s;
 }
-
-.mobile-toggle span {
-  width: 20px; height: 2px;
-  background: var(--text-primary);
-  border-radius: 2px;
-  transition: all 0.3s ease;
-}
+.mobile-menu.open { display: flex; opacity: 1; }
+.mobile-menu .nav-link { font-size: 1.2rem; }
 
 /* ═══════════════════════════════════════════
    HERO SECTION
    ═══════════════════════════════════════════ */
 .hero {
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  padding: 6rem 2rem 4rem;
+  display: flex; align-items: center;
+  padding: 120px 1.5rem 80px;
   position: relative;
 }
 
 .hero-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 4rem;
-  align-items: center;
+  max-width: 1200px; margin: 0 auto; width: 100%;
+  display: grid; grid-template-columns: 1fr 0.55fr; gap: 4rem; align-items: center;
 }
-
-.hero-content { position: relative; z-index: 2; }
 
 .hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
+  display: inline-flex; align-items: center; gap: 0.5rem;
   padding: 0.4rem 1rem 0.4rem 0.5rem;
-  background: rgba(0,200,150,0.12);
-  border: 1px solid rgba(0,200,150,0.25);
   border-radius: 999px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-glass);
   font-size: 0.82rem;
-  font-weight: 500;
   color: var(--sf-green);
-  margin-bottom: 1.5rem;
-  opacity: 0;
-  animation: fadeSlideUp 0.8s var(--ease-out-expo) 0.2s forwards;
+  font-weight: 500;
+  margin-bottom: 1.2rem;
+  backdrop-filter: blur(12px);
 }
-
-.badge-dot {
-  width: 8px; height: 8px;
+.hero-badge-dot {
+  width: 8px; height: 8px; border-radius: 50%;
   background: var(--sf-green);
-  border-radius: 50%;
-  animation: pulse 2s ease-in-out infinite;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%,100% { opacity:1; box-shadow: 0 0 0 0 var(--glow-green); }
+  50% { opacity:.7; box-shadow: 0 0 0 8px transparent; }
 }
 
-.hero h1 {
+.hero-title {
   font-family: var(--font-display);
-  font-size: clamp(2.4rem, 5vw, 3.8rem);
-  font-weight: 800;
-  line-height: 1.1;
+  font-size: clamp(2.6rem, 5.5vw, 4.2rem);
+  font-weight: 900;
+  line-height: 1.08;
   letter-spacing: -0.03em;
-  margin-bottom: 1rem;
-  opacity: 0;
-  animation: fadeSlideUp 0.8s var(--ease-out-expo) 0.35s forwards;
+  margin-bottom: 0.6rem;
 }
-
-.hero h1 .gradient-text {
-  background: linear-gradient(135deg, var(--sf-blue), var(--sf-cyan), var(--sf-lavender));
+.hero-title .gradient-text {
+  background: linear-gradient(135deg, var(--sf-blue) 0%, var(--sf-sky) 40%, var(--sf-green) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .hero-subtitle {
-  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  font-weight: 400;
   color: var(--text-secondary);
-  line-height: 1.65;
-  max-width: 520px;
+  line-height: 1.7;
+  max-width: 540px;
   margin-bottom: 2rem;
-  opacity: 0;
-  animation: fadeSlideUp 0.8s var(--ease-out-expo) 0.5s forwards;
 }
 
-.hero-chips {
-  display: flex;
+.hero-stats {
+  display: flex; gap: 2rem; margin-bottom: 2.2rem;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 2.5rem;
-  opacity: 0;
-  animation: fadeSlideUp 0.8s var(--ease-out-expo) 0.6s forwards;
 }
-
-.hero-chip {
+.hero-stat { text-align: left; }
+.hero-stat-number {
   font-family: var(--font-display);
-  font-size: 0.78rem;
-  font-weight: 600;
-  padding: 0.4rem 0.9rem;
-  border-radius: 8px;
-  background: var(--bg-glass);
-  border: 1px solid var(--border-glass);
-  color: var(--text-accent);
-  transition: all 0.25s ease;
-}
-
-.hero-chip:hover {
-  border-color: var(--border-glow);
-  background: rgba(0,112,210,0.1);
-  transform: translateY(-2px);
-}
-
-.hero-actions {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  opacity: 0;
-  animation: fadeSlideUp 0.8s var(--ease-out-expo) 0.7s forwards;
-}
-
-.btn-primary {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 0.95rem;
-  padding: 0.85rem 2rem;
-  border-radius: 14px;
-  border: none;
-  cursor: pointer;
-  background: linear-gradient(135deg, var(--sf-blue), #0090FF);
-  color: #fff;
-  box-shadow: 0 8px 32px rgba(0,112,210,0.35);
-  transition: all 0.3s var(--ease-spring);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.btn-primary:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 12px 44px rgba(0,112,210,0.5);
-}
-
-.btn-secondary {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 0.95rem;
-  padding: 0.85rem 2rem;
-  border-radius: 14px;
-  border: 1px solid var(--border-glass);
-  cursor: pointer;
-  background: var(--bg-glass);
-  color: var(--text-primary);
-  transition: all 0.3s var(--ease-spring);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  backdrop-filter: blur(8px);
-}
-
-.btn-secondary:hover {
-  transform: translateY(-3px);
-  border-color: var(--border-glow);
-  background: var(--bg-card);
-}
-
-/* Hero visual */
-.hero-visual {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  animation: fadeScaleIn 1s var(--ease-out-expo) 0.5s forwards;
-}
-
-.hero-photo-wrapper {
-  position: relative;
-  width: 320px;
-  height: 320px;
-}
-
-.hero-photo-ring {
-  position: absolute;
-  inset: -12px;
-  border-radius: 50%;
-  border: 2px solid transparent;
-  background: conic-gradient(from 0deg, var(--sf-blue), var(--sf-cyan), var(--sf-lavender), var(--sf-green), var(--sf-blue)) border-box;
-  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-  mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  animation: ringRotate 8s linear infinite;
-}
-
-.hero-photo {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid var(--bg-primary);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-  background: var(--sf-navy);
-}
-
-/* Floating stat cards around photo */
-.float-card {
-  position: absolute;
-  background: var(--bg-card);
-  backdrop-filter: blur(20px) saturate(1.3);
-  border: 1px solid var(--border-glass);
-  border-radius: 14px;
-  padding: 0.7rem 1rem;
-  box-shadow: var(--shadow-deep);
-  animation: float 6s ease-in-out infinite;
-  z-index: 3;
-}
-
-.float-card-value {
-  font-family: var(--font-display);
+  font-size: 1.8rem;
   font-weight: 800;
-  font-size: 1.3rem;
-  background: linear-gradient(135deg, var(--sf-blue), var(--sf-cyan));
+  background: linear-gradient(135deg, var(--sf-sky), var(--sf-green));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-
-.float-card-label {
-  font-size: 0.72rem;
+.hero-stat-label {
+  font-size: 0.78rem;
   color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
   font-weight: 500;
 }
 
-.float-card-1 { top: 10%; right: -40px; animation-delay: 0s; }
-.float-card-2 { bottom: 15%; left: -50px; animation-delay: -2s; }
-.float-card-3 { bottom: -10px; right: 10%; animation-delay: -4s; }
+.hero-buttons { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+
+.btn {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.92rem;
+  padding: 0.75rem 1.6rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.25s var(--ease-spring), box-shadow 0.25s;
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  border: none;
+}
+.btn:hover { transform: translateY(-3px); }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--sf-blue), var(--sf-sky));
+  color: #fff;
+  box-shadow: 0 6px 24px var(--glow-blue);
+}
+.btn-primary:hover { box-shadow: 0 12px 36px var(--glow-blue); }
+
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid var(--border-glow);
+  color: var(--text-primary);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+.btn-outline:hover { border-color: var(--sf-blue); box-shadow: 0 8px 28px var(--glow-blue); }
+
+.btn-ghost {
+  background: var(--sf-green-dim);
+  color: var(--sf-green);
+  border: 1px solid rgba(0,200,150,0.2);
+}
+.btn-ghost:hover { box-shadow: 0 8px 24px var(--glow-green); }
+
+/* Hero visual */
+.hero-visual {
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+
+.hero-card-stack {
+  position: relative;
+  width: 320px; height: 380px;
+}
+
+.float-card {
+  position: absolute;
+  border-radius: 18px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  padding: 1.2rem;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.4s var(--ease-out-expo);
+}
+
+.float-card-main {
+  width: 280px; top: 0; left: 0; z-index: 3;
+  animation: floatMain 6s ease-in-out infinite;
+}
+.float-card-cert {
+  width: 220px; top: 180px; left: 120px; z-index: 4;
+  animation: floatCert 5s ease-in-out infinite;
+  animation-delay: -1.5s;
+}
+.float-card-stat {
+  width: 180px; top: 60px; left: -40px; z-index: 2;
+  animation: floatStat 7s ease-in-out infinite;
+  animation-delay: -3s;
+}
+
+@keyframes floatMain {
+  0%,100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(0.5deg); }
+}
+@keyframes floatCert {
+  0%,100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(-0.8deg); }
+}
+@keyframes floatStat {
+  0%,100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(0.6deg); }
+}
+
+.fc-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; margin-bottom: 0.7rem;
+}
+.fc-icon-blue { background: rgba(0,112,210,0.15); }
+.fc-icon-green { background: rgba(0,200,150,0.15); }
+
+.fc-title {
+  font-family: var(--font-display);
+  font-weight: 700; font-size: 0.95rem;
+  margin-bottom: 0.2rem;
+}
+.fc-sub { font-size: 0.8rem; color: var(--text-secondary); }
+.fc-chips { display:flex; flex-wrap:wrap; gap:0.3rem; margin-top:0.5rem; }
+.fc-chip {
+  font-size:0.7rem; padding:0.2rem 0.5rem; border-radius:999px;
+  background:var(--sf-green-dim); color:var(--sf-green); font-weight:500;
+}
+
+.fc-big-num {
+  font-family:var(--font-display); font-size:2rem; font-weight:900;
+  background:linear-gradient(135deg,var(--sf-sky),var(--sf-green));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
 
 /* ═══════════════════════════════════════════
-   SECTION FOUNDATIONS
+   SECTION BASE
    ═══════════════════════════════════════════ */
-.section {
-  padding: 5rem 2rem;
-  position: relative;
-  z-index: 2;
-}
+.section { padding: 5rem 1.5rem; }
 
-.section-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-}
+.section-inner { max-width: 1200px; margin: 0 auto; }
 
 .section-label {
   font-family: var(--font-display);
   font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-weight: 600;
   text-transform: uppercase;
-  color: var(--sf-blue);
-  margin-bottom: 0.6rem;
+  letter-spacing: 0.14em;
+  color: var(--sf-green);
+  margin-bottom: 0.5rem;
 }
 
-.section-title {
+.section-heading {
   font-family: var(--font-display);
-  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
   font-weight: 800;
   letter-spacing: -0.02em;
+  margin-bottom: 0.6rem;
   line-height: 1.15;
-  margin-bottom: 1rem;
 }
 
 .section-desc {
-  font-size: 1.05rem;
+  font-size: 1rem;
   color: var(--text-secondary);
   max-width: 600px;
-  line-height: 1.6;
-  margin-bottom: 3rem;
-}
-
-/* Reveal animation */
-.reveal {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
-}
-
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
+  margin-bottom: 2.5rem;
 }
 
 /* ═══════════════════════════════════════════
-   SKILLS MATRIX
-   ═══════════════════════════════════════════ */
-.skills-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.2rem;
-}
-
-.skill-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-glass);
-  border-radius: 18px;
-  padding: 1.6rem;
-  backdrop-filter: blur(16px);
-  transition: all 0.4s var(--ease-out-expo);
-  position: relative;
-  overflow: hidden;
-}
-
-.skill-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 3px;
-  background: linear-gradient(90deg, var(--sf-blue), var(--sf-cyan));
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.skill-card:hover {
-  transform: translateY(-6px);
-  border-color: var(--border-glow);
-  background: var(--bg-card-hover);
-  box-shadow: var(--shadow-glow);
-}
-
-.skill-card:hover::before { opacity: 1; }
-
-.skill-icon {
-  width: 48px; height: 48px;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.4rem;
-  margin-bottom: 1rem;
-  background: rgba(0,112,210,0.12);
-  border: 1px solid rgba(0,112,210,0.2);
-}
-
-.skill-icon.green { background: rgba(0,200,150,0.12); border-color: rgba(0,200,150,0.2); }
-.skill-icon.purple { background: rgba(155,143,255,0.12); border-color: rgba(155,143,255,0.2); }
-.skill-icon.cyan { background: rgba(30,203,225,0.12); border-color: rgba(30,203,225,0.2); }
-.skill-icon.coral { background: rgba(255,107,107,0.12); border-color: rgba(255,107,107,0.2); }
-.skill-icon.gold { background: rgba(255,193,7,0.12); border-color: rgba(255,193,7,0.2); }
-
-.skill-card h3 {
-  font-family: var(--font-display);
-  font-size: 1.05rem;
-  font-weight: 700;
-  margin-bottom: 0.4rem;
-}
-
-.skill-card p {
-  font-size: 0.86rem;
-  color: var(--text-secondary);
-  line-height: 1.55;
-  margin-bottom: 1rem;
-}
-
-.skill-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-}
-
-.skill-tag {
-  font-size: 0.72rem;
-  font-weight: 600;
-  padding: 0.25rem 0.6rem;
-  border-radius: 6px;
-  background: rgba(0,112,210,0.1);
-  color: var(--text-accent);
-  border: 1px solid rgba(0,112,210,0.15);
-}
-
-/* ═══════════════════════════════════════════
-   ABOUT / STATS
+   ABOUT SECTION
    ═══════════════════════════════════════════ */
 .about-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  align-items: start;
-}
-
-.stats-row {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.stat-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-glass);
-  border-radius: 16px;
-  padding: 1.4rem;
-  text-align: center;
-  backdrop-filter: blur(12px);
-  transition: all 0.3s ease;
-}
-
-.stat-card:hover {
-  border-color: var(--border-glow);
-  transform: translateY(-3px);
-}
-
-.stat-number {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 2rem;
-  background: linear-gradient(135deg, var(--sf-blue), var(--sf-cyan));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.stat-label {
-  font-size: 0.82rem;
-  color: var(--text-secondary);
-  margin-top: 0.2rem;
+  gap: 2rem;
 }
 
 .about-text p {
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: var(--text-secondary);
-  line-height: 1.75;
+  line-height: 1.8;
   margin-bottom: 1rem;
 }
+.about-text strong { color: var(--text-primary); font-weight: 600; }
 
-.about-text strong {
-  color: var(--text-primary);
+.about-highlights {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
 }
 
-/* Timeline */
-.timeline {
-  margin-top: 1.5rem;
-  border-left: 2px solid var(--border-glass);
-  padding-left: 1.5rem;
+.about-hi-card {
+  padding: 1.2rem;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  transition: transform 0.3s var(--ease-spring), box-shadow 0.3s;
+}
+.about-hi-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
 }
 
-.timeline-item {
-  position: relative;
-  margin-bottom: 1.8rem;
+.ahi-icon {
+  font-size: 1.6rem; margin-bottom: 0.6rem;
+}
+.ahi-title {
+  font-family: var(--font-display);
+  font-weight: 700; font-size: 0.9rem;
+  margin-bottom: 0.2rem;
+}
+.ahi-desc {
+  font-size: 0.8rem; color: var(--text-secondary);
 }
 
-.timeline-item::before {
+/* ═══════════════════════════════════════════
+   SKILLS SECTION
+   ═══════════════════════════════════════════ */
+.skills-mosaic {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.8rem;
+}
+
+.skill-tile {
+  padding: 1rem 1.1rem;
+  border-radius: 14px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  transition: transform 0.3s var(--ease-spring), border-color 0.3s, box-shadow 0.3s;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+}
+.skill-tile:hover {
+  transform: translateY(-3px) scale(1.02);
+  border-color: var(--sf-blue);
+  box-shadow: var(--shadow-hover);
+}
+
+.st-icon {
+  width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  background: rgba(0,112,210,0.12);
+}
+.st-icon-green { background: rgba(0,200,150,0.12); }
+
+.st-name {
+  font-family: var(--font-display);
+  font-weight: 600; font-size: 0.88rem;
+}
+.st-level {
+  font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.1rem;
+}
+
+.st-bar {
+  width: 100%; height: 4px; border-radius: 4px;
+  background: rgba(148,163,196,0.15);
+  margin-top: 0.4rem; overflow: hidden;
+}
+.st-fill {
+  height: 100%; border-radius: 4px;
+  background: linear-gradient(90deg, var(--sf-blue), var(--sf-green));
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 1.2s var(--ease-out-expo);
+}
+.visible .st-fill { transform: scaleX(1); }
+
+/* ═══════════════════════════════════════════
+   EXPERIENCE TIMELINE
+   ═══════════════════════════════════════════ */
+.timeline { position: relative; padding-left: 2.5rem; }
+.timeline::before {
   content: '';
+  position: absolute; left: 11px; top: 8px; bottom: 8px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--sf-blue), var(--sf-green), transparent);
+  border-radius: 2px;
+}
+
+.tl-item {
+  position: relative;
+  padding-bottom: 2.5rem;
+}
+.tl-item:last-child { padding-bottom: 0; }
+
+.tl-dot {
   position: absolute;
-  left: -1.78rem;
+  left: -2.5rem;
   top: 6px;
   width: 12px; height: 12px;
   border-radius: 50%;
+  border: 2.5px solid var(--sf-blue);
+  background: var(--bg-primary);
+  z-index: 2;
+}
+.tl-item:first-child .tl-dot {
   background: var(--sf-blue);
-  border: 3px solid var(--bg-primary);
-  box-shadow: 0 0 0 2px var(--sf-blue);
+  box-shadow: 0 0 0 4px var(--glow-blue);
 }
 
-.timeline-year {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 0.82rem;
-  color: var(--sf-cyan);
-  margin-bottom: 0.25rem;
+.tl-card {
+  padding: 1.3rem 1.5rem;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  transition: transform 0.3s var(--ease-spring), box-shadow 0.3s;
+}
+.tl-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
 }
 
-.timeline-role {
+.tl-date {
   font-family: var(--font-display);
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--sf-green);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.35rem;
+}
+.tl-role {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
   font-weight: 700;
-  font-size: 1rem;
   margin-bottom: 0.15rem;
 }
-
-.timeline-company {
+.tl-company {
   font-size: 0.88rem;
+  color: var(--text-accent);
+  font-weight: 500;
+  margin-bottom: 0.6rem;
+}
+
+.tl-details {
+  list-style: none;
+}
+.tl-details li {
+  font-size: 0.86rem;
   color: var(--text-secondary);
-}
-
-/* ═══════════════════════════════════════════
-   PROJECTS
-   ═══════════════════════════════════════════ */
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-  gap: 1.4rem;
-}
-
-.project-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-glass);
-  border-radius: 20px;
-  padding: 2rem;
-  backdrop-filter: blur(16px);
-  transition: all 0.4s var(--ease-out-expo);
+  padding: 0.2rem 0;
+  padding-left: 1.1rem;
   position: relative;
-  overflow: hidden;
+  line-height: 1.55;
 }
-
-.project-card::after {
+.tl-details li::before {
   content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 20px;
-  background: linear-gradient(135deg, rgba(0,112,210,0.05), transparent);
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  position: absolute; left: 0; top: 0.6rem;
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--sf-sky);
 }
 
-.project-card:hover {
-  transform: translateY(-8px);
-  border-color: var(--border-glow);
-  box-shadow: var(--shadow-glow);
+.tl-tags {
+  display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.6rem;
 }
-
-.project-card:hover::after { opacity: 1; }
-
-.project-number {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 3rem;
-  line-height: 1;
-  background: linear-gradient(135deg, rgba(0,112,210,0.15), rgba(30,203,225,0.08));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 1rem;
-}
-
-.project-card h3 {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.15rem;
-  margin-bottom: 0.35rem;
-  position: relative;
-  z-index: 1;
-}
-
-.project-meta {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--sf-cyan);
-  margin-bottom: 0.8rem;
-  position: relative;
-  z-index: 1;
-}
-
-.project-desc {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
-  position: relative;
-  z-index: 1;
-  margin-bottom: 1rem;
-}
-
-.project-result {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 0.85rem;
-  color: var(--sf-green);
-  padding: 0.35rem 0.8rem;
-  background: rgba(0,200,150,0.1);
-  border: 1px solid rgba(0,200,150,0.2);
-  border-radius: 8px;
-  display: inline-block;
-  position: relative;
-  z-index: 1;
+.tl-tag {
+  font-size: 0.7rem; padding: 0.18rem 0.5rem; border-radius: 999px;
+  background: var(--sf-green-dim); color: var(--sf-green); font-weight: 500;
 }
 
 /* ═══════════════════════════════════════════
-   TECH MARQUEE
+   EDUCATION
    ═══════════════════════════════════════════ */
-.marquee-section {
-  padding: 2rem 0;
-  overflow: hidden;
-  border-top: 1px solid var(--border-glass);
-  border-bottom: 1px solid var(--border-glass);
-  background: var(--bg-glass);
+.edu-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem;
 }
 
-.marquee-track {
-  display: flex;
-  animation: marquee 40s linear infinite;
-  width: max-content;
+.edu-card {
+  padding: 1.3rem 1.5rem;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  transition: transform 0.3s var(--ease-spring), box-shadow 0.3s;
 }
+.edu-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
 
-.marquee-item {
+.edu-icon { font-size: 1.8rem; margin-bottom: 0.6rem; }
+.edu-degree {
   font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  padding: 0.5rem 2rem;
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  font-weight: 700; font-size: 1rem;
+  margin-bottom: 0.15rem;
 }
-
-.marquee-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--sf-blue);
-}
-
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
+.edu-school { font-size: 0.86rem; color: var(--text-accent); margin-bottom: 0.3rem; }
+.edu-meta { font-size: 0.8rem; color: var(--text-secondary); }
 
 /* ═══════════════════════════════════════════
-   CONTACT / CTA
+   CERTIFICATIONS
+   ═══════════════════════════════════════════ */
+.cert-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem;
+}
+
+.cert-card {
+  padding: 1.5rem;
+  border-radius: 18px;
+  border: 1px solid var(--border-color);
+  background: linear-gradient(135deg, var(--bg-card), rgba(0,112,210,0.06));
+  backdrop-filter: blur(12px);
+  transition: transform 0.3s var(--ease-spring), box-shadow 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.cert-card::before {
+  content: '';
+  position: absolute; top: -1px; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--sf-blue), var(--sf-green));
+}
+.cert-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+
+.cert-badge {
+  width: 52px; height: 52px; border-radius: 14px;
+  background: linear-gradient(135deg, rgba(0,112,210,0.15), rgba(0,200,150,0.1));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.cert-name {
+  font-family: var(--font-display);
+  font-weight: 700; font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+}
+.cert-issuer { font-size: 0.85rem; color: var(--text-accent); margin-bottom: 0.15rem; }
+.cert-date { font-size: 0.8rem; color: var(--text-secondary); }
+.cert-id { font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.4rem; font-style: italic; }
+
+/* ═══════════════════════════════════════════
+   CONTACT / CTA SECTION
    ═══════════════════════════════════════════ */
 .cta-section {
-  text-align: center;
-  padding: 6rem 2rem;
+  padding: 5rem 1.5rem;
+  position: relative;
 }
 
 .cta-card {
-  max-width: 720px;
-  margin: 0 auto;
-  background: linear-gradient(135deg, rgba(0,112,210,0.12), rgba(30,203,225,0.06));
+  max-width: 800px; margin: 0 auto;
+  padding: 3rem 3rem;
+  border-radius: 24px;
   border: 1px solid var(--border-glow);
-  border-radius: 28px;
-  padding: 3.5rem 2.5rem;
-  backdrop-filter: blur(20px);
+  background: linear-gradient(135deg, var(--bg-card), rgba(0,112,210,0.08));
+  backdrop-filter: blur(16px);
+  text-align: center;
   position: relative;
   overflow: hidden;
+  box-shadow: var(--shadow-card);
 }
-
 .cta-card::before {
   content: '';
-  position: absolute;
-  top: -2px; left: -2px; right: -2px; bottom: -2px;
-  border-radius: 29px;
-  background: conic-gradient(from 180deg, var(--sf-blue), transparent, var(--sf-cyan), transparent, var(--sf-blue));
-  z-index: -1;
-  opacity: 0.3;
-  animation: borderRotate 10s linear infinite;
+  position: absolute; inset: -1px;
+  border-radius: 24px;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--sf-blue), transparent, var(--sf-green));
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  pointer-events: none;
 }
 
-.cta-title {
+.cta-heading {
   font-family: var(--font-display);
   font-size: clamp(1.6rem, 3vw, 2.2rem);
   font-weight: 800;
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
+  letter-spacing: -0.02em;
 }
-
 .cta-desc {
-  font-size: 1.05rem;
-  color: var(--text-secondary);
-  margin-bottom: 2rem;
-  line-height: 1.6;
+  font-size: 1rem; color: var(--text-secondary);
+  max-width: 500px; margin: 0 auto 2rem;
+  line-height: 1.7;
 }
 
-.cta-links {
-  display: flex;
-  justify-content: center;
+.cta-buttons {
+  display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;
+}
+
+.contact-links {
+  display: flex; gap: 0.8rem; justify-content: center; margin-top: 1.8rem;
   flex-wrap: wrap;
-  gap: 0.8rem;
-  margin-top: 2rem;
 }
 
-.cta-link {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.65rem 1.3rem;
-  border-radius: 12px;
-  border: 1px solid var(--border-glass);
+.contact-pill {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
   background: var(--bg-glass);
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 0.88rem;
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  transition: border-color 0.2s, color 0.2s, transform 0.2s;
+}
+.contact-pill:hover {
+  border-color: var(--sf-blue);
   color: var(--text-primary);
-  transition: all 0.3s ease;
-  backdrop-filter: blur(8px);
-}
-
-.cta-link:hover {
-  border-color: var(--border-glow);
-  background: var(--bg-card);
   transform: translateY(-2px);
-}
-
-.cta-link-icon {
-  width: 28px; height: 28px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.8rem;
-  font-weight: 700;
-  background: linear-gradient(135deg, var(--sf-blue), var(--sf-cyan));
-  color: #fff;
 }
 
 /* ═══════════════════════════════════════════
    FOOTER
    ═══════════════════════════════════════════ */
 .footer {
-  border-top: 1px solid var(--border-glass);
-  padding: 2.5rem 2rem;
-  text-align: center;
+  border-top: 1px solid var(--border-color);
+  padding: 2rem 1.5rem;
+  background: var(--bg-glass);
+  backdrop-filter: blur(10px);
 }
 
 .footer-inner {
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem;
 }
 
-.footer p {
-  font-size: 0.88rem;
+.footer-left {
+  font-size: 0.84rem; color: var(--text-secondary);
+}
+.footer-left strong {
+  color: var(--text-primary);
+  font-family: var(--font-display);
+}
+
+.footer-links { display: flex; gap: 1rem; }
+.footer-links a {
+  font-size: 0.84rem;
   color: var(--text-secondary);
+  transition: color 0.2s;
 }
-
-.footer-sub {
-  font-size: 0.82rem;
-  margin-top: 0.4rem;
-  color: var(--text-secondary);
-  opacity: 0.7;
-}
+.footer-links a:hover { color: var(--sf-sky); }
 
 /* ═══════════════════════════════════════════
-   ANIMATIONS
-   ═══════════════════════════════════════════ */
-@keyframes fadeSlideUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeScaleIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to   { opacity: 1; transform: scale(1); }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-12px); }
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50%      { opacity: 0.5; transform: scale(1.5); }
-}
-
-@keyframes ringRotate {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-
-@keyframes borderRotate {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-
-/* ═══════════════════════════════════════════
-   SCROLLBAR
-   ═══════════════════════════════════════════ */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: var(--bg-primary); }
-::-webkit-scrollbar-thumb {
-  background: rgba(0,112,210,0.3);
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover { background: rgba(0,112,210,0.5); }
-
-/* ═══════════════════════════════════════════
-   RESPONSIVE
+   RESPONSIVENESS
    ═══════════════════════════════════════════ */
 @media (max-width: 1024px) {
-  .hero-inner { grid-template-columns: 1fr; text-align: center; gap: 3rem; }
+  .hero-inner { grid-template-columns: 1fr; text-align: center; }
   .hero-subtitle { margin-left: auto; margin-right: auto; }
-  .hero-chips { justify-content: center; }
-  .hero-actions { justify-content: center; }
-  .hero-photo-wrapper { width: 260px; height: 260px; }
-  .float-card-1 { right: -20px; }
-  .float-card-2 { left: -20px; }
+  .hero-stats { justify-content: center; }
+  .hero-buttons { justify-content: center; }
+  .hero-visual { margin-top: 2rem; }
+  .hero-card-stack { width: 300px; height: 360px; margin: 0 auto; }
   .about-grid { grid-template-columns: 1fr; }
-  .skills-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 768px) {
   .nav-links { display: none; }
-  .mobile-toggle { display: flex; }
-  .nav-links.open {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 72px; left: 0; right: 0;
-    background: rgba(3,11,26,0.95);
-    backdrop-filter: blur(20px);
-    padding: 1rem;
-    border-bottom: 1px solid var(--border-glass);
-  }
-  html[data-theme="light"] .nav-links.open { background: rgba(240,244,250,0.95); }
-  .nav-cta { margin-left: 0; width: 100%; justify-content: center; }
-  .hero { padding: 5rem 1.2rem 3rem; }
+  .hamburger { display: flex; }
+  .hero { padding: 100px 1.2rem 60px; }
+  .hero-title { font-size: clamp(2rem, 7vw, 2.8rem); }
+  .hero-card-stack { width: 260px; height: 320px; }
+  .float-card-main { width: 240px; }
+  .float-card-cert { width: 190px; left: 80px; top: 160px; }
+  .float-card-stat { width: 160px; left: -20px; }
   .section { padding: 3.5rem 1.2rem; }
-  .skills-grid { grid-template-columns: 1fr; }
-  .projects-grid { grid-template-columns: 1fr; }
-  .stats-row { grid-template-columns: repeat(2, 1fr); }
-  .hero-photo-wrapper { width: 220px; height: 220px; }
-  .float-card { display: none; }
+  .skills-mosaic { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+  .edu-grid, .cert-grid { grid-template-columns: 1fr; }
+  .about-highlights { grid-template-columns: 1fr; }
+  .cta-card { padding: 2rem 1.5rem; }
+  .footer-inner { flex-direction: column; text-align: center; }
 }
 
 @media (max-width: 480px) {
-  .stats-row { grid-template-columns: 1fr 1fr; gap: 0.8rem; }
-  .cta-card { padding: 2.5rem 1.5rem; }
-  .cta-links { flex-direction: column; align-items: center; }
+  .hero-stats { gap: 1.2rem; }
+  .hero-stat-number { font-size: 1.4rem; }
+  .skills-mosaic { grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+  .hero-card-stack { transform: scale(0.85); }
 }
+
+/* ═══════════════════════════════════════════
+   SCROLL BAR
+   ═══════════════════════════════════════════ */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--sf-blue); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--sf-sky); }
 </style>
 </head>
 <body>
 
-<!-- Background -->
-<div class="bg-gradient"></div>
-<canvas id="particleCanvas"></canvas>
+<!-- ═══════ BACKGROUND ═══════ -->
+<div class="bg-canvas"></div>
+<div class="bg-grid"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
 
-<!-- Navigation -->
+<!-- ═══════ NAVIGATION ═══════ -->
 <nav class="nav" id="mainNav">
   <div class="nav-inner">
     <a href="#" class="nav-logo">VK</a>
     <div class="nav-links" id="navLinks">
-      <a href="#skills" class="nav-link">Skills</a>
       <a href="#about" class="nav-link">About</a>
-      <a href="#projects" class="nav-link">Projects</a>
-      <a href="#contact" class="nav-link nav-cta">Get In Touch</a>
+      <a href="#skills" class="nav-link">Skills</a>
+      <a href="#experience" class="nav-link">Experience</a>
+      <a href="#certifications" class="nav-link">Certifications</a>
+      <a href="#contact" class="nav-link">Contact</a>
+      <a href="mailto:kvetrivel919@gmail.com" class="nav-cta">Hire Me</a>
+      <button class="theme-btn" id="themeToggle" aria-label="Toggle theme"><span id="themeIcon">🌙</span></button>
     </div>
-    <div style="display:flex;align-items:center;gap:0.4rem;">
-      <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
-        <span id="themeIcon">☀️</span>
-      </button>
-      <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
+    <div style="display:flex;align-items:center;gap:0.5rem;">
+      <button class="theme-btn" id="themeToggleMobile" aria-label="Toggle theme" style="display:none;"><span id="themeIconMobile">🌙</span></button>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
         <span></span><span></span><span></span>
       </button>
     </div>
   </div>
 </nav>
 
-<!-- ═══════ HERO ═══════ -->
-<section class="hero" id="hero">
-  <div class="hero-inner">
-    <div class="hero-content">
-      <div class="hero-badge">
-        <span class="badge-dot"></span>
-        Open to Opportunities
-      </div>
-      <h1>
-        Building Enterprise<br/>
-        <span class="gradient-text">Salesforce Solutions</span>
-      </h1>
-      <p class="hero-subtitle">
-        Senior Salesforce Developer with 3+ years designing scalable
-        Sales Cloud implementations, AI-powered automations, and
-        seamless integrations for B2B enterprises.
-      </p>
-      <div class="hero-chips">
-        <span class="hero-chip">Sales Cloud</span>
-        <span class="hero-chip">Apex & LWC</span>
-        <span class="hero-chip">Flows & Automation</span>
-        <span class="hero-chip">REST Integrations</span>
-        <span class="hero-chip">Einstein AI</span>
-      </div>
-      <div class="hero-actions">
-        <a href="#projects" class="btn-primary">View Projects ↓</a>
-        <a href="mailto:kvetrivel919@gmail.com" class="btn-secondary">Let's Connect →</a>
-      </div>
-    </div>
-    <div class="hero-visual">
-      <div class="hero-photo-wrapper">
-        <div class="hero-photo-ring"></div>
-        <img src="vetri.jpg" alt="Vetrivel K" class="hero-photo" onerror="this.style.background='linear-gradient(135deg,#0070D2,#061D41)'; this.alt='VK'"/>
-        <div class="float-card float-card-1">
-          <div class="float-card-value">3+</div>
-          <div class="float-card-label">Years Experience</div>
-        </div>
-        <div class="float-card float-card-2">
-          <div class="float-card-value">50+</div>
-          <div class="float-card-label">Flows Built</div>
-        </div>
-        <div class="float-card float-card-3">
-          <div class="float-card-value">30+</div>
-          <div class="float-card-label">Integrations</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════ TECH MARQUEE ═══════ -->
-<div class="marquee-section">
-  <div class="marquee-track" id="marqueeTrack">
-    <span class="marquee-item"><span class="marquee-dot"></span>Salesforce Lightning</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>Apex Development</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>Lightning Web Components</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>Flow Builder</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>SOQL / SOSL</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>REST & SOAP APIs</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>Einstein AI</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>Sales Cloud CPQ</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>Service Cloud</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>Experience Cloud</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>Analytics Studio</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>Git & DevOps</span>
-    <!-- duplicate for seamless loop -->
-    <span class="marquee-item"><span class="marquee-dot"></span>Salesforce Lightning</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>Apex Development</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>Lightning Web Components</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>Flow Builder</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>SOQL / SOSL</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>REST & SOAP APIs</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>Einstein AI</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>Sales Cloud CPQ</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>Service Cloud</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>Experience Cloud</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>Analytics Studio</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>Git & DevOps</span>
-  </div>
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" class="nav-link">About</a>
+  <a href="#skills" class="nav-link">Skills</a>
+  <a href="#experience" class="nav-link">Experience</a>
+  <a href="#certifications" class="nav-link">Certifications</a>
+  <a href="#contact" class="nav-link">Contact</a>
+  <a href="mailto:kvetrivel919@gmail.com" class="btn btn-primary" style="margin-top:1rem;">Hire Me</a>
 </div>
 
-<!-- ═══════ SKILLS ═══════ -->
-<section class="section" id="skills">
-  <div class="section-inner">
-    <div class="reveal">
-      <p class="section-label">Expertise</p>
-      <h2 class="section-title">Skill Matrix</h2>
-      <p class="section-desc">Deep expertise across the Salesforce ecosystem — from config to code, automation to AI.</p>
+<!-- ═══════ HERO ═══════ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge reveal">
+        <span class="hero-badge-dot"></span>
+        Open to Opportunities
+      </div>
+      <h1 class="hero-title reveal reveal-delay-1">
+        Hi, I'm <span class="gradient-text">Vetrivel K</span>
+      </h1>
+      <p class="hero-subtitle reveal reveal-delay-2">
+        Salesforce Developer with <strong>3+ years</strong> of hands-on experience building scalable Sales Cloud solutions, custom Apex logic, Lightning Web Components, and enterprise integrations.
+      </p>
+      <div class="hero-stats reveal reveal-delay-2">
+        <div class="hero-stat">
+          <div class="hero-stat-number">3+</div>
+          <div class="hero-stat-label">Years Experience</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-number">2x</div>
+          <div class="hero-stat-label">Certified</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-number">7x</div>
+          <div class="hero-stat-label">Superbadges</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-number">1.5K+</div>
+          <div class="hero-stat-label">Followers</div>
+        </div>
+      </div>
+      <div class="hero-buttons reveal reveal-delay-3">
+        <a href="mailto:kvetrivel919@gmail.com" class="btn btn-primary">
+          ✉ Get in Touch
+        </a>
+        <a href="https://linkedin.com/in/vetrivel-k-b42658154" target="_blank" rel="noopener" class="btn btn-outline">
+          💼 LinkedIn
+        </a>
+        <a href="https://github.com/vetrivel9445" target="_blank" rel="noopener" class="btn btn-ghost">
+          ⌨ GitHub
+        </a>
+      </div>
     </div>
-    <div class="skills-grid">
-      <div class="skill-card reveal">
-        <div class="skill-icon">⚡</div>
-        <h3>Sales Cloud</h3>
-        <p>End-to-end Lead-to-Cash implementations, CPQ configuration, territory management, and revenue pipeline optimization.</p>
-        <div class="skill-tags">
-          <span class="skill-tag">Lead Management</span>
-          <span class="skill-tag">CPQ</span>
-          <span class="skill-tag">Opportunities</span>
-          <span class="skill-tag">Revenue Cloud</span>
+    <div class="hero-visual reveal reveal-delay-3">
+      <div class="hero-card-stack">
+        <div class="float-card float-card-main">
+          <div class="fc-icon fc-icon-blue">☁️</div>
+          <div class="fc-title">Salesforce Developer</div>
+          <div class="fc-sub">Minuscule Technologies · 2.8 yrs</div>
+          <div class="fc-chips">
+            <span class="fc-chip">Apex</span>
+            <span class="fc-chip">LWC</span>
+            <span class="fc-chip">Flows</span>
+            <span class="fc-chip">APIs</span>
+          </div>
         </div>
-      </div>
-      <div class="skill-card reveal">
-        <div class="skill-icon green">🛡️</div>
-        <h3>Service Cloud</h3>
-        <p>Case automation, omnichannel routing, knowledge base architecture, and Field Service Lightning setups.</p>
-        <div class="skill-tags">
-          <span class="skill-tag">Case Automation</span>
-          <span class="skill-tag">Omnichannel</span>
-          <span class="skill-tag">Knowledge Base</span>
-          <span class="skill-tag">FSL</span>
+        <div class="float-card float-card-cert">
+          <div class="fc-icon fc-icon-green">🏅</div>
+          <div class="fc-title">Platform Dev I</div>
+          <div class="fc-sub">Certified Feb 2023</div>
         </div>
-      </div>
-      <div class="skill-card reveal">
-        <div class="skill-icon purple">📊</div>
-        <h3>Analytics & AI</h3>
-        <p>Tableau CRM dashboards, Einstein AI predictions, and custom ML model integrations for data-driven decisions.</p>
-        <div class="skill-tags">
-          <span class="skill-tag">Tableau CRM</span>
-          <span class="skill-tag">Einstein AI</span>
-          <span class="skill-tag">Predictive</span>
-          <span class="skill-tag">Dashboards</span>
-        </div>
-      </div>
-      <div class="skill-card reveal">
-        <div class="skill-icon cyan">💻</div>
-        <h3>Apex & LWC</h3>
-        <p>Bulk-safe triggers, service-layer architecture, test-driven patterns, and performant Lightning Web Components.</p>
-        <div class="skill-tags">
-          <span class="skill-tag">Triggers</span>
-          <span class="skill-tag">Batch Apex</span>
-          <span class="skill-tag">LWC</span>
-          <span class="skill-tag">TDD</span>
-        </div>
-      </div>
-      <div class="skill-card reveal">
-        <div class="skill-icon coral">🔗</div>
-        <h3>Integrations</h3>
-        <p>REST/SOAP API design, callout patterns, middleware connections, and multi-system data sync with external ERPs.</p>
-        <div class="skill-tags">
-          <span class="skill-tag">REST API</span>
-          <span class="skill-tag">SOAP</span>
-          <span class="skill-tag">Middleware</span>
-          <span class="skill-tag">ERP Sync</span>
-        </div>
-      </div>
-      <div class="skill-card reveal">
-        <div class="skill-icon gold">🚀</div>
-        <h3>Flows & Automation</h3>
-        <p>Complex Flow orchestrations, screen flows for guided UX, scheduled automation, and approval workflows.</p>
-        <div class="skill-tags">
-          <span class="skill-tag">Screen Flows</span>
-          <span class="skill-tag">Record-Triggered</span>
-          <span class="skill-tag">Orchestrator</span>
-          <span class="skill-tag">Approvals</span>
+        <div class="float-card float-card-stat">
+          <div class="fc-big-num">7x</div>
+          <div class="fc-sub">Superbadges Earned</div>
         </div>
       </div>
     </div>
@@ -1219,299 +1001,470 @@ html[data-theme="light"] .nav.scrolled {
 <!-- ═══════ ABOUT ═══════ -->
 <section class="section" id="about">
   <div class="section-inner">
-    <div class="reveal">
-      <p class="section-label">Background</p>
-      <h2 class="section-title">About Me</h2>
-    </div>
+    <p class="section-label reveal">About Me</p>
+    <h2 class="section-heading reveal">Crafting Scalable Salesforce Solutions</h2>
     <div class="about-grid">
-      <div class="reveal">
-        <div class="stats-row">
-          <div class="stat-card">
-            <div class="stat-number" data-count="50">0</div>
-            <div class="stat-label">Flows Built</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-number" data-count="30">0</div>
-            <div class="stat-label">Integrations</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-number" data-count="3">0</div>
-            <div class="stat-label">Years Experience</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-number" data-count="5">0</div>
-            <div class="stat-label">★ Client Rating</div>
-          </div>
-        </div>
-        <div class="about-text">
-          <p>
-            I work on <strong>Sales Cloud projects</strong> where business teams need reliable pipelines, accurate data, and minimal manual effort in their daily operations.
-          </p>
-          <p>
-            My core strengths are in <strong>Apex, Lightning Web Components, and Flows</strong>, with a focus on building solutions that are easy to maintain and intuitive for end users. I specialize in complex integrations connecting Salesforce with ERPs, payment gateways, and AI systems.
-          </p>
-          <p>
-            I enjoy taking requirements from ideas to working features, collaborating with admins, architects, and stakeholders to keep implementations aligned with Salesforce best practices.
-          </p>
-        </div>
+      <div class="about-text reveal reveal-delay-1">
+        <p>
+          I'm <strong>Vetrivel K</strong>, a Salesforce Developer based in <strong>Chennai, India</strong>, currently building enterprise CRM solutions at <strong>Minuscule Technologies</strong>. With over 3 years of focused Salesforce experience, I specialize in Sales Cloud implementations, complex Apex development, Lightning Web Components, and REST integrations with external systems.
+        </p>
+        <p>
+          My journey to tech is unconventional — I transitioned from a career as a <strong>Health Inspector</strong> with the Government of Tamil Nadu, driven by a passion for technology and problem-solving. That background gave me strong analytical skills, attention to detail, and comfort working with diverse stakeholders — all of which serve me well in CRM architecture.
+        </p>
+        <p>
+          I focus on writing clean, bulk-safe Apex code, designing intuitive Flows for business automation, and building LWC interfaces that sales teams actually enjoy using. I'm 2x Salesforce Certified with 7 Superbadges, and continuously expanding my expertise into CPQ, Einstein AI, and Marketing Cloud.
+        </p>
       </div>
-      <div class="reveal">
-        <div class="timeline">
-          <div class="timeline-item">
-            <div class="timeline-year">2023 – Present</div>
-            <div class="timeline-role">Salesforce Developer</div>
-            <div class="timeline-company">Prologis Energy · Enterprise Salesforce Team</div>
-          </div>
-          <div class="timeline-item">
-            <div class="timeline-year">2022 – 2023</div>
-            <div class="timeline-role">Salesforce Developer</div>
-            <div class="timeline-company">PIL India · Java → Salesforce Transition</div>
-          </div>
-          <div class="timeline-item">
-            <div class="timeline-year">2019 – 2022</div>
-            <div class="timeline-role">Software Developer</div>
-            <div class="timeline-company">Java Microservices · Spring Boot</div>
-          </div>
+      <div class="about-highlights">
+        <div class="about-hi-card reveal reveal-delay-1">
+          <div class="ahi-icon">⚡</div>
+          <div class="ahi-title">Sales Cloud</div>
+          <div class="ahi-desc">End-to-end implementations for B2B sales teams</div>
+        </div>
+        <div class="about-hi-card reveal reveal-delay-2">
+          <div class="ahi-icon">🔗</div>
+          <div class="ahi-title">Integrations</div>
+          <div class="ahi-desc">REST APIs, callouts & external system syncing</div>
+        </div>
+        <div class="about-hi-card reveal reveal-delay-3">
+          <div class="ahi-icon">🧩</div>
+          <div class="ahi-title">Automation</div>
+          <div class="ahi-desc">Flows, triggers & process optimization</div>
+        </div>
+        <div class="about-hi-card reveal reveal-delay-4">
+          <div class="ahi-icon">🎯</div>
+          <div class="ahi-title">LWC & UI</div>
+          <div class="ahi-desc">Modern Lightning components for end users</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════ PROJECTS ═══════ -->
-<section class="section" id="projects">
+<!-- ═══════ SKILLS ═══════ -->
+<section class="section" id="skills" style="background:linear-gradient(180deg,transparent,rgba(0,112,210,0.03),transparent);">
   <div class="section-inner">
-    <div class="reveal">
-      <p class="section-label">Portfolio</p>
-      <h2 class="section-title">Selected Projects</h2>
-      <p class="section-desc">Real-world Salesforce implementations that drove measurable business outcomes.</p>
+    <p class="section-label reveal">Technical Expertise</p>
+    <h2 class="section-heading reveal">Skills & Technologies</h2>
+    <p class="section-desc reveal">A comprehensive toolkit covering Salesforce clouds, development, automation, analytics, and integration.</p>
+
+    <div class="skills-mosaic">
+      <div class="skill-tile reveal">
+        <div class="st-icon">☁️</div>
+        <div>
+          <div class="st-name">Sales Cloud</div>
+          <div class="st-level">Advanced</div>
+          <div class="st-bar"><div class="st-fill" style="width:95%"></div></div>
+        </div>
+      </div>
+      <div class="skill-tile reveal">
+        <div class="st-icon">🛠️</div>
+        <div>
+          <div class="st-name">Service Cloud</div>
+          <div class="st-level">Advanced</div>
+          <div class="st-bar"><div class="st-fill" style="width:90%"></div></div>
+        </div>
+      </div>
+      <div class="skill-tile reveal">
+        <div class="st-icon st-icon-green">📊</div>
+        <div>
+          <div class="st-name">Analytics Studio</div>
+          <div class="st-level">Intermediate</div>
+          <div class="st-bar"><div class="st-fill" style="width:70%"></div></div>
+        </div>
+      </div>
+      <div class="skill-tile reveal">
+        <div class="st-icon">🌐</div>
+        <div>
+          <div class="st-name">Experience Cloud</div>
+          <div class="st-level">Intermediate</div>
+          <div class="st-bar"><div class="st-fill" style="width:72%"></div></div>
+        </div>
+      </div>
+      <div class="skill-tile reveal">
+        <div class="st-icon st-icon-green">📧</div>
+        <div>
+          <div class="st-name">Marketing Cloud</div>
+          <div class="st-level">Intermediate</div>
+          <div class="st-bar"><div class="st-fill" style="width:65%"></div></div>
+        </div>
+      </div>
+      <div class="skill-tile reveal">
+        <div class="st-icon">⚙️</div>
+        <div>
+          <div class="st-name">Apex Programming</div>
+          <div class="st-level">Advanced</div>
+          <div class="st-bar"><div class="st-fill" style="width:92%"></div></div>
+        </div>
+      </div>
+      <div class="skill-tile reveal">
+        <div class="st-icon st-icon-green">⚡</div>
+        <div>
+          <div class="st-name">Lightning Web Components</div>
+          <div class="st-level">Advanced</div>
+          <div class="st-bar"><div class="st-fill" style="width:88%"></div></div>
+        </div>
+      </div>
+      <div class="skill-tile reveal">
+        <div class="st-icon">🔍</div>
+        <div>
+          <div class="st-name">SOQL / SOSL</div>
+          <div class="st-level">Advanced</div>
+          <div class="st-bar"><div class="st-fill" style="width:90%"></div></div>
+        </div>
+      </div>
+      <div class="skill-tile reveal">
+        <div class="st-icon st-icon-green">🔧</div>
+        <div>
+          <div class="st-name">Admin Tasks</div>
+          <div class="st-level">Advanced</div>
+          <div class="st-bar"><div class="st-fill" style="width:88%"></div></div>
+        </div>
+      </div>
+      <div class="skill-tile reveal">
+        <div class="st-icon">📦</div>
+        <div>
+          <div class="st-name">Out of Box Solutions</div>
+          <div class="st-level">Advanced</div>
+          <div class="st-bar"><div class="st-fill" style="width:85%"></div></div>
+        </div>
+      </div>
+      <div class="skill-tile reveal">
+        <div class="st-icon st-icon-green">🔗</div>
+        <div>
+          <div class="st-name">REST Integrations</div>
+          <div class="st-level">Advanced</div>
+          <div class="st-bar"><div class="st-fill" style="width:85%"></div></div>
+        </div>
+      </div>
+      <div class="skill-tile reveal">
+        <div class="st-icon">🔄</div>
+        <div>
+          <div class="st-name">Salesforce Flows</div>
+          <div class="st-level">Advanced</div>
+          <div class="st-bar"><div class="st-fill" style="width:93%"></div></div>
+        </div>
+      </div>
+      <div class="skill-tile reveal">
+        <div class="st-icon st-icon-green">💰</div>
+        <div>
+          <div class="st-name">CPQ & Revenue Mgmt</div>
+          <div class="st-level">Intermediate</div>
+          <div class="st-bar"><div class="st-fill" style="width:65%"></div></div>
+        </div>
+      </div>
+      <div class="skill-tile reveal">
+        <div class="st-icon">📈</div>
+        <div>
+          <div class="st-name">Tableau CRM</div>
+          <div class="st-level">Intermediate</div>
+          <div class="st-bar"><div class="st-fill" style="width:68%"></div></div>
+        </div>
+      </div>
+      <div class="skill-tile reveal">
+        <div class="st-icon st-icon-green">🤖</div>
+        <div>
+          <div class="st-name">Einstein AI</div>
+          <div class="st-level">Intermediate</div>
+          <div class="st-bar"><div class="st-fill" style="width:60%"></div></div>
+        </div>
+      </div>
     </div>
-    <div class="projects-grid">
-      <article class="project-card reveal">
-        <div class="project-number">01</div>
-        <h3>Enterprise Sales Automation</h3>
-        <p class="project-meta">Sales Cloud · CPQ · REST API</p>
-        <p class="project-desc">Built an end-to-end pipeline automation system with CPQ integration, automated lead scoring and routing to regional teams using Flows and Apex triggers.</p>
-        <span class="project-result">↑ 40% Faster Pipeline</span>
-      </article>
-      <article class="project-card reveal">
-        <div class="project-number">02</div>
-        <h3>Customer Success Portal</h3>
-        <p class="project-meta">Experience Cloud · LWC · Self-Service</p>
-        <p class="project-desc">Designed a self-service portal for B2B clients with case management, knowledge articles, and real-time order tracking via custom LWC components.</p>
-        <span class="project-result">24/7 Self-Service Access</span>
-      </article>
-      <article class="project-card reveal">
-        <div class="project-number">03</div>
-        <h3>AI Analytics Dashboard</h3>
-        <p class="project-meta">Analytics Studio · Einstein · Tableau CRM</p>
-        <p class="project-desc">Created predictive dashboards combining Einstein predictions with custom SAQL queries to surface deal insights and churn risk for sales leadership.</p>
-        <span class="project-result">Predictive Insights Live</span>
-      </article>
-      <article class="project-card reveal">
-        <div class="project-number">04</div>
-        <h3>Multi-System Integration Hub</h3>
-        <p class="project-meta">Apex · REST/SOAP · SAP Connector</p>
-        <p class="project-desc">Architected a centralized integration layer connecting Salesforce with SAP ERP and payment gateways, handling real-time and batch data synchronization.</p>
-        <span class="project-result">30+ Systems Connected</span>
-      </article>
-      <article class="project-card reveal">
-        <div class="project-number">05</div>
-        <h3>Expense Tracking Application</h3>
-        <p class="project-meta">Custom Objects · Validation Rules · Dashboards</p>
-        <p class="project-desc">Developed an internal expense management app with approval workflows, category-wise reporting dashboards, and automated budget alerts.</p>
-        <span class="project-result">Full Expense Visibility</span>
-      </article>
+  </div>
+</section>
+
+<!-- ═══════ EXPERIENCE ═══════ -->
+<section class="section" id="experience">
+  <div class="section-inner">
+    <p class="section-label reveal">Career Journey</p>
+    <h2 class="section-heading reveal">Professional Experience</h2>
+    <p class="section-desc reveal">From healthcare to Salesforce — a career driven by curiosity, discipline, and love for building solutions.</p>
+
+    <div class="timeline">
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-date">Jul 2023 — Present · 2.8 years</div>
+          <div class="tl-role">Salesforce Developer</div>
+          <div class="tl-company">Minuscule Technologies</div>
+          <ul class="tl-details">
+            <li>Led Apex development for complex business logic including triggers, batch classes, and schedulable jobs</li>
+            <li>Implemented complex Flows for lead qualification, assignment rules, and follow-up automation</li>
+            <li>Architected REST API integrations to sync account, opportunity, and order data with external systems</li>
+            <li>Built Lightning Web Components for list views, record detail enhancements, and guided actions</li>
+            <li>Configured Sales Cloud objects — Leads, Opportunities, and custom objects for region-wise sales processes</li>
+          </ul>
+          <div class="tl-tags">
+            <span class="tl-tag">Apex</span>
+            <span class="tl-tag">LWC</span>
+            <span class="tl-tag">Flows</span>
+            <span class="tl-tag">REST APIs</span>
+            <span class="tl-tag">Sales Cloud</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-date">Nov 2022 — Jul 2023 · 9 months</div>
+          <div class="tl-role">Salesforce Developer Trainee</div>
+          <div class="tl-company">AJ Skill Development Academy</div>
+          <ul class="tl-details">
+            <li>Completed intensive Salesforce Lightning training covering platform fundamentals and development</li>
+            <li>Earned Platform Developer I Certification (Feb 2023)</li>
+          </ul>
+          <div class="tl-tags">
+            <span class="tl-tag">Lightning</span>
+            <span class="tl-tag">Platform Dev I</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-date">Nov 2022 · 1 month</div>
+          <div class="tl-role">Salesforce Administrator Trainee</div>
+          <div class="tl-company">Training Program</div>
+          <ul class="tl-details">
+            <li>Foundational Salesforce Admin training — object configuration, security, and platform basics</li>
+            <li>Gateway to Platform Developer I certification journey</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-date">Jan 2020 — Oct 2022 · 2.8 years</div>
+          <div class="tl-role">Health Inspector</div>
+          <div class="tl-company">Government of Tamil Nadu</div>
+          <ul class="tl-details">
+            <li>Conducted public health inspections and regulatory compliance assessments</li>
+            <li>Developed analytical and stakeholder communication skills that translated directly to CRM consulting</li>
+            <li>Career transition to IT / Salesforce ecosystem driven by passion for technology</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-date">Apr 2017 — Nov 2018 · 1.8 years</div>
+          <div class="tl-role">Field Services Engineer</div>
+          <div class="tl-company">ADX Electromedical</div>
+          <ul class="tl-details">
+            <li>Installed, maintained, and troubleshot biomedical electronic equipment at healthcare facilities</li>
+            <li>Built strong technical troubleshooting foundation and client-facing communication skills</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ EDUCATION ═══════ -->
+<section class="section" id="education" style="background:linear-gradient(180deg,transparent,rgba(0,200,150,0.03),transparent);">
+  <div class="section-inner">
+    <p class="section-label reveal">Education</p>
+    <h2 class="section-heading reveal">Academic Background</h2>
+    <div class="edu-grid" style="margin-top:1.5rem;">
+      <div class="edu-card reveal reveal-delay-1">
+        <div class="edu-icon">🎓</div>
+        <div class="edu-degree">B.E. in Medical Electronic Engineering</div>
+        <div class="edu-school">Sengunthar College of Engineering</div>
+        <div class="edu-meta">2013 — 2017 · CGPA: 6.8</div>
+      </div>
+      <div class="edu-card reveal reveal-delay-2">
+        <div class="edu-icon">📋</div>
+        <div class="edu-degree">Diploma in Health Inspector</div>
+        <div class="edu-school">Government Institute</div>
+        <div class="edu-meta">2018 — 2019 · Grade: 80%</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ CERTIFICATIONS ═══════ -->
+<section class="section" id="certifications">
+  <div class="section-inner">
+    <p class="section-label reveal">Credentials</p>
+    <h2 class="section-heading reveal">Certifications & Badges</h2>
+    <p class="section-desc reveal">Verified Salesforce credentials demonstrating platform expertise and continuous learning.</p>
+
+    <div class="cert-grid">
+      <div class="cert-card reveal reveal-delay-1">
+        <div class="cert-badge">🏆</div>
+        <div class="cert-name">Salesforce Certified Platform Developer I</div>
+        <div class="cert-issuer">Salesforce</div>
+        <div class="cert-date">Issued: February 2023</div>
+        <div class="cert-id">Credential ID: 3021489</div>
+      </div>
+      <div class="cert-card reveal reveal-delay-2">
+        <div class="cert-badge">⭐</div>
+        <div class="cert-name">7x Salesforce Superbadges</div>
+        <div class="cert-issuer">Salesforce Trailhead</div>
+        <div class="cert-date">Ongoing achievements</div>
+        <div class="cert-id">Verified on Trailhead profile</div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- ═══════ CONTACT CTA ═══════ -->
 <section class="cta-section" id="contact">
-  <div class="reveal">
-    <div class="cta-card">
-      <p class="section-label">Get In Touch</p>
-      <h2 class="cta-title">Ready to Accelerate Your<br/>Salesforce Journey?</h2>
-      <p class="cta-desc">
-        Open to Salesforce Developer roles focused on Sales Cloud, complex integrations,
-        and AI-powered enterprise solutions. Based in Chennai — available hybrid or remote.
-      </p>
-      <div class="hero-actions" style="justify-content:center; opacity:1; animation:none;">
-        <a href="mailto:kvetrivel919@gmail.com" class="btn-primary">Start a Conversation ✉</a>
-      </div>
-      <div class="cta-links">
-        <a href="https://github.com/vetrivel9445" target="_blank" rel="noopener" class="cta-link">
-          <span class="cta-link-icon">GH</span> GitHub
-        </a>
-        <a href="https://trailblazer.me/id/vsalesforce35" target="_blank" rel="noopener" class="cta-link">
-          <span class="cta-link-icon" style="background:linear-gradient(135deg,#00a1e0,#1ecbe1)">SF</span> Trailhead
-        </a>
-        <a href="https://www.linkedin.com/in/vetrivel-k-b42658154" target="_blank" rel="noopener" class="cta-link">
-          <span class="cta-link-icon" style="background:linear-gradient(135deg,#0077B5,#00a0dc)">in</span> LinkedIn
-        </a>
-        <a href="mailto:kvetrivel919@gmail.com" class="cta-link">
-          <span class="cta-link-icon" style="background:linear-gradient(135deg,#00C896,#1ECBE1)">@</span> Email
-        </a>
-      </div>
+  <div class="cta-card reveal">
+    <h2 class="cta-heading">Let's Build Something <span class="gradient-text">Together</span></h2>
+    <p class="cta-desc">
+      Looking for a Salesforce Developer to architect your Sales Cloud implementation, build custom integrations, or optimize your CRM workflows? Let's talk.
+    </p>
+    <div class="cta-buttons">
+      <a href="mailto:kvetrivel919@gmail.com" class="btn btn-primary">
+        ✉ Email Me
+      </a>
+      <a href="https://linkedin.com/in/vetrivel-k-b42658154" target="_blank" rel="noopener" class="btn btn-outline">
+        💼 Connect on LinkedIn
+      </a>
+    </div>
+    <div class="contact-links">
+      <a href="https://github.com/vetrivel9445" target="_blank" rel="noopener" class="contact-pill">
+        ⌨ GitHub
+      </a>
+      <a href="https://trailblazer.me/id/vsalesforce35" target="_blank" rel="noopener" class="contact-pill">
+        ☁️ Trailhead
+      </a>
+      <a href="https://vetrivel9445.github.io" target="_blank" rel="noopener" class="contact-pill">
+        🌐 Website
+      </a>
+      <span class="contact-pill">📍 Chennai, India</span>
     </div>
   </div>
 </section>
 
-<!-- Footer -->
+<!-- ═══════ FOOTER ═══════ -->
 <footer class="footer">
   <div class="footer-inner">
-    <p>Designed & built by <strong>Vetrivel K</strong> — Salesforce Developer · Chennai, India</p>
-    <p class="footer-sub">© 2026 · Open to Sales Cloud, integrations & AI-powered Salesforce projects.</p>
+    <div class="footer-left">
+      <strong>Vetrivel K</strong> · Salesforce Developer · Chennai, India<br/>
+      Open to hybrid & remote opportunities in Sales Cloud, integrations, and consulting.
+    </div>
+    <div class="footer-links">
+      <a href="https://linkedin.com/in/vetrivel-k-b42658154" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/vetrivel9445" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://trailblazer.me/id/vsalesforce35" target="_blank" rel="noopener">Trailhead</a>
+      <a href="mailto:kvetrivel919@gmail.com">Email</a>
+    </div>
   </div>
 </footer>
 
 <!-- ═══════ SCRIPTS ═══════ -->
 <script>
-// ── Particle System ──
 (function() {
-  const canvas = document.getElementById('particleCanvas');
-  const ctx = canvas.getContext('2d');
-  let w, h, particles = [], mouse = { x: -999, y: -999 };
-  const PARTICLE_COUNT = 60;
+  // Theme toggle
+  const html = document.documentElement;
+  const saved = localStorage.getItem('vk-theme');
+  if (saved) html.setAttribute('data-theme', saved);
 
-  function resize() {
-    w = canvas.width = window.innerWidth;
-    h = canvas.height = window.innerHeight;
+  function toggleTheme() {
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('vk-theme', next);
+    updateIcons(next);
   }
-  resize();
-  window.addEventListener('resize', resize);
-  document.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
 
-  class Particle {
-    constructor() { this.reset(); }
-    reset() {
-      this.x = Math.random() * w;
-      this.y = Math.random() * h;
-      this.vx = (Math.random() - 0.5) * 0.4;
-      this.vy = (Math.random() - 0.5) * 0.4;
-      this.r = Math.random() * 2 + 0.5;
-      this.alpha = Math.random() * 0.4 + 0.1;
-    }
-    update() {
-      this.x += this.vx;
-      this.y += this.vy;
-      if (this.x < 0 || this.x > w) this.vx *= -1;
-      if (this.y < 0 || this.y > h) this.vy *= -1;
-      const dx = mouse.x - this.x, dy = mouse.y - this.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 150) {
-        this.x -= dx * 0.008;
-        this.y -= dy * 0.008;
+  function updateIcons(t) {
+    const icon = t === 'dark' ? '🌙' : '☀️';
+    document.getElementById('themeIcon').textContent = icon;
+    document.getElementById('themeIconMobile').textContent = icon;
+  }
+
+  document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+  document.getElementById('themeToggleMobile').addEventListener('click', toggleTheme);
+  updateIcons(html.getAttribute('data-theme'));
+
+  // Mobile menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const mobileTheme = document.getElementById('themeToggleMobile');
+
+  function updateMobileVisibility() {
+    const isMobile = window.innerWidth <= 768;
+    mobileTheme.style.display = isMobile ? 'flex' : 'none';
+  }
+  updateMobileVisibility();
+  window.addEventListener('resize', updateMobileVisibility);
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    mobileMenu.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  });
+
+  mobileMenu.querySelectorAll('.nav-link, .btn').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('active');
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // Nav scroll effect
+  const nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  // Intersection Observer for reveal animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
       }
-    }
-    draw() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(0,112,210,${this.alpha})`;
-      ctx.fill();
-    }
-  }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 
-  for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-  function connectParticles() {
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        const dx = particles[i].x - particles[j].x;
-        const dy = particles[i].y - particles[j].y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 140) {
-          ctx.beginPath();
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(0,112,210,${0.08 * (1 - dist / 140)})`;
-          ctx.lineWidth = 0.5;
-          ctx.stroke();
-        }
+  // Smooth scroll for nav links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth' });
       }
-    }
-  }
-
-  function animate() {
-    ctx.clearRect(0, 0, w, h);
-    particles.forEach(p => { p.update(); p.draw(); });
-    connectParticles();
-    requestAnimationFrame(animate);
-  }
-  animate();
+    });
+  });
 })();
+</script>
 
-// ── Nav scroll effect ──
-const nav = document.getElementById('mainNav');
-window.addEventListener('scroll', () => {
-  nav.classList.toggle('scrolled', window.scrollY > 40);
-});
-
-// ── Theme toggle ──
-const html = document.documentElement;
-const themeToggle = document.getElementById('themeToggle');
-const themeIcon = document.getElementById('themeIcon');
-
-function setTheme(theme) {
-  html.setAttribute('data-theme', theme);
-  themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
-  try { localStorage.setItem('portfolio-theme', theme); } catch(e) {}
+<!-- Structured Data for SEO -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Vetrivel K",
+  "alternateName": "Vetri K",
+  "jobTitle": "Salesforce Developer",
+  "url": "https://vetrivel9445.github.io",
+  "sameAs": [
+    "https://linkedin.com/in/vetrivel-k-b42658154",
+    "https://github.com/vetrivel9445",
+    "https://trailblazer.me/id/vsalesforce35"
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Chennai",
+    "addressRegion": "Tamil Nadu",
+    "addressCountry": "IN"
+  },
+  "worksFor": {
+    "@type": "Organization",
+    "name": "Minuscule Technologies"
+  },
+  "knowsAbout": ["Salesforce", "Sales Cloud", "Apex", "Lightning Web Components", "Salesforce Flows", "REST API Integrations", "CPQ", "Service Cloud"]
 }
-
-try {
-  const saved = localStorage.getItem('portfolio-theme');
-  if (saved) setTheme(saved);
-} catch(e) {}
-
-themeToggle.addEventListener('click', () => {
-  setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-});
-
-// ── Mobile menu ──
-const mobileToggle = document.getElementById('mobileToggle');
-const navLinks = document.getElementById('navLinks');
-mobileToggle.addEventListener('click', () => {
-  navLinks.classList.toggle('open');
-});
-navLinks.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', () => navLinks.classList.remove('open'));
-});
-
-// ── Scroll reveal ──
-const reveals = document.querySelectorAll('.reveal');
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry, i) => {
-    if (entry.isIntersecting) {
-      setTimeout(() => entry.target.classList.add('visible'), i * 80);
-      revealObserver.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-reveals.forEach(el => revealObserver.observe(el));
-
-// ── Counter animation ──
-const statNumbers = document.querySelectorAll('.stat-number[data-count]');
-const counterObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const el = entry.target;
-      const target = parseInt(el.dataset.count);
-      let current = 0;
-      const increment = target / 40;
-      const timer = setInterval(() => {
-        current += increment;
-        if (current >= target) {
-          el.textContent = target + '+';
-          clearInterval(timer);
-        } else {
-          el.textContent = Math.floor(current) + '+';
-        }
-      }, 35);
-      counterObserver.unobserve(el);
-    }
-  });
-}, { threshold: 0.5 });
-statNumbers.forEach(el => counterObserver.observe(el));
 </script>
 </body>
 </html>
