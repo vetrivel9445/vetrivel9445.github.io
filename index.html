@@ -1,1455 +1,487 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Vetrivel K — Salesforce Developer | 2x Certified | 3+ Years Experience</title>
-<meta name="description" content="Vetrivel K is a Salesforce Developer with 3+ years of experience in Sales Cloud, Apex, LWC, Flows, and integrations. Based in Chennai, India. Available for consulting."/>
-<meta name="keywords" content="Salesforce Developer, Apex, LWC, Sales Cloud, Service Cloud, CPQ, Chennai, Vetrivel K"/>
-<meta property="og:title" content="Vetrivel K — Salesforce Developer"/>
-<meta property="og:description" content="2x Certified Salesforce Developer specializing in Sales Cloud, Apex, LWC & Integrations."/>
-<meta property="og:type" content="website"/>
-<link rel="canonical" href="https://vetrivel9445.github.io"/>
-
-<!-- Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet"/>
-
+<meta name="description" content="Vetrivel K — Salesforce Developer with 3+ years experience in Apex, LWC, Agentforce AI, Flows and integrations. 3x Certified. Chennai, India."/>
+<meta name="keywords" content="Salesforce Developer, Apex, LWC, Agentforce, Chennai, 3x Certified, Vetrivel K"/>
+<title>Vetrivel K — Salesforce Developer | 3x Certified | Chennai</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
-/* ═══════════════════════════════════════════
-   THEME VARIABLES
-   ═══════════════════════════════════════════ */
-:root {
-  --sf-navy: #061D41;
-  --sf-blue: #0070D2;
-  --sf-sky: #1B96FF;
-  --sf-green: #00C896;
-  --sf-green-dim: rgba(0,200,150,0.15);
-
-  --bg-primary: #030A1A;
-  --bg-card: rgba(6,29,65,0.55);
-  --bg-card-solid: #071E42;
-  --bg-glass: rgba(6,29,65,0.35);
-  --text-primary: #F0F4FF;
-  --text-secondary: #94A3C4;
-  --text-accent: #1B96FF;
-  --border-color: rgba(27,150,255,0.12);
-  --border-glow: rgba(0,112,210,0.35);
-  --glow-blue: rgba(0,112,210,0.4);
-  --glow-green: rgba(0,200,150,0.35);
-  --shadow-card: 0 8px 32px rgba(0,0,0,0.4);
-  --shadow-hover: 0 16px 48px rgba(0,112,210,0.2);
-
-  --font-display: 'Outfit', sans-serif;
-  --font-body: 'DM Sans', sans-serif;
-
-  --ease-out-expo: cubic-bezier(0.16,1,0.3,1);
-  --ease-spring: cubic-bezier(0.34,1.56,0.64,1);
-}
-
-html[data-theme="light"] {
-  --bg-primary: #F0F4FA;
-  --bg-card: rgba(255,255,255,0.85);
-  --bg-card-solid: #FFFFFF;
-  --bg-glass: rgba(255,255,255,0.6);
-  --text-primary: #061D41;
-  --text-secondary: #4A6085;
-  --text-accent: #0070D2;
-  --border-color: rgba(0,112,210,0.15);
-  --border-glow: rgba(0,112,210,0.25);
-  --glow-blue: rgba(0,112,210,0.15);
-  --glow-green: rgba(0,200,150,0.15);
-  --shadow-card: 0 4px 24px rgba(6,29,65,0.08);
-  --shadow-hover: 0 12px 40px rgba(0,112,210,0.12);
-  --sf-green-dim: rgba(0,200,150,0.1);
-}
-
-/* ═══════════════════════════════════════════
-   RESET & BASE
-   ═══════════════════════════════════════════ */
-*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
-
-html { scroll-behavior:smooth; scroll-padding-top:80px; }
-
-body {
-  font-family: var(--font-body);
-  color: var(--text-primary);
-  background: var(--bg-primary);
-  line-height: 1.6;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-}
-
-a { color: inherit; text-decoration: none; }
-img { max-width: 100%; display: block; }
-ul { list-style: none; }
-
-/* ═══════════════════════════════════════════
-   ANIMATED BACKGROUND
-   ═══════════════════════════════════════════ */
-.bg-canvas {
-  position: fixed; inset: 0; z-index: -1; pointer-events: none;
-  background:
-    radial-gradient(ellipse 80% 60% at 10% 0%, var(--glow-blue), transparent),
-    radial-gradient(ellipse 60% 50% at 90% 100%, var(--glow-green), transparent),
-    radial-gradient(ellipse 70% 40% at 50% 50%, rgba(0,112,210,0.06), transparent),
-    var(--bg-primary);
-}
-
-.bg-grid {
-  position: fixed; inset: 0; z-index: -1; pointer-events: none;
-  background-image:
-    linear-gradient(var(--border-color) 1px, transparent 1px),
-    linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
-  background-size: 64px 64px;
-  mask-image: radial-gradient(ellipse 70% 50% at 50% 30%, black 20%, transparent 70%);
-  -webkit-mask-image: radial-gradient(ellipse 70% 50% at 50% 30%, black 20%, transparent 70%);
-  opacity: 0.45;
-}
-
-.orb {
-  position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: -1;
-  animation: orbFloat 20s ease-in-out infinite alternate;
-}
-.orb-1 { width:420px;height:420px;background:rgba(0,112,210,0.18);top:-100px;left:-80px; }
-.orb-2 { width:350px;height:350px;background:rgba(0,200,150,0.12);bottom:-80px;right:-60px;animation-delay:-7s;animation-duration:25s; }
-.orb-3 { width:280px;height:280px;background:rgba(27,150,255,0.1);top:40%;left:60%;animation-delay:-12s;animation-duration:28s; }
-
-@keyframes orbFloat {
-  0%   { transform: translate(0,0) scale(1); }
-  33%  { transform: translate(30px,-20px) scale(1.05); }
-  66%  { transform: translate(-20px,30px) scale(0.95); }
-  100% { transform: translate(15px,10px) scale(1.02); }
-}
-
-/* ═══════════════════════════════════════════
-   REVEAL ANIMATIONS
-   ═══════════════════════════════════════════ */
-.reveal {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
-}
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.3s; }
-.reveal-delay-4 { transition-delay: 0.4s; }
-
-/* ═══════════════════════════════════════════
-   NAVIGATION
-   ═══════════════════════════════════════════ */
-.nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  padding: 0 1.5rem;
-  backdrop-filter: blur(20px) saturate(1.4);
-  -webkit-backdrop-filter: blur(20px) saturate(1.4);
-  background: var(--bg-glass);
-  border-bottom: 1px solid var(--border-color);
-  transition: background 0.3s, box-shadow 0.3s;
-}
-.nav.scrolled {
-  background: var(--bg-card);
-  box-shadow: 0 4px 30px rgba(0,0,0,0.2);
-}
-
-.nav-inner {
-  max-width: 1200px; margin: 0 auto;
-  display: flex; align-items: center; justify-content: space-between;
-  height: 68px;
-}
-
-.nav-logo {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 1.35rem;
-  background: linear-gradient(135deg, var(--sf-blue), var(--sf-green));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: -0.02em;
-}
-
-.nav-links { display: flex; gap: 0.25rem; align-items: center; }
-
-.nav-link {
-  font-family: var(--font-display);
-  font-size: 0.88rem;
-  font-weight: 500;
-  padding: 0.45rem 0.9rem;
-  border-radius: 10px;
-  color: var(--text-secondary);
-  transition: color 0.2s, background 0.2s;
-  position: relative;
-}
-.nav-link:hover { color: var(--text-primary); background: var(--bg-card); }
-
-.nav-cta {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 0.85rem;
-  padding: 0.5rem 1.2rem;
-  border-radius: 10px;
-  background: linear-gradient(135deg, var(--sf-blue), var(--sf-sky));
-  color: #fff;
-  border: none; cursor: pointer;
-  transition: transform 0.2s var(--ease-spring), box-shadow 0.2s;
-  box-shadow: 0 4px 16px var(--glow-blue);
-}
-.nav-cta:hover {
-  transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 8px 24px var(--glow-blue);
-}
-
-.theme-btn {
-  width: 38px; height: 38px; border-radius: 10px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-card);
-  cursor: pointer; display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem;
-  transition: border-color 0.2s, transform 0.2s;
-  margin-left: 0.4rem;
-}
-.theme-btn:hover { border-color: var(--sf-blue); transform: scale(1.08); }
-
-/* Hamburger */
-.hamburger {
-  display: none; flex-direction: column; gap: 5px;
-  background: none; border: none; cursor: pointer; padding: 6px;
-}
-.hamburger span {
-  width: 24px; height: 2px; background: var(--text-primary);
-  border-radius: 2px; transition: transform 0.3s, opacity 0.3s;
-}
-.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
-.hamburger.active span:nth-child(2) { opacity: 0; }
-.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
-
-/* Mobile nav */
-.mobile-menu {
-  display: none;
-  position: fixed; top: 68px; left: 0; right: 0; bottom: 0;
-  background: var(--bg-card-solid);
-  z-index: 99;
-  flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-.mobile-menu.open { display: flex; opacity: 1; }
-.mobile-menu .nav-link { font-size: 1.2rem; }
-
-/* ═══════════════════════════════════════════
-   HERO SECTION
-   ═══════════════════════════════════════════ */
-.hero {
-  min-height: 100vh;
-  display: flex; align-items: center;
-  padding: 120px 1.5rem 80px;
-  position: relative;
-}
-
-.hero-inner {
-  max-width: 1200px; margin: 0 auto; width: 100%;
-  display: grid; grid-template-columns: 1fr 0.55fr; gap: 4rem; align-items: center;
-}
-
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  padding: 0.4rem 1rem 0.4rem 0.5rem;
-  border-radius: 999px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-glass);
-  font-size: 0.82rem;
-  color: var(--sf-green);
-  font-weight: 500;
-  margin-bottom: 1.2rem;
-  backdrop-filter: blur(12px);
-}
-.hero-badge-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--sf-green);
-  animation: pulse-dot 2s ease-in-out infinite;
-}
-@keyframes pulse-dot {
-  0%,100% { opacity:1; box-shadow: 0 0 0 0 var(--glow-green); }
-  50% { opacity:.7; box-shadow: 0 0 0 8px transparent; }
-}
-
-.hero-title {
-  font-family: var(--font-display);
-  font-size: clamp(2.6rem, 5.5vw, 4.2rem);
-  font-weight: 900;
-  line-height: 1.08;
-  letter-spacing: -0.03em;
-  margin-bottom: 0.6rem;
-}
-.hero-title .gradient-text {
-  background: linear-gradient(135deg, var(--sf-blue) 0%, var(--sf-sky) 40%, var(--sf-green) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.hero-subtitle {
-  font-family: var(--font-display);
-  font-size: clamp(1rem, 1.6vw, 1.2rem);
-  font-weight: 400;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  max-width: 540px;
-  margin-bottom: 2rem;
-}
-
-.hero-stats {
-  display: flex; gap: 2rem; margin-bottom: 2.2rem;
-  flex-wrap: wrap;
-}
-.hero-stat { text-align: left; }
-.hero-stat-number {
-  font-family: var(--font-display);
-  font-size: 1.8rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, var(--sf-sky), var(--sf-green));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.hero-stat-label {
-  font-size: 0.78rem;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-weight: 500;
-}
-
-.hero-buttons { display: flex; gap: 0.8rem; flex-wrap: wrap; }
-
-.btn {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 0.92rem;
-  padding: 0.75rem 1.6rem;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: transform 0.25s var(--ease-spring), box-shadow 0.25s;
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  border: none;
-}
-.btn:hover { transform: translateY(-3px); }
-
-.btn-primary {
-  background: linear-gradient(135deg, var(--sf-blue), var(--sf-sky));
-  color: #fff;
-  box-shadow: 0 6px 24px var(--glow-blue);
-}
-.btn-primary:hover { box-shadow: 0 12px 36px var(--glow-blue); }
-
-.btn-outline {
-  background: transparent;
-  border: 1.5px solid var(--border-glow);
-  color: var(--text-primary);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-}
-.btn-outline:hover { border-color: var(--sf-blue); box-shadow: 0 8px 28px var(--glow-blue); }
-
-.btn-ghost {
-  background: var(--sf-green-dim);
-  color: var(--sf-green);
-  border: 1px solid rgba(0,200,150,0.2);
-}
-.btn-ghost:hover { box-shadow: 0 8px 24px var(--glow-green); }
-
-/* Hero visual */
-.hero-visual {
-  display: flex; align-items: center; justify-content: center;
-  position: relative;
-}
-
-.hero-card-stack {
-  position: relative;
-  width: 320px; height: 380px;
-}
-
-.float-card {
-  position: absolute;
-  border-radius: 18px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-card);
-  backdrop-filter: blur(16px);
-  padding: 1.2rem;
-  box-shadow: var(--shadow-card);
-  transition: transform 0.4s var(--ease-out-expo);
-}
-
-.float-card-main {
-  width: 280px; top: 0; left: 0; z-index: 3;
-  animation: floatMain 6s ease-in-out infinite;
-}
-.float-card-cert {
-  width: 220px; top: 180px; left: 120px; z-index: 4;
-  animation: floatCert 5s ease-in-out infinite;
-  animation-delay: -1.5s;
-}
-.float-card-stat {
-  width: 180px; top: 60px; left: -40px; z-index: 2;
-  animation: floatStat 7s ease-in-out infinite;
-  animation-delay: -3s;
-}
-
-@keyframes floatMain {
-  0%,100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-12px) rotate(0.5deg); }
-}
-@keyframes floatCert {
-  0%,100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-8px) rotate(-0.8deg); }
-}
-@keyframes floatStat {
-  0%,100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-10px) rotate(0.6deg); }
-}
-
-.fc-icon {
-  width: 44px; height: 44px; border-radius: 12px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.4rem; margin-bottom: 0.7rem;
-}
-.fc-icon-blue { background: rgba(0,112,210,0.15); }
-.fc-icon-green { background: rgba(0,200,150,0.15); }
-
-.fc-title {
-  font-family: var(--font-display);
-  font-weight: 700; font-size: 0.95rem;
-  margin-bottom: 0.2rem;
-}
-.fc-sub { font-size: 0.8rem; color: var(--text-secondary); }
-.fc-chips { display:flex; flex-wrap:wrap; gap:0.3rem; margin-top:0.5rem; }
-.fc-chip {
-  font-size:0.7rem; padding:0.2rem 0.5rem; border-radius:999px;
-  background:var(--sf-green-dim); color:var(--sf-green); font-weight:500;
-}
-
-.fc-big-num {
-  font-family:var(--font-display); font-size:2rem; font-weight:900;
-  background:linear-gradient(135deg,var(--sf-sky),var(--sf-green));
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-}
-
-/* ═══════════════════════════════════════════
-   SECTION BASE
-   ═══════════════════════════════════════════ */
-.section { padding: 5rem 1.5rem; }
-
-.section-inner { max-width: 1200px; margin: 0 auto; }
-
-.section-label {
-  font-family: var(--font-display);
-  font-size: 0.78rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--sf-green);
-  margin-bottom: 0.5rem;
-}
-
-.section-heading {
-  font-family: var(--font-display);
-  font-size: clamp(1.8rem, 3vw, 2.6rem);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  margin-bottom: 0.6rem;
-  line-height: 1.15;
+/* ── TOKENS ─────────────────────────────────────────────────── */
+:root{
+  --ink:       #0C1A2E;
+  --ink-mid:   #1E3554;
+  --sf-blue:   #0176D3;
+  --sf-sky:    #1BAEEE;
+  --sf-cloud:  #032D60;
+  --ai-teal:   #06B6D4;
+  --ai-glow:   rgba(6,182,212,.12);
+  --green:     #22C55E;
+  --surface:   #F0F5FF;
+  --card:      #FFFFFF;
+  --border:    #D1DFF5;
+  --text:      #1E3554;
+  --muted:     #5C7A99;
+  --mono:      'JetBrains Mono', monospace;
+  --sans:      'Plus Jakarta Sans', sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);background:var(--surface);color:var(--text);overflow-x:hidden;}
+
+/* ── NAV ────────────────────────────────────────────────────── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+.logo{font-family:var(--mono);font-size:14px;color:var(--sf-blue);font-weight:500;letter-spacing:.5px;}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:500;transition:color .18s;}
+.nav-links a:hover{color:var(--sf-blue);}
+.nav-hire{background:var(--sf-blue);color:#fff!important;padding:7px 18px;border-radius:8px;font-weight:600!important;}
+.nav-hire:hover{background:#0156A3!important;color:#fff!important;}
+
+/* ── HERO ───────────────────────────────────────────────────── */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 420px;gap:60px;align-items:center;padding:100px 60px 60px;max-width:1200px;margin:0 auto;}
+.hero-eyebrow{font-family:var(--mono);font-size:12px;color:var(--ai-teal);letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+.hero-eyebrow::before{content:'';width:28px;height:1.5px;background:var(--ai-teal);}
+.hero-name{font-size:clamp(44px,5.5vw,72px);font-weight:800;line-height:1.08;color:var(--ink);margin-bottom:10px;letter-spacing:-1.5px;}
+.hero-name .highlight{color:var(--sf-blue);}
+.hero-role{font-size:18px;font-weight:500;color:var(--muted);margin-bottom:24px;}
+.hero-desc{font-size:15px;color:var(--muted);line-height:1.85;max-width:520px;margin-bottom:32px;}
+.cert-strip{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:36px;}
+.cert-pill{display:inline-flex;align-items:center;gap:5px;background:#ECFDF5;border:1px solid #BBF7D0;color:#065F46;padding:5px 13px;border-radius:20px;font-size:11.5px;font-weight:600;}
+.cert-pill svg{width:12px;height:12px;}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;}
+.btn-primary{background:var(--sf-blue);color:#fff;padding:13px 26px;border-radius:9px;text-decoration:none;font-size:14px;font-weight:700;transition:all .18s;box-shadow:0 4px 14px rgba(1,118,211,.25);}
+.btn-primary:hover{background:#0156A3;transform:translateY(-2px);box-shadow:0 6px 20px rgba(1,118,211,.32);}
+.btn-ghost{border:1.5px solid var(--border);color:var(--text);padding:12px 24px;border-radius:9px;text-decoration:none;font-size:14px;font-weight:500;transition:all .18s;}
+.btn-ghost:hover{border-color:var(--sf-blue);color:var(--sf-blue);}
+
+/* HERO RIGHT — stat cards */
+.hero-right{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px 20px;transition:border-color .2s,transform .2s;}
+.stat-card:hover{border-color:var(--sf-sky);transform:translateY(-3px);}
+.stat-num{font-size:34px;font-weight:800;color:var(--sf-blue);font-family:var(--mono);line-height:1;}
+.stat-label{font-size:11.5px;color:var(--muted);margin-top:5px;font-weight:500;}
+.trailhead-wide{grid-column:1/-1;background:linear-gradient(135deg,var(--sf-cloud),#0E4A8A);border-radius:16px;padding:20px 22px;display:flex;align-items:center;gap:16px;border:none;}
+.trail-badge{width:44px;height:44px;background:linear-gradient(135deg,#FF6B35,#FF9500);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.trail-text h4{font-size:13px;font-weight:700;color:#fff;}
+.trail-text p{font-size:11.5px;color:rgba(255,255,255,.65);margin-top:2px;}
+
+/* ── SECTIONS ───────────────────────────────────────────────── */
+.section-wrap{max-width:1100px;margin:0 auto;padding:80px 40px;}
+.section-eyebrow{font-family:var(--mono);font-size:11px;color:var(--ai-teal);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:8px;}
+.section-title{font-size:32px;font-weight:800;color:var(--ink);letter-spacing:-0.5px;margin-bottom:48px;}
+hr.divider{border:none;border-top:1px solid var(--border);margin:0 0 48px;}
+
+/* ── PROJECTS ───────────────────────────────────────────────── */
+.projects-bg{background:#fff;}
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:22px;}
+.proj-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:28px;position:relative;overflow:hidden;transition:border-color .2s,transform .2s,box-shadow .2s;}
+.proj-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--sf-blue),var(--ai-teal));border-radius:18px 18px 0 0;}
+.proj-card:hover{border-color:var(--sf-sky);transform:translateY(-4px);box-shadow:0 12px 36px rgba(1,118,211,.12);}
+.proj-tag-row{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.proj-tag{font-family:var(--mono);font-size:10px;background:rgba(1,118,211,.08);color:var(--sf-blue);padding:3px 8px;border-radius:4px;font-weight:500;}
+.proj-new{background:#ECFDF5;color:#065F46;border:1px solid #BBF7D0;}
+.proj-title{font-size:17px;font-weight:700;color:var(--ink);margin-bottom:10px;line-height:1.3;}
+.proj-desc{font-size:13px;color:var(--muted);line-height:1.75;margin-bottom:18px;}
+.proj-stack{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;}
+.stack-tag{background:var(--card);border:1px solid var(--border);color:var(--text);padding:3px 9px;border-radius:5px;font-size:11px;font-family:var(--mono);}
+.proj-link{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--sf-blue);text-decoration:none;transition:opacity .18s;}
+.proj-link:hover{opacity:.7;}
+.proj-link-arrow{font-size:14px;}
+
+/* ── SKILLS ─────────────────────────────────────────────────── */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;}
+.skill-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;transition:border-color .2s,transform .2s;}
+.skill-card:hover{border-color:var(--sf-sky);transform:translateY(-3px);}
+.skill-icon{font-size:24px;margin-bottom:12px;}
+.skill-name{font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:10px;}
+.skill-tags{display:flex;flex-wrap:wrap;gap:5px;}
+.skill-tag{background:rgba(1,118,211,.07);color:var(--sf-blue);padding:3px 8px;border-radius:4px;font-size:10.5px;font-family:var(--mono);}
+
+/* ── EXPERIENCE ──────────────────────────────────────────────── */
+.exp-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:30px 32px;margin-bottom:18px;}
+.exp-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;}
+.exp-jobtitle{font-size:17px;font-weight:700;color:var(--ink);}
+.exp-date{font-family:var(--mono);font-size:11.5px;color:var(--sf-blue);background:rgba(1,118,211,.08);padding:4px 12px;border-radius:20px;}
+.exp-company{font-size:13.5px;color:var(--sf-blue);font-weight:500;margin-bottom:18px;}
+.exp-bullets{list-style:none;}
+.exp-bullets li{font-size:13px;color:var(--muted);padding:4px 0 4px 16px;position:relative;line-height:1.7;}
+.exp-bullets li::before{content:'▸';position:absolute;left:0;color:var(--ai-teal);font-size:11px;top:6px;}
+
+/* ── CERTIFICATIONS ──────────────────────────────────────────── */
+.certs-bg{background:#fff;}
+.certs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;}
+.cert-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;display:flex;gap:16px;align-items:flex-start;transition:border-color .2s,transform .2s;}
+.cert-card:hover{border-color:var(--green);transform:translateY(-3px);}
+.cert-icon{width:42px;height:42px;background:linear-gradient(135deg,var(--sf-blue),var(--sf-sky));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.cert-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:3px;}
+.cert-meta{font-size:11.5px;color:var(--muted);}
+.cert-active{display:inline-block;background:#ECFDF5;color:#065F46;border:1px solid #BBF7D0;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;margin-top:5px;}
+
+/* ── CONTACT ─────────────────────────────────────────────────── */
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:14px;}
+.contact-card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:18px;text-align:center;text-decoration:none;color:var(--text);transition:all .2s;}
+.contact-card:hover{border-color:var(--sf-blue);transform:translateY(-3px);box-shadow:0 8px 24px rgba(1,118,211,.10);}
+.contact-emoji{font-size:22px;margin-bottom:7px;}
+.contact-lbl{font-size:10.5px;color:var(--muted);font-weight:500;margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px;}
+.contact-val{font-size:12.5px;font-weight:600;color:var(--sf-blue);}
+
+/* ── FOOTER ──────────────────────────────────────────────────── */
+footer{border-top:1px solid var(--border);padding:28px 40px;text-align:center;font-size:12px;color:var(--muted);}
+footer strong{color:var(--sf-blue);}
+
+/* ── ANIMATIONS ──────────────────────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+.fade-up{opacity:0;animation:fadeUp .65s ease forwards;}
+.fade-up-d1{animation-delay:.1s;}
+.fade-up-d2{animation-delay:.22s;}
+.fade-up-d3{animation-delay:.34s;}
+
+/* AI glow badge */
+.ai-badge{display:inline-flex;align-items:center;gap:6px;background:var(--ai-glow);border:1px solid rgba(6,182,212,.3);color:var(--ai-teal);padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;font-family:var(--mono);margin-bottom:18px;}
+.ai-dot{width:6px;height:6px;border-radius:50%;background:var(--ai-teal);animation:pulse 1.8s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+
+@media(max-width:900px){
+  nav{padding:0 20px;}
+  .nav-links{display:none;}
+  .hero{grid-template-columns:1fr;padding:90px 24px 40px;}
+  .hero-right{display:none;}
+  .section-wrap{padding:60px 24px;}
 }
-
-.section-desc {
-  font-size: 1rem;
-  color: var(--text-secondary);
-  max-width: 600px;
-  margin-bottom: 2.5rem;
-}
-
-/* ═══════════════════════════════════════════
-   ABOUT SECTION
-   ═══════════════════════════════════════════ */
-.about-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-}
-
-.about-text p {
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-  line-height: 1.8;
-  margin-bottom: 1rem;
-}
-.about-text strong { color: var(--text-primary); font-weight: 600; }
-
-.about-highlights {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
-}
-
-.about-hi-card {
-  padding: 1.2rem;
-  border-radius: 16px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-card);
-  backdrop-filter: blur(12px);
-  transition: transform 0.3s var(--ease-spring), box-shadow 0.3s;
-}
-.about-hi-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-hover);
-}
-
-.ahi-icon {
-  font-size: 1.6rem; margin-bottom: 0.6rem;
-}
-.ahi-title {
-  font-family: var(--font-display);
-  font-weight: 700; font-size: 0.9rem;
-  margin-bottom: 0.2rem;
-}
-.ahi-desc {
-  font-size: 0.8rem; color: var(--text-secondary);
-}
-
-/* ═══════════════════════════════════════════
-   SKILLS SECTION
-   ═══════════════════════════════════════════ */
-.skills-mosaic {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 0.8rem;
-}
-
-.skill-tile {
-  padding: 1rem 1.1rem;
-  border-radius: 14px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-card);
-  backdrop-filter: blur(12px);
-  transition: transform 0.3s var(--ease-spring), border-color 0.3s, box-shadow 0.3s;
-  display: flex;
-  align-items: flex-start;
-  gap: 0.8rem;
-}
-.skill-tile:hover {
-  transform: translateY(-3px) scale(1.02);
-  border-color: var(--sf-blue);
-  box-shadow: var(--shadow-hover);
-}
-
-.st-icon {
-  width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem;
-  background: rgba(0,112,210,0.12);
-}
-.st-icon-green { background: rgba(0,200,150,0.12); }
-
-.st-name {
-  font-family: var(--font-display);
-  font-weight: 600; font-size: 0.88rem;
-}
-.st-level {
-  font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.1rem;
-}
-
-.st-bar {
-  width: 100%; height: 4px; border-radius: 4px;
-  background: rgba(148,163,196,0.15);
-  margin-top: 0.4rem; overflow: hidden;
-}
-.st-fill {
-  height: 100%; border-radius: 4px;
-  background: linear-gradient(90deg, var(--sf-blue), var(--sf-green));
-  transform-origin: left;
-  transform: scaleX(0);
-  transition: transform 1.2s var(--ease-out-expo);
-}
-.visible .st-fill { transform: scaleX(1); }
-
-/* ═══════════════════════════════════════════
-   EXPERIENCE TIMELINE
-   ═══════════════════════════════════════════ */
-.timeline { position: relative; padding-left: 2.5rem; }
-.timeline::before {
-  content: '';
-  position: absolute; left: 11px; top: 8px; bottom: 8px;
-  width: 2px;
-  background: linear-gradient(180deg, var(--sf-blue), var(--sf-green), transparent);
-  border-radius: 2px;
-}
-
-.tl-item {
-  position: relative;
-  padding-bottom: 2.5rem;
-}
-.tl-item:last-child { padding-bottom: 0; }
-
-.tl-dot {
-  position: absolute;
-  left: -2.5rem;
-  top: 6px;
-  width: 12px; height: 12px;
-  border-radius: 50%;
-  border: 2.5px solid var(--sf-blue);
-  background: var(--bg-primary);
-  z-index: 2;
-}
-.tl-item:first-child .tl-dot {
-  background: var(--sf-blue);
-  box-shadow: 0 0 0 4px var(--glow-blue);
-}
-
-.tl-card {
-  padding: 1.3rem 1.5rem;
-  border-radius: 16px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-card);
-  backdrop-filter: blur(12px);
-  transition: transform 0.3s var(--ease-spring), box-shadow 0.3s;
-}
-.tl-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-hover);
-}
-
-.tl-date {
-  font-family: var(--font-display);
-  font-size: 0.76rem;
-  font-weight: 600;
-  color: var(--sf-green);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-bottom: 0.35rem;
-}
-.tl-role {
-  font-family: var(--font-display);
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-bottom: 0.15rem;
-}
-.tl-company {
-  font-size: 0.88rem;
-  color: var(--text-accent);
-  font-weight: 500;
-  margin-bottom: 0.6rem;
-}
-
-.tl-details {
-  list-style: none;
-}
-.tl-details li {
-  font-size: 0.86rem;
-  color: var(--text-secondary);
-  padding: 0.2rem 0;
-  padding-left: 1.1rem;
-  position: relative;
-  line-height: 1.55;
-}
-.tl-details li::before {
-  content: '';
-  position: absolute; left: 0; top: 0.6rem;
-  width: 5px; height: 5px; border-radius: 50%;
-  background: var(--sf-sky);
-}
-
-.tl-tags {
-  display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.6rem;
-}
-.tl-tag {
-  font-size: 0.7rem; padding: 0.18rem 0.5rem; border-radius: 999px;
-  background: var(--sf-green-dim); color: var(--sf-green); font-weight: 500;
-}
-
-/* ═══════════════════════════════════════════
-   EDUCATION
-   ═══════════════════════════════════════════ */
-.edu-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem;
-}
-
-.edu-card {
-  padding: 1.3rem 1.5rem;
-  border-radius: 16px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-card);
-  backdrop-filter: blur(12px);
-  transition: transform 0.3s var(--ease-spring), box-shadow 0.3s;
-}
-.edu-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
-
-.edu-icon { font-size: 1.8rem; margin-bottom: 0.6rem; }
-.edu-degree {
-  font-family: var(--font-display);
-  font-weight: 700; font-size: 1rem;
-  margin-bottom: 0.15rem;
-}
-.edu-school { font-size: 0.86rem; color: var(--text-accent); margin-bottom: 0.3rem; }
-.edu-meta { font-size: 0.8rem; color: var(--text-secondary); }
-
-/* ═══════════════════════════════════════════
-   CERTIFICATIONS
-   ═══════════════════════════════════════════ */
-.cert-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem;
-}
-
-.cert-card {
-  padding: 1.5rem;
-  border-radius: 18px;
-  border: 1px solid var(--border-color);
-  background: linear-gradient(135deg, var(--bg-card), rgba(0,112,210,0.06));
-  backdrop-filter: blur(12px);
-  transition: transform 0.3s var(--ease-spring), box-shadow 0.3s;
-  position: relative;
-  overflow: hidden;
-}
-.cert-card::before {
-  content: '';
-  position: absolute; top: -1px; left: 0; right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--sf-blue), var(--sf-green));
-}
-.cert-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
-
-.cert-badge {
-  width: 52px; height: 52px; border-radius: 14px;
-  background: linear-gradient(135deg, rgba(0,112,210,0.15), rgba(0,200,150,0.1));
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.cert-name {
-  font-family: var(--font-display);
-  font-weight: 700; font-size: 1.05rem;
-  margin-bottom: 0.3rem;
-}
-.cert-issuer { font-size: 0.85rem; color: var(--text-accent); margin-bottom: 0.15rem; }
-.cert-date { font-size: 0.8rem; color: var(--text-secondary); }
-.cert-id { font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.4rem; font-style: italic; }
-
-/* ═══════════════════════════════════════════
-   CONTACT / CTA SECTION
-   ═══════════════════════════════════════════ */
-.cta-section {
-  padding: 5rem 1.5rem;
-  position: relative;
-}
-
-.cta-card {
-  max-width: 800px; margin: 0 auto;
-  padding: 3rem 3rem;
-  border-radius: 24px;
-  border: 1px solid var(--border-glow);
-  background: linear-gradient(135deg, var(--bg-card), rgba(0,112,210,0.08));
-  backdrop-filter: blur(16px);
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  box-shadow: var(--shadow-card);
-}
-.cta-card::before {
-  content: '';
-  position: absolute; inset: -1px;
-  border-radius: 24px;
-  padding: 1px;
-  background: linear-gradient(135deg, var(--sf-blue), transparent, var(--sf-green));
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  -webkit-mask-composite: xor;
-  pointer-events: none;
-}
-
-.cta-heading {
-  font-family: var(--font-display);
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
-  font-weight: 800;
-  margin-bottom: 0.8rem;
-  letter-spacing: -0.02em;
-}
-.cta-desc {
-  font-size: 1rem; color: var(--text-secondary);
-  max-width: 500px; margin: 0 auto 2rem;
-  line-height: 1.7;
-}
-
-.cta-buttons {
-  display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;
-}
-
-.contact-links {
-  display: flex; gap: 0.8rem; justify-content: center; margin-top: 1.8rem;
-  flex-wrap: wrap;
-}
-
-.contact-pill {
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  border-radius: 999px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-glass);
-  font-size: 0.84rem;
-  color: var(--text-secondary);
-  font-weight: 500;
-  transition: border-color 0.2s, color 0.2s, transform 0.2s;
-}
-.contact-pill:hover {
-  border-color: var(--sf-blue);
-  color: var(--text-primary);
-  transform: translateY(-2px);
-}
-
-/* ═══════════════════════════════════════════
-   FOOTER
-   ═══════════════════════════════════════════ */
-.footer {
-  border-top: 1px solid var(--border-color);
-  padding: 2rem 1.5rem;
-  background: var(--bg-glass);
-  backdrop-filter: blur(10px);
-}
-
-.footer-inner {
-  max-width: 1200px; margin: 0 auto;
-  display: flex; align-items: center; justify-content: space-between;
-  flex-wrap: wrap; gap: 1rem;
-}
-
-.footer-left {
-  font-size: 0.84rem; color: var(--text-secondary);
-}
-.footer-left strong {
-  color: var(--text-primary);
-  font-family: var(--font-display);
-}
-
-.footer-links { display: flex; gap: 1rem; }
-.footer-links a {
-  font-size: 0.84rem;
-  color: var(--text-secondary);
-  transition: color 0.2s;
-}
-.footer-links a:hover { color: var(--sf-sky); }
-
-/* ═══════════════════════════════════════════
-   RESPONSIVENESS
-   ═══════════════════════════════════════════ */
-@media (max-width: 1024px) {
-  .hero-inner { grid-template-columns: 1fr; text-align: center; }
-  .hero-subtitle { margin-left: auto; margin-right: auto; }
-  .hero-stats { justify-content: center; }
-  .hero-buttons { justify-content: center; }
-  .hero-visual { margin-top: 2rem; }
-  .hero-card-stack { width: 300px; height: 360px; margin: 0 auto; }
-  .about-grid { grid-template-columns: 1fr; }
-}
-
-@media (max-width: 768px) {
-  .nav-links { display: none; }
-  .hamburger { display: flex; }
-  .hero { padding: 100px 1.2rem 60px; }
-  .hero-title { font-size: clamp(2rem, 7vw, 2.8rem); }
-  .hero-card-stack { width: 260px; height: 320px; }
-  .float-card-main { width: 240px; }
-  .float-card-cert { width: 190px; left: 80px; top: 160px; }
-  .float-card-stat { width: 160px; left: -20px; }
-  .section { padding: 3.5rem 1.2rem; }
-  .skills-mosaic { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
-  .edu-grid, .cert-grid { grid-template-columns: 1fr; }
-  .about-highlights { grid-template-columns: 1fr; }
-  .cta-card { padding: 2rem 1.5rem; }
-  .footer-inner { flex-direction: column; text-align: center; }
-}
-
-@media (max-width: 480px) {
-  .hero-stats { gap: 1.2rem; }
-  .hero-stat-number { font-size: 1.4rem; }
-  .skills-mosaic { grid-template-columns: 1fr 1fr; gap: 0.6rem; }
-  .hero-card-stack { transform: scale(0.85); }
-}
-
-/* ═══════════════════════════════════════════
-   SCROLL BAR
-   ═══════════════════════════════════════════ */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: var(--bg-primary); }
-::-webkit-scrollbar-thumb { background: var(--sf-blue); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: var(--sf-sky); }
 </style>
 </head>
 <body>
 
-<!-- ═══════ BACKGROUND ═══════ -->
-<div class="bg-canvas"></div>
-<div class="bg-grid"></div>
-<div class="orb orb-1"></div>
-<div class="orb orb-2"></div>
-<div class="orb orb-3"></div>
-
-<!-- ═══════ NAVIGATION ═══════ -->
-<nav class="nav" id="mainNav">
-  <div class="nav-inner">
-    <a href="#" class="nav-logo">VK</a>
-    <div class="nav-links" id="navLinks">
-      <a href="#about" class="nav-link">About</a>
-      <a href="#skills" class="nav-link">Skills</a>
-      <a href="#experience" class="nav-link">Experience</a>
-      <a href="#certifications" class="nav-link">Certifications</a>
-      <a href="#contact" class="nav-link">Contact</a>
-      <a href="mailto:kvetrivel919@gmail.com" class="nav-cta">Hire Me</a>
-      <button class="theme-btn" id="themeToggle" aria-label="Toggle theme"><span id="themeIcon">🌙</span></button>
-    </div>
-    <div style="display:flex;align-items:center;gap:0.5rem;">
-      <button class="theme-btn" id="themeToggleMobile" aria-label="Toggle theme" style="display:none;"><span id="themeIconMobile">🌙</span></button>
-      <button class="hamburger" id="hamburger" aria-label="Menu">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </div>
+<!-- NAV -->
+<nav>
+  <div class="logo">vetrivel.k()</div>
+  <ul class="nav-links">
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#certifications">Certifications</a></li>
+    <li><a href="#contact" class="nav-hire">Hire Me</a></li>
+  </ul>
 </nav>
 
-<!-- Mobile menu -->
-<div class="mobile-menu" id="mobileMenu">
-  <a href="#about" class="nav-link">About</a>
-  <a href="#skills" class="nav-link">Skills</a>
-  <a href="#experience" class="nav-link">Experience</a>
-  <a href="#certifications" class="nav-link">Certifications</a>
-  <a href="#contact" class="nav-link">Contact</a>
-  <a href="mailto:kvetrivel919@gmail.com" class="btn btn-primary" style="margin-top:1rem;">Hire Me</a>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left fade-up">
+    <div class="ai-badge"><span class="ai-dot"></span> Agentforce Specialist · Jan 2025</div>
+    <div class="hero-eyebrow">Salesforce Developer · Chennai, India</div>
+    <h1 class="hero-name">Vetrivel <span class="highlight">K</span></h1>
+    <div class="hero-role">Apex · LWC · Agentforce AI · Integrations</div>
+    <p class="hero-desc">3+ years building production Salesforce solutions — clean bulkified Apex, reusable LWC components, and AI agent configuration. Zero governor-limit violations. 90%+ test coverage across every deployment.</p>
+    <div class="cert-strip">
+      <span class="cert-pill"><svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#065F46" stroke-width="1.5"/><path d="M3.5 6l1.5 1.5L8.5 4.5" stroke="#065F46" stroke-width="1.5" stroke-linecap="round"/></svg>Agentforce Specialist</span>
+      <span class="cert-pill"><svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#065F46" stroke-width="1.5"/><path d="M3.5 6l1.5 1.5L8.5 4.5" stroke="#065F46" stroke-width="1.5" stroke-linecap="round"/></svg>Platform Developer I</span>
+      <span class="cert-pill"><svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#065F46" stroke-width="1.5"/><path d="M3.5 6l1.5 1.5L8.5 4.5" stroke="#065F46" stroke-width="1.5" stroke-linecap="round"/></svg>Platform Administrator</span>
+    </div>
+    <div class="hero-actions">
+      <a href="#projects" class="btn-primary">View Projects</a>
+      <a href="mailto:kvetrivel919@gmail.com" class="btn-ghost">Get in Touch</a>
+    </div>
+  </div>
+  <div class="hero-right fade-up fade-up-d2">
+    <div class="stat-card">
+      <div class="stat-num">3+</div>
+      <div class="stat-label">Years Experience</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">3×</div>
+      <div class="stat-label">SF Certified</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">90%+</div>
+      <div class="stat-label">Apex Test Coverage</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">0</div>
+      <div class="stat-label">Gov. Limit Violations</div>
+    </div>
+    <div class="trailhead-wide">
+      <div class="trail-badge">🏆</div>
+      <div class="trail-text">
+        <h4>Trailhead Ranger</h4>
+        <p>90,775 Points &nbsp;·&nbsp; 114 Badges &nbsp;·&nbsp; 12 Trails</p>
+      </div>
+    </div>
+  </div>
 </div>
 
-<!-- ═══════ HERO ═══════ -->
-<section class="hero">
-  <div class="hero-inner">
-    <div class="hero-content">
-      <div class="hero-badge reveal">
-        <span class="hero-badge-dot"></span>
-        Open to Opportunities
+<!-- PROJECTS -->
+<div class="projects-bg" id="projects">
+  <div class="section-wrap">
+    <div class="section-eyebrow">// things I've built</div>
+    <h2 class="section-title">Featured Projects</h2>
+    <div class="projects-grid">
+
+      <div class="proj-card">
+        <div class="proj-tag-row">
+          <span class="proj-tag">Agentforce AI</span>
+          <span class="proj-tag proj-new">NEW</span>
+        </div>
+        <div class="proj-title">SF Agentforce Case Bot</div>
+        <div class="proj-desc">AI-powered Service Cloud agent that auto-triages incoming cases, suggests Knowledge Base solutions, and routes to correct queue — cutting manual triage time by 70%.</div>
+        <div class="proj-stack">
+          <span class="stack-tag">Agentforce</span><span class="stack-tag">Apex</span>
+          <span class="stack-tag">Atlas Engine</span><span class="stack-tag">LWC</span>
+          <span class="stack-tag">Service Cloud</span>
+        </div>
+        <a href="https://github.com/vetrivel9445/sf-agentforce-case-bot" class="proj-link" target="_blank">View on GitHub <span class="proj-link-arrow">→</span></a>
       </div>
-      <h1 class="hero-title reveal reveal-delay-1">
-        Hi, I'm <span class="gradient-text">Vetrivel K</span>
-      </h1>
-      <p class="hero-subtitle reveal reveal-delay-2">
-        Salesforce Developer with <strong>3+ years</strong> of hands-on experience building scalable Sales Cloud solutions, custom Apex logic, Lightning Web Components, and enterprise integrations.
-      </p>
-      <div class="hero-stats reveal reveal-delay-2">
-        <div class="hero-stat">
-          <div class="hero-stat-number">3+</div>
-          <div class="hero-stat-label">Years Experience</div>
+
+      <div class="proj-card">
+        <div class="proj-tag-row">
+          <span class="proj-tag">Apex Framework</span>
+          <span class="proj-tag proj-new">NEW</span>
         </div>
-        <div class="hero-stat">
-          <div class="hero-stat-number">2x</div>
-          <div class="hero-stat-label">Certified</div>
+        <div class="proj-title">Apex Trigger Framework</div>
+        <div class="proj-desc">Enterprise TriggerHandler pattern framework — one trigger per object, bypass logic for Data Loader migrations, loop prevention, and 95%+ test coverage baked in.</div>
+        <div class="proj-stack">
+          <span class="stack-tag">Apex</span><span class="stack-tag">Triggers</span>
+          <span class="stack-tag">Design Patterns</span><span class="stack-tag">SFDX</span>
+          <span class="stack-tag">Unit Tests</span>
         </div>
-        <div class="hero-stat">
-          <div class="hero-stat-number">7x</div>
-          <div class="hero-stat-label">Superbadges</div>
+        <a href="https://github.com/vetrivel9445/sf-apex-trigger-framework" class="proj-link" target="_blank">View on GitHub <span class="proj-link-arrow">→</span></a>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-tag-row">
+          <span class="proj-tag">LWC + Apex</span>
+          <span class="proj-tag proj-new">NEW</span>
         </div>
-        <div class="hero-stat">
-          <div class="hero-stat-number">1.5K+</div>
-          <div class="hero-stat-label">Followers</div>
+        <div class="proj-title">Smart Lead Qualifier</div>
+        <div class="proj-desc">LWC dashboard that scores Sales Cloud leads 0–100 using a custom Apex engine. Surfaces hot leads, auto-creates follow-up tasks, and tracks score history per lead.</div>
+        <div class="proj-stack">
+          <span class="stack-tag">LWC</span><span class="stack-tag">Apex</span>
+          <span class="stack-tag">Sales Cloud</span><span class="stack-tag">SOQL</span>
+          <span class="stack-tag">Flows</span>
+        </div>
+        <a href="https://github.com/vetrivel9445/sf-smart-lead-qualifier" class="proj-link" target="_blank">View on GitHub <span class="proj-link-arrow">→</span></a>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-tag-row">
+          <span class="proj-tag">LWC Component</span>
+        </div>
+        <div class="proj-title">DataTable with Inline Picklist</div>
+        <div class="proj-desc">Reusable LWC DataTable with inline Rating Picklist editing — real-time record updates without page reload. Uses @wire adapters, custom events, and reactive properties.</div>
+        <div class="proj-stack">
+          <span class="stack-tag">LWC</span><span class="stack-tag">JavaScript</span>
+          <span class="stack-tag">Apex</span><span class="stack-tag">@wire</span>
+        </div>
+        <a href="https://github.com/vetrivel9445" class="proj-link" target="_blank">View on GitHub <span class="proj-link-arrow">→</span></a>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-tag-row">
+          <span class="proj-tag">Client · Out-of-Box</span>
+        </div>
+        <div class="proj-title">Trip Summary & Construction PM</div>
+        <div class="proj-desc">Custom objects, Flows, validation rules, approval processes, and executive dashboards for two separate clients — full lifecycle management with zero custom code.</div>
+        <div class="proj-stack">
+          <span class="stack-tag">Flows</span><span class="stack-tag">Custom Objects</span>
+          <span class="stack-tag">Reports</span><span class="stack-tag">Approvals</span>
         </div>
       </div>
-      <div class="hero-buttons reveal reveal-delay-3">
-        <a href="mailto:kvetrivel919@gmail.com" class="btn btn-primary">
-          ✉ Get in Touch
-        </a>
-        <a href="https://linkedin.com/in/vetrivel-k-b42658154" target="_blank" rel="noopener" class="btn btn-outline">
-          💼 LinkedIn
-        </a>
-        <a href="https://github.com/vetrivel9445" target="_blank" rel="noopener" class="btn btn-ghost">
-          ⌨ GitHub
-        </a>
+
+      <div class="proj-card">
+        <div class="proj-tag-row">
+          <span class="proj-tag">Client · Data Migration</span>
+        </div>
+        <div class="proj-title">Mass Email & Attachment Migration</div>
+        <div class="proj-desc">Large-scale Data Loader migration of email records and binary attachments — full field mapping, transformation logic, and zero data loss across the complete dataset.</div>
+        <div class="proj-stack">
+          <span class="stack-tag">Data Loader</span><span class="stack-tag">SOQL</span>
+          <span class="stack-tag">Data Migration</span>
+        </div>
       </div>
+
     </div>
-    <div class="hero-visual reveal reveal-delay-3">
-      <div class="hero-card-stack">
-        <div class="float-card float-card-main">
-          <div class="fc-icon fc-icon-blue">☁️</div>
-          <div class="fc-title">Salesforce Developer</div>
-          <div class="fc-sub">Minuscule Technologies · 2.8 yrs</div>
-          <div class="fc-chips">
-            <span class="fc-chip">Apex</span>
-            <span class="fc-chip">LWC</span>
-            <span class="fc-chip">Flows</span>
-            <span class="fc-chip">APIs</span>
-          </div>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<div id="skills">
+  <div class="section-wrap">
+    <div class="section-eyebrow">// what I build with</div>
+    <h2 class="section-title">Technical Skills</h2>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-icon">⚡</div>
+        <div class="skill-name">Apex & Backend</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Apex</span><span class="skill-tag">Triggers</span><span class="skill-tag">Batch</span>
+          <span class="skill-tag">Queueable</span><span class="skill-tag">Schedulable</span><span class="skill-tag">SOQL</span>
+          <span class="skill-tag">SOSL</span><span class="skill-tag">Test Classes</span>
         </div>
-		<div class="float-card float-card-cert">
-          <div class="fc-icon fc-icon-green">🏅</div>
-          <div class="fc-title">Administrator</div>
-          <div class="fc-sub">Certified Dec 2022</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🎨</div>
+        <div class="skill-name">LWC & Frontend</div>
+        <div class="skill-tags">
+          <span class="skill-tag">LWC</span><span class="skill-tag">JavaScript</span><span class="skill-tag">HTML5</span>
+          <span class="skill-tag">CSS3</span><span class="skill-tag">@wire</span><span class="skill-tag">LMS</span>
+          <span class="skill-tag">Custom Events</span>
         </div>
-        <div class="float-card float-card-cert">
-          <div class="fc-icon fc-icon-green">🏅</div>
-          <div class="fc-title">Platform Dev I</div>
-          <div class="fc-sub">Certified Feb 2023</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🤖</div>
+        <div class="skill-name">Agentforce AI</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Agentforce</span><span class="skill-tag">Atlas Engine</span>
+          <span class="skill-tag">Prompt Builder</span><span class="skill-tag">Einstein</span>
+          <span class="skill-tag">AI Agents</span>
         </div>
-        <div class="float-card float-card-stat">
-          <div class="fc-big-num">7x</div>
-          <div class="fc-sub">Superbadges Earned</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🔗</div>
+        <div class="skill-name">Integrations</div>
+        <div class="skill-tags">
+          <span class="skill-tag">REST API</span><span class="skill-tag">SOAP API</span><span class="skill-tag">OAuth 2.0</span>
+          <span class="skill-tag">Named Credentials</span><span class="skill-tag">Platform Events</span><span class="skill-tag">CDC</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">☁️</div>
+        <div class="skill-name">Salesforce Clouds</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Sales Cloud</span><span class="skill-tag">Service Cloud</span>
+          <span class="skill-tag">Experience Cloud</span><span class="skill-tag">Flows</span>
+          <span class="skill-tag">Approvals</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🛠️</div>
+        <div class="skill-name">DevOps & Tools</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Git</span><span class="skill-tag">SFDX</span><span class="skill-tag">VS Code</span>
+          <span class="skill-tag">Change Sets</span><span class="skill-tag">Data Loader</span><span class="skill-tag">GitHub</span>
         </div>
       </div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- ═══════ ABOUT ═══════ -->
-<section class="section" id="about">
-  <div class="section-inner">
-    <p class="section-label reveal">About Me</p>
-    <h2 class="section-heading reveal">Crafting Scalable Salesforce Solutions</h2>
-    <div class="about-grid">
-      <div class="about-text reveal reveal-delay-1">
-        <p>
-          I'm <strong>Vetrivel K</strong>, a Chennai, India-based Salesforce Developer at Minuscule Technologies, crafts enterprise CRM solutions. With 3+ years of hands-on expertise, I excel in Sales Cloud implementations, advanced Apex development, Lightning Web Components, and seamless REST integrations with external systems.
-        </p>
-        <p>
-          I specialize in crafting clean, bulk-optimized Apex code, intuitive Flows for seamless business automation, and engaging LWC interfaces that sales teams love. A 2x Salesforce Certified developer with 7 Superbadges, I'm continually deepening my skills in Sales Cloud, Service Cloud, Experience Cloud, Analytics Studio, and Marketing Cloud.
-        </p>
+<!-- EXPERIENCE -->
+<div class="projects-bg" id="experience">
+  <div class="section-wrap">
+    <div class="section-eyebrow">// where I've worked</div>
+    <h2 class="section-title">Experience</h2>
+
+    <div class="exp-card">
+      <div class="exp-top">
+        <div class="exp-jobtitle">Salesforce Developer</div>
+        <div class="exp-date">Nov 2022 – Present · 3+ yrs</div>
       </div>
-      <div class="about-highlights">
-        <div class="about-hi-card reveal reveal-delay-1">
-          <div class="ahi-icon">⚡</div>
-          <div class="ahi-title">Sales Cloud</div>
-          <div class="ahi-desc">End-to-end implementations for B2B sales teams</div>
+      <div class="exp-company">Minuscule Technologies Pvt Ltd · Chennai, Tamil Nadu</div>
+      <ul class="exp-bullets">
+        <li>Architected Apex classes, triggers, and batch/queueable jobs automating critical business processes — <strong>zero governor-limit violations</strong> in production across all deployments</li>
+        <li>Built reusable LWC component library for Lightning App pages and Experience Cloud portals — reduced UI delivery time by ~30%</li>
+        <li>Designed end-to-end automation using Screen Flows, Record-Triggered Flows, Scheduled Flows, and Approval Processes</li>
+        <li>Integrated Salesforce with external systems via REST/SOAP APIs, Named Credentials, Platform Events — idempotent, retry-safe pipelines</li>
+        <li>Configured <strong>Agentforce AI agents</strong> using Atlas Reasoning Engine and Prompt Builder for intelligent case routing and contextual responses</li>
+        <li>Maintained <strong>90%+ Apex test coverage</strong> across all components; managed releases via Git branching and change sets</li>
+      </ul>
+    </div>
+
+    <div class="exp-card">
+      <div class="exp-top">
+        <div class="exp-jobtitle">Salesforce Developer Trainee</div>
+        <div class="exp-date">Nov 2022 · 3 months</div>
+      </div>
+      <div class="exp-company">AJ Skills Academy · Chennai</div>
+      <ul class="exp-bullets">
+        <li>Completed intensive Salesforce Lightning Development training — platform fundamentals, Apex, and LWC</li>
+        <li>Earned Platform Administrator (Dec 2022) and Platform Developer I (Feb 2023) certifications</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- CERTIFICATIONS -->
+<div class="certs-bg" id="certifications">
+  <div class="section-wrap">
+    <div class="section-eyebrow">// verified credentials</div>
+    <h2 class="section-title">Certifications</h2>
+    <div class="certs-grid">
+      <div class="cert-card">
+        <div class="cert-icon">🤖</div>
+        <div>
+          <div class="cert-name">Salesforce Certified Agentforce Specialist</div>
+          <div class="cert-meta">Issued: January 2025</div>
+          <span class="cert-active">✓ Active</span>
         </div>
-        <div class="about-hi-card reveal reveal-delay-2">
-          <div class="ahi-icon">🔗</div>
-          <div class="ahi-title">Integrations</div>
-          <div class="ahi-desc">REST APIs, callouts & external system syncing</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">💻</div>
+        <div>
+          <div class="cert-name">Salesforce Certified Platform Developer I</div>
+          <div class="cert-meta">Issued: Feb 2023 · ID: 3021489</div>
+          <span class="cert-active">✓ Active</span>
         </div>
-        <div class="about-hi-card reveal reveal-delay-3">
-          <div class="ahi-icon">🧩</div>
-          <div class="ahi-title">Automation</div>
-          <div class="ahi-desc">Flows, triggers & process optimization</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">⚙️</div>
+        <div>
+          <div class="cert-name">Salesforce Certified Platform Administrator</div>
+          <div class="cert-meta">Issued: Dec 2022 · ID: 2805329</div>
+          <span class="cert-active">✓ Active</span>
         </div>
-        <div class="about-hi-card reveal reveal-delay-4">
-          <div class="ahi-icon">🎯</div>
-          <div class="ahi-title">LWC & UI</div>
-          <div class="ahi-desc">Modern Lightning components for end users</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">🏆</div>
+        <div>
+          <div class="cert-name">Trailhead Ranger</div>
+          <div class="cert-meta">90,775 Points · 114 Badges · 12 Trails</div>
+          <span class="cert-active">✓ Verified</span>
         </div>
       </div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- ═══════ SKILLS ═══════ -->
-<section class="section" id="skills" style="background:linear-gradient(180deg,transparent,rgba(0,112,210,0.03),transparent);">
-  <div class="section-inner">
-    <p class="section-label reveal">Technical Expertise</p>
-    <h2 class="section-heading reveal">Skills & Technologies</h2>
-    <p class="section-desc reveal">A comprehensive toolkit covering Salesforce clouds, development, automation, analytics, and integration.</p>
-
-    <div class="skills-mosaic">
-      <div class="skill-tile reveal">
-        <div class="st-icon">☁️</div>
-        <div>
-          <div class="st-name">Sales Cloud</div>
-          <div class="st-level">Advanced</div>
-          <div class="st-bar"><div class="st-fill" style="width:95%"></div></div>
-        </div>
-      </div>
-      <div class="skill-tile reveal">
-        <div class="st-icon">🛠️</div>
-        <div>
-          <div class="st-name">Service Cloud</div>
-          <div class="st-level">Advanced</div>
-          <div class="st-bar"><div class="st-fill" style="width:90%"></div></div>
-        </div>
-      </div>
-      <div class="skill-tile reveal">
-        <div class="st-icon st-icon-green">📊</div>
-        <div>
-          <div class="st-name">Analytics Studio</div>
-          <div class="st-level">Intermediate</div>
-          <div class="st-bar"><div class="st-fill" style="width:70%"></div></div>
-        </div>
-      </div>
-      <div class="skill-tile reveal">
-        <div class="st-icon">🌐</div>
-        <div>
-          <div class="st-name">Experience Cloud</div>
-          <div class="st-level">Intermediate</div>
-          <div class="st-bar"><div class="st-fill" style="width:72%"></div></div>
-        </div>
-      </div>
-      <div class="skill-tile reveal">
-        <div class="st-icon st-icon-green">📧</div>
-        <div>
-          <div class="st-name">Marketing Cloud</div>
-          <div class="st-level">Intermediate</div>
-          <div class="st-bar"><div class="st-fill" style="width:65%"></div></div>
-        </div>
-      </div>
-      <div class="skill-tile reveal">
-        <div class="st-icon">⚙️</div>
-        <div>
-          <div class="st-name">Apex Programming</div>
-          <div class="st-level">Advanced</div>
-          <div class="st-bar"><div class="st-fill" style="width:92%"></div></div>
-        </div>
-      </div>
-      <div class="skill-tile reveal">
-        <div class="st-icon st-icon-green">⚡</div>
-        <div>
-          <div class="st-name">Lightning Web Components</div>
-          <div class="st-level">Advanced</div>
-          <div class="st-bar"><div class="st-fill" style="width:88%"></div></div>
-        </div>
-      </div>
-      <div class="skill-tile reveal">
-        <div class="st-icon">🔍</div>
-        <div>
-          <div class="st-name">SOQL / SOSL</div>
-          <div class="st-level">Advanced</div>
-          <div class="st-bar"><div class="st-fill" style="width:90%"></div></div>
-        </div>
-      </div>
-      <div class="skill-tile reveal">
-        <div class="st-icon st-icon-green">🔧</div>
-        <div>
-          <div class="st-name">Admin Tasks</div>
-          <div class="st-level">Advanced</div>
-          <div class="st-bar"><div class="st-fill" style="width:88%"></div></div>
-        </div>
-      </div>
-      <div class="skill-tile reveal">
-        <div class="st-icon">📦</div>
-        <div>
-          <div class="st-name">Out of Box Solutions</div>
-          <div class="st-level">Advanced</div>
-          <div class="st-bar"><div class="st-fill" style="width:85%"></div></div>
-        </div>
-      </div>
-      <div class="skill-tile reveal">
-        <div class="st-icon st-icon-green">🔗</div>
-        <div>
-          <div class="st-name">REST Integrations</div>
-          <div class="st-level">Advanced</div>
-          <div class="st-bar"><div class="st-fill" style="width:85%"></div></div>
-        </div>
-      </div>
-      <div class="skill-tile reveal">
-        <div class="st-icon">🔄</div>
-        <div>
-          <div class="st-name">Salesforce Flows</div>
-          <div class="st-level">Advanced</div>
-          <div class="st-bar"><div class="st-fill" style="width:93%"></div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════ EXPERIENCE ═══════ -->
-<section class="section" id="experience">
-  <div class="section-inner">
-    <p class="section-label reveal">Career Journey</p>
-    <h2 class="section-heading reveal">Professional Experience</h2>
-    <p class="section-desc reveal">From healthcare to Salesforce — a career driven by curiosity, discipline, and love for building solutions.</p>
-
-    <div class="timeline">
-      <div class="tl-item reveal">
-        <div class="tl-dot"></div>
-        <div class="tl-card">
-          <div class="tl-date">Jul 2023 — Present · 2.8 years</div>
-          <div class="tl-role">Salesforce Developer</div>
-          <div class="tl-company">Minuscule Technologies</div>
-          <ul class="tl-details">
-            <li>Led Apex development for complex business logic including triggers, batch classes, and schedulable jobs</li>
-            <li>Implemented complex Flows for lead qualification, assignment rules, and follow-up automation</li>
-            <li>Architected REST API integrations to sync account, opportunity, and order data with external systems</li>
-            <li>Built Lightning Web Components for list views, record detail enhancements, and guided actions</li>
-            <li>Configured Sales Cloud objects — Leads, Opportunities, and custom objects for region-wise sales processes</li>
-          </ul>
-          <div class="tl-tags">
-            <span class="tl-tag">Apex</span>
-            <span class="tl-tag">LWC</span>
-            <span class="tl-tag">Flows</span>
-            <span class="tl-tag">REST APIs</span>
-            <span class="tl-tag">Sales Cloud</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="tl-item reveal">
-        <div class="tl-dot"></div>
-        <div class="tl-card">
-          <div class="tl-date">Nov 2022 — Jul 2023 · 9 months</div>
-          <div class="tl-role">Salesforce Developer Trainee</div>
-          <div class="tl-company">AJ Skill Development Academy</div>
-          <ul class="tl-details">
-            <li>Completed intensive Salesforce Lightning training covering platform fundamentals and development</li>
-            <li>Earned Platform Developer I Certification (Feb 2023)</li>
-          </ul>
-          <div class="tl-tags">
-            <span class="tl-tag">Lightning</span>
-            <span class="tl-tag">Platform Dev I</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="tl-item reveal">
-        <div class="tl-dot"></div>
-        <div class="tl-card">
-          <div class="tl-date">Nov 2022 · 1 month</div>
-          <div class="tl-role">Salesforce Administrator Trainee</div>
-          <div class="tl-company">Training Program</div>
-          <ul class="tl-details">
-            <li>Foundational Salesforce Admin training — object configuration, security, and platform basics</li>
-            <li>Gateway to Platform Developer I certification journey</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="tl-item reveal">
-        <div class="tl-dot"></div>
-        <div class="tl-card">
-          <div class="tl-date">Jan 2020 — Oct 2022 · 8 Months</div>
-          <div class="tl-role">Health Inspector</div>
-          <div class="tl-company">Government of Tamil Nadu</div>
-          <ul class="tl-details">
-            <li>Conducted public health inspections and regulatory compliance assessments</li>
-            <li>Developed analytical and stakeholder communication skills that translated directly to CRM consulting</li>
-            <li>Career transition to IT / Salesforce ecosystem driven by passion for technology</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="tl-item reveal">
-        <div class="tl-dot"></div>
-        <div class="tl-card">
-          <div class="tl-date">Apr 2017 — Nov 2018 · 1.8 years</div>
-          <div class="tl-role">Field Services Engineer</div>
-          <div class="tl-company">ADX Electromedical</div>
-          <ul class="tl-details">
-            <li>Installed, maintained, and troubleshot biomedical electronic equipment at healthcare facilities</li>
-            <li>Built strong technical troubleshooting foundation and client-facing communication skills</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════ EDUCATION ═══════ -->
-<section class="section" id="education" style="background:linear-gradient(180deg,transparent,rgba(0,200,150,0.03),transparent);">
-  <div class="section-inner">
-    <p class="section-label reveal">Education</p>
-    <h2 class="section-heading reveal">Academic Background</h2>
-    <div class="edu-grid" style="margin-top:1.5rem;">
-      <div class="edu-card reveal reveal-delay-1">
-        <div class="edu-icon">🎓</div>
-        <div class="edu-degree">B.E. in Medical Electronic Engineering</div>
-        <div class="edu-school">Sengunthar College of Engineering</div>
-        <div class="edu-meta">2013 — 2017 · CGPA: 6.8</div>
-      </div>
-      <div class="edu-card reveal reveal-delay-2">
-        <div class="edu-icon">📋</div>
-        <div class="edu-degree">Diploma in Health Inspector</div>
-        <div class="edu-school">Government Institute</div>
-        <div class="edu-meta">2018 — 2019 · Grade: 80%</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════ CERTIFICATIONS ═══════ -->
-<section class="section" id="certifications">
-  <div class="section-inner">
-    <p class="section-label reveal">Credentials</p>
-    <h2 class="section-heading reveal">Certifications & Badges</h2>
-    <p class="section-desc reveal">Verified Salesforce credentials demonstrating platform expertise and continuous learning.</p>
-
-    <div class="cert-grid">
-	  <div class="cert-card reveal reveal-delay-1">
-        <div class="cert-badge">🏆</div>
-        <div class="cert-name">Salesforce Certified Administrator (SCA)</div>
-        <div class="cert-issuer">Salesforce</div>
-        <div class="cert-date">Issued: Dec 2022</div>
-        <div class="cert-id">Credential ID: 2805329</div>
-      </div>
-      <div class="cert-card reveal reveal-delay-1">
-        <div class="cert-badge">🏆</div>
-        <div class="cert-name">Salesforce Certified Platform Developer I</div>
-        <div class="cert-issuer">Salesforce</div>
-        <div class="cert-date">Issued: February 2023</div>
-        <div class="cert-id">Credential ID: 3021489</div>
-      </div>
-      <div class="cert-card reveal reveal-delay-2">
-        <div class="cert-badge">⭐</div>
-        <div class="cert-name">7x Salesforce Superbadges</div>
-        <div class="cert-issuer">Salesforce Trailhead</div>
-        <div class="cert-date">Ongoing achievements</div>
-        <div class="cert-id">Verified on Trailhead profile</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════ CONTACT CTA ═══════ -->
-<section class="cta-section" id="contact">
-  <div class="cta-card reveal">
-    <h2 class="cta-heading">Let's Build Something <span class="gradient-text">Together</span></h2>
-    <p class="cta-desc">
-      Looking for a Salesforce Developer to architect your Sales Cloud implementation, build custom integrations, or optimize your CRM workflows? Let's talk.
-    </p>
-    <div class="cta-buttons">
-      <a href="mailto:kvetrivel919@gmail.com" class="btn btn-primary">
-        ✉ Email Me
+<!-- CONTACT -->
+<div id="contact">
+  <div class="section-wrap">
+    <div class="section-eyebrow">// get in touch</div>
+    <h2 class="section-title">Contact</h2>
+    <div class="contact-grid">
+      <a href="mailto:kvetrivel919@gmail.com" class="contact-card">
+        <div class="contact-emoji">📧</div>
+        <div class="contact-lbl">Email</div>
+        <div class="contact-val">kvetrivel919@gmail.com</div>
       </a>
-      <a href="https://linkedin.com/in/vetrivel-k-b42658154" target="_blank" rel="noopener" class="btn btn-outline">
-        💼 Connect on LinkedIn
+      <a href="tel:+919445535605" class="contact-card">
+        <div class="contact-emoji">📱</div>
+        <div class="contact-lbl">Phone</div>
+        <div class="contact-val">+91-94455 35605</div>
+      </a>
+      <a href="https://linkedin.com/in/vetrivel-k-b42658154" target="_blank" class="contact-card">
+        <div class="contact-emoji">💼</div>
+        <div class="contact-lbl">LinkedIn</div>
+        <div class="contact-val">vetrivel-k-b42658154</div>
+      </a>
+      <a href="https://github.com/vetrivel9445" target="_blank" class="contact-card">
+        <div class="contact-emoji">💻</div>
+        <div class="contact-lbl">GitHub</div>
+        <div class="contact-val">github.com/vetrivel9445</div>
+      </a>
+      <a href="https://trailblazer.me/id/vsalesforce35" target="_blank" class="contact-card">
+        <div class="contact-emoji">🏆</div>
+        <div class="contact-lbl">Trailhead</div>
+        <div class="contact-val">Ranger · 90,775 pts</div>
       </a>
     </div>
-    <div class="contact-links">
-      <a href="https://github.com/vetrivel9445" target="_blank" rel="noopener" class="contact-pill">
-        ⌨ GitHub
-      </a>
-      <a href="https://trailblazer.me/id/vsalesforce35" target="_blank" rel="noopener" class="contact-pill">
-        ☁️ Trailhead
-      </a>
-      <a href="https://vetrivel9445.github.io" target="_blank" rel="noopener" class="contact-pill">
-        🌐 Website
-      </a>
-      <span class="contact-pill">📍 Chennai, India</span>
-    </div>
   </div>
-</section>
+</div>
 
-<!-- ═══════ FOOTER ═══════ -->
-<footer class="footer">
-  <div class="footer-inner">
-    <div class="footer-left">
-      <strong>Vetrivel K</strong> · Salesforce Developer · Chennai, India<br/>
-      Open to hybrid & remote opportunities in Sales Cloud, integrations, and consulting.
-    </div>
-    <div class="footer-links">
-      <a href="https://linkedin.com/in/vetrivel-k-b42658154" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://github.com/vetrivel9445" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://trailblazer.me/id/vsalesforce35" target="_blank" rel="noopener">Trailhead</a>
-      <a href="mailto:kvetrivel919@gmail.com">Email</a>
-    </div>
-  </div>
+<footer>
+  <strong>Vetrivel K</strong> · Salesforce Developer · 3× Certified · Chennai, India · Open to hybrid &amp; remote opportunities
 </footer>
 
-<!-- ═══════ SCRIPTS ═══════ -->
-<script>
-(function() {
-  // Theme toggle
-  const html = document.documentElement;
-  const saved = localStorage.getItem('vk-theme');
-  if (saved) html.setAttribute('data-theme', saved);
-
-  function toggleTheme() {
-    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    html.setAttribute('data-theme', next);
-    localStorage.setItem('vk-theme', next);
-    updateIcons(next);
-  }
-
-  function updateIcons(t) {
-    const icon = t === 'dark' ? '🌙' : '☀️';
-    document.getElementById('themeIcon').textContent = icon;
-    document.getElementById('themeIconMobile').textContent = icon;
-  }
-
-  document.getElementById('themeToggle').addEventListener('click', toggleTheme);
-  document.getElementById('themeToggleMobile').addEventListener('click', toggleTheme);
-  updateIcons(html.getAttribute('data-theme'));
-
-  // Mobile menu
-  const hamburger = document.getElementById('hamburger');
-  const mobileMenu = document.getElementById('mobileMenu');
-  const mobileTheme = document.getElementById('themeToggleMobile');
-
-  function updateMobileVisibility() {
-    const isMobile = window.innerWidth <= 768;
-    mobileTheme.style.display = isMobile ? 'flex' : 'none';
-  }
-  updateMobileVisibility();
-  window.addEventListener('resize', updateMobileVisibility);
-
-  hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    mobileMenu.classList.toggle('open');
-    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
-  });
-
-  mobileMenu.querySelectorAll('.nav-link, .btn').forEach(link => {
-    link.addEventListener('click', () => {
-      hamburger.classList.remove('active');
-      mobileMenu.classList.remove('open');
-      document.body.style.overflow = '';
-    });
-  });
-
-  // Nav scroll effect
-  const nav = document.getElementById('mainNav');
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 40);
-  }, { passive: true });
-
-  // Intersection Observer for reveal animations
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-  // Smooth scroll for nav links
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', e => {
-      const target = document.querySelector(a.getAttribute('href'));
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth' });
-      }
-    });
-  });
-})();
-</script>
-
-<!-- Structured Data for SEO -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Vetrivel K",
-  "alternateName": "Vetri K",
-  "jobTitle": "Salesforce Developer",
-  "url": "https://vetrivel9445.github.io",
-  "sameAs": [
-    "https://linkedin.com/in/vetrivel-k-b42658154",
-    "https://github.com/vetrivel9445",
-    "https://trailblazer.me/id/vsalesforce35"
-  ],
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Chennai",
-    "addressRegion": "Tamil Nadu",
-    "addressCountry": "IN"
-  },
-  "worksFor": {
-    "@type": "Organization",
-    "name": "Minuscule Technologies"
-  },
-  "knowsAbout": ["Salesforce", "Sales Cloud", "Apex", "Lightning Web Components", "Salesforce Flows", "REST API Integrations", "CPQ", "Service Cloud"]
-}
-</script>
 </body>
 </html>
