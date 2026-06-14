@@ -3,485 +3,1130 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<meta name="description" content="Vetrivel K — Salesforce Developer with 3+ years experience in Apex, LWC, Agentforce AI, Flows and integrations. 3x Certified. Chennai, India."/>
-<meta name="keywords" content="Salesforce Developer, Apex, LWC, Agentforce, Chennai, 3x Certified, Vetrivel K"/>
-<title>Vetrivel K — Salesforce Developer | 3x Certified | Chennai</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<meta name="description" content="Vetrivel K — Salesforce Developer. 3× Certified. Apex · LWC · Agentforce AI. Chennai, India."/>
+<title>Vetrivel K — Salesforce Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
-/* ── TOKENS ─────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════
+   TOKENS — Salesforce palette, dark base
+═══════════════════════════════════════════ */
 :root{
-  --ink:       #0C1A2E;
-  --ink-mid:   #1E3554;
-  --sf-blue:   #0176D3;
-  --sf-sky:    #1BAEEE;
-  --sf-cloud:  #032D60;
-  --ai-teal:   #06B6D4;
-  --ai-glow:   rgba(6,182,212,.12);
-  --green:     #22C55E;
-  --surface:   #F0F5FF;
-  --card:      #FFFFFF;
-  --border:    #D1DFF5;
-  --text:      #1E3554;
-  --muted:     #5C7A99;
-  --mono:      'JetBrains Mono', monospace;
-  --sans:      'Plus Jakarta Sans', sans-serif;
+  --sf-blue:    #0176D3;
+  --sf-sky:     #1B96FF;
+  --sf-cloud:   #032D60;
+  --sf-teal:    #06AED5;
+  --sf-indigo:  #3A49CC;
+  --bg:         #050D1A;
+  --bg2:        #081426;
+  --surface:    rgba(255,255,255,0.04);
+  --surface2:   rgba(255,255,255,0.07);
+  --border:     rgba(255,255,255,0.09);
+  --border2:    rgba(27,150,255,0.25);
+  --text:       #E8F0FE;
+  --muted:      #7A95B4;
+  --green:      #22D3A5;
+  --white:      #FFFFFF;
+  --f-display:  'Sora', sans-serif;
+  --f-body:     'Inter', sans-serif;
+  --f-mono:     'JetBrains Mono', monospace;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{font-family:var(--sans);background:var(--surface);color:var(--text);overflow-x:hidden;}
+body{
+  font-family:var(--f-body);
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
 
-/* ── NAV ────────────────────────────────────────────────────── */
-nav{position:fixed;top:0;left:0;right:0;z-index:200;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
-.logo{font-family:var(--mono);font-size:14px;color:var(--sf-blue);font-weight:500;letter-spacing:.5px;}
-.nav-links{display:flex;gap:32px;list-style:none;}
-.nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:500;transition:color .18s;}
-.nav-links a:hover{color:var(--sf-blue);}
-.nav-hire{background:var(--sf-blue);color:#fff!important;padding:7px 18px;border-radius:8px;font-weight:600!important;}
-.nav-hire:hover{background:#0156A3!important;color:#fff!important;}
+/* ═══════════════════════════════════════════
+   CANVAS BACKGROUND — animated cloud mesh
+═══════════════════════════════════════════ */
+#bg-canvas{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  z-index:0;pointer-events:none;
+}
 
-/* ── HERO ───────────────────────────────────────────────────── */
-.hero{min-height:100vh;display:grid;grid-template-columns:1fr 420px;gap:60px;align-items:center;padding:100px 60px 60px;max-width:1200px;margin:0 auto;}
-.hero-eyebrow{font-family:var(--mono);font-size:12px;color:var(--ai-teal);letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:8px;}
-.hero-eyebrow::before{content:'';width:28px;height:1.5px;background:var(--ai-teal);}
-.hero-name{font-size:clamp(44px,5.5vw,72px);font-weight:800;line-height:1.08;color:var(--ink);margin-bottom:10px;letter-spacing:-1.5px;}
-.hero-name .highlight{color:var(--sf-blue);}
-.hero-role{font-size:18px;font-weight:500;color:var(--muted);margin-bottom:24px;}
-.hero-desc{font-size:15px;color:var(--muted);line-height:1.85;max-width:520px;margin-bottom:32px;}
-.cert-strip{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:36px;}
-.cert-pill{display:inline-flex;align-items:center;gap:5px;background:#ECFDF5;border:1px solid #BBF7D0;color:#065F46;padding:5px 13px;border-radius:20px;font-size:11.5px;font-weight:600;}
-.cert-pill svg{width:12px;height:12px;}
-.hero-actions{display:flex;gap:14px;flex-wrap:wrap;}
-.btn-primary{background:var(--sf-blue);color:#fff;padding:13px 26px;border-radius:9px;text-decoration:none;font-size:14px;font-weight:700;transition:all .18s;box-shadow:0 4px 14px rgba(1,118,211,.25);}
-.btn-primary:hover{background:#0156A3;transform:translateY(-2px);box-shadow:0 6px 20px rgba(1,118,211,.32);}
-.btn-ghost{border:1.5px solid var(--border);color:var(--text);padding:12px 24px;border-radius:9px;text-decoration:none;font-size:14px;font-weight:500;transition:all .18s;}
-.btn-ghost:hover{border-color:var(--sf-blue);color:var(--sf-blue);}
+/* ═══════════════════════════════════════════
+   SCROLLBAR
+═══════════════════════════════════════════ */
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--sf-blue);border-radius:2px;}
 
-/* HERO RIGHT — stat cards */
-.hero-right{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.stat-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px 20px;transition:border-color .2s,transform .2s;}
-.stat-card:hover{border-color:var(--sf-sky);transform:translateY(-3px);}
-.stat-num{font-size:34px;font-weight:800;color:var(--sf-blue);font-family:var(--mono);line-height:1;}
-.stat-label{font-size:11.5px;color:var(--muted);margin-top:5px;font-weight:500;}
-.trailhead-wide{grid-column:1/-1;background:linear-gradient(135deg,var(--sf-cloud),#0E4A8A);border-radius:16px;padding:20px 22px;display:flex;align-items:center;gap:16px;border:none;}
-.trail-badge{width:44px;height:44px;background:linear-gradient(135deg,#FF6B35,#FF9500);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
-.trail-text h4{font-size:13px;font-weight:700;color:#fff;}
-.trail-text p{font-size:11.5px;color:rgba(255,255,255,.65);margin-top:2px;}
+/* ═══════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:60px;
+  display:flex;align-items:center;justify-content:center;
+}
+.nav-inner{
+  width:100%;max-width:1100px;
+  margin:12px 24px 0;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(5,13,26,0.7);
+  backdrop-filter:blur(20px);
+  border:1px solid var(--border2);
+  border-radius:14px;
+  padding:0 24px;
+  height:48px;
+  transition:background 0.3s;
+}
+.nav-logo{
+  font-family:var(--f-mono);
+  font-size:14px;
+  font-weight:500;
+  color:var(--white);
+  letter-spacing:0.5px;
+}
+.nav-logo em{color:var(--sf-sky);font-style:normal;}
+.nav-links{display:flex;gap:6px;list-style:none;}
+.nav-links a{
+  font-size:13px;font-weight:500;
+  color:var(--muted);
+  text-decoration:none;
+  padding:6px 14px;
+  border-radius:8px;
+  transition:all 0.2s;
+}
+.nav-links a:hover{color:var(--white);background:var(--surface2);}
+.nav-cta{
+  font-size:13px;font-weight:600;
+  color:var(--white)!important;
+  background:var(--sf-blue)!important;
+  padding:7px 18px!important;
+  border-radius:8px;
+  box-shadow:0 0 20px rgba(1,118,211,0.35);
+  transition:all 0.2s!important;
+}
+.nav-cta:hover{
+  background:var(--sf-sky)!important;
+  box-shadow:0 0 30px rgba(27,150,255,0.5)!important;
+  transform:translateY(-1px);
+}
 
-/* ── SECTIONS ───────────────────────────────────────────────── */
-.section-wrap{max-width:1100px;margin:0 auto;padding:80px 40px;}
-.section-eyebrow{font-family:var(--mono);font-size:11px;color:var(--ai-teal);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:8px;}
-.section-title{font-size:32px;font-weight:800;color:var(--ink);letter-spacing:-0.5px;margin-bottom:48px;}
-hr.divider{border:none;border-top:1px solid var(--border);margin:0 0 48px;}
+/* ═══════════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════════ */
+.wrap{max-width:1100px;margin:0 auto;padding:0 32px;position:relative;z-index:1;}
 
-/* ── PROJECTS ───────────────────────────────────────────────── */
-.projects-bg{background:#fff;}
-.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:22px;}
-.proj-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:28px;position:relative;overflow:hidden;transition:border-color .2s,transform .2s,box-shadow .2s;}
-.proj-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--sf-blue),var(--ai-teal));border-radius:18px 18px 0 0;}
-.proj-card:hover{border-color:var(--sf-sky);transform:translateY(-4px);box-shadow:0 12px 36px rgba(1,118,211,.12);}
-.proj-tag-row{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
-.proj-tag{font-family:var(--mono);font-size:10px;background:rgba(1,118,211,.08);color:var(--sf-blue);padding:3px 8px;border-radius:4px;font-weight:500;}
-.proj-new{background:#ECFDF5;color:#065F46;border:1px solid #BBF7D0;}
-.proj-title{font-size:17px;font-weight:700;color:var(--ink);margin-bottom:10px;line-height:1.3;}
-.proj-desc{font-size:13px;color:var(--muted);line-height:1.75;margin-bottom:18px;}
+/* ═══════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════ */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:100px 0 80px;
+}
+.hero-label{
+  font-family:var(--f-mono);
+  font-size:11.5px;font-weight:500;
+  color:var(--sf-teal);
+  letter-spacing:2px;text-transform:uppercase;
+  margin-bottom:24px;
+  display:flex;align-items:center;gap:10px;
+  opacity:0;animation:fadeUp 0.6s 0.1s ease forwards;
+}
+.hero-label::before{
+  content:'';width:32px;height:1px;background:var(--sf-teal);
+}
+.status-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 8px var(--green);
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{
+  0%,100%{box-shadow:0 0 6px var(--green);}
+  50%{box-shadow:0 0 14px var(--green),0 0 28px rgba(34,211,165,0.3);}
+}
+
+.hero-name{
+  font-family:var(--f-display);
+  font-size:clamp(52px,7vw,88px);
+  font-weight:800;
+  color:var(--white);
+  line-height:1.0;
+  letter-spacing:-2px;
+  margin-bottom:4px;
+  opacity:0;animation:fadeUp 0.7s 0.2s ease forwards;
+}
+.hero-name .blue-word{
+  background:linear-gradient(135deg,var(--sf-sky),var(--sf-teal));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero-role{
+  font-family:var(--f-display);
+  font-size:clamp(18px,2.5vw,26px);
+  font-weight:300;
+  color:var(--muted);
+  margin-bottom:28px;
+  letter-spacing:-0.3px;
+  opacity:0;animation:fadeUp 0.7s 0.3s ease forwards;
+}
+.hero-desc{
+  font-size:16px;line-height:1.85;
+  color:var(--muted);
+  max-width:600px;
+  margin-bottom:36px;
+  opacity:0;animation:fadeUp 0.7s 0.4s ease forwards;
+}
+.hero-desc strong{color:var(--text);font-weight:500;}
+
+/* cert chips */
+.cert-strip{
+  display:flex;flex-wrap:wrap;gap:8px;
+  margin-bottom:40px;
+  opacity:0;animation:fadeUp 0.7s 0.5s ease forwards;
+}
+.cert-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:12px;font-weight:500;
+  color:var(--green);
+  background:rgba(34,211,165,0.08);
+  border:1px solid rgba(34,211,165,0.25);
+  padding:5px 14px;border-radius:20px;
+  transition:all 0.2s;
+}
+.cert-chip:hover{
+  background:rgba(34,211,165,0.15);
+  border-color:rgba(34,211,165,0.5);
+  transform:translateY(-2px);
+}
+.cert-chip::before{content:'✓';font-weight:700;}
+
+/* hero actions */
+.hero-actions{
+  display:flex;gap:14px;flex-wrap:wrap;
+  opacity:0;animation:fadeUp 0.7s 0.6s ease forwards;
+}
+.btn-glow{
+  font-size:14px;font-weight:600;
+  color:var(--white);
+  background:var(--sf-blue);
+  padding:13px 28px;border-radius:10px;
+  text-decoration:none;
+  box-shadow:0 4px 24px rgba(1,118,211,0.4);
+  transition:all 0.25s;
+  position:relative;overflow:hidden;
+}
+.btn-glow::before{
+  content:'';position:absolute;top:0;left:-100%;
+  width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.12),transparent);
+  transition:left 0.5s;
+}
+.btn-glow:hover::before{left:100%;}
+.btn-glow:hover{
+  background:var(--sf-sky);
+  box-shadow:0 6px 32px rgba(27,150,255,0.55);
+  transform:translateY(-2px);
+  text-decoration:none;
+}
+.btn-ghost{
+  font-size:14px;font-weight:500;
+  color:var(--muted);
+  border:1px solid var(--border);
+  padding:12px 24px;border-radius:10px;
+  text-decoration:none;
+  transition:all 0.2s;
+  backdrop-filter:blur(10px);
+}
+.btn-ghost:hover{
+  color:var(--white);
+  border-color:var(--sf-sky);
+  background:rgba(27,150,255,0.08);
+  text-decoration:none;
+}
+
+/* ═══════════════════════════════════════════
+   METRICS STRIP
+═══════════════════════════════════════════ */
+.metrics-strip{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1px;
+  background:var(--border);
+  border:1px solid var(--border);
+  border-radius:16px;
+  overflow:hidden;
+  margin-top:64px;
+  opacity:0;animation:fadeUp 0.7s 0.7s ease forwards;
+}
+.metric-cell{
+  background:var(--bg2);
+  padding:28px 20px;text-align:center;
+  transition:background 0.2s;
+}
+.metric-cell:hover{background:rgba(1,118,211,0.08);}
+.metric-num{
+  font-family:var(--f-display);
+  font-size:36px;font-weight:800;
+  color:var(--white);
+  letter-spacing:-1px;line-height:1;
+  margin-bottom:6px;
+}
+.metric-num sub{
+  font-size:20px;color:var(--sf-sky);
+  font-weight:700;vertical-align:baseline;
+}
+.metric-lbl{font-size:12px;color:var(--muted);font-weight:400;line-height:1.4;}
+
+/* ═══════════════════════════════════════════
+   SECTION TITLES
+═══════════════════════════════════════════ */
+.sec-wrap{padding:80px 0;}
+.sec-head{
+  display:flex;align-items:center;gap:16px;
+  margin-bottom:52px;
+}
+.sec-eye{
+  font-family:var(--f-mono);font-size:11px;
+  color:var(--sf-sky);letter-spacing:2px;
+  text-transform:uppercase;white-space:nowrap;
+}
+.sec-rule{flex:1;height:1px;background:var(--border);}
+.sec-title{
+  font-family:var(--f-display);
+  font-size:32px;font-weight:700;
+  color:var(--white);letter-spacing:-0.5px;
+}
+/* subtitle below title */
+.sec-sub{
+  font-size:15px;color:var(--muted);
+  margin-top:8px;margin-bottom:40px;
+  line-height:1.7;max-width:520px;
+}
+
+/* ═══════════════════════════════════════════
+   SKILLS — animated pill grid
+═══════════════════════════════════════════ */
+.skills-grid{display:flex;flex-direction:column;gap:16px;}
+.skill-row{
+  display:grid;grid-template-columns:150px 1fr;
+  gap:20px;align-items:center;
+  padding:16px 20px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:12px;
+  transition:all 0.25s;
+}
+.skill-row:hover{
+  background:var(--surface2);
+  border-color:var(--border2);
+  transform:translateX(4px);
+}
+.skill-cat{
+  font-size:13px;font-weight:600;
+  color:var(--text);
+  font-family:var(--f-display);
+}
+.skill-pills{display:flex;flex-wrap:wrap;gap:6px;}
+.skill-pill{
+  font-family:var(--f-mono);font-size:11px;
+  color:var(--sf-sky);
+  background:rgba(27,150,255,0.08);
+  border:1px solid rgba(27,150,255,0.2);
+  padding:3px 10px;border-radius:4px;
+  transition:all 0.2s;
+}
+.skill-pill:hover{
+  background:rgba(27,150,255,0.18);
+  border-color:rgba(27,150,255,0.5);
+  color:var(--white);
+}
+
+/* ═══════════════════════════════════════════
+   PROJECTS — glass cards
+═══════════════════════════════════════════ */
+.projects-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.proj-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:28px;
+  position:relative;overflow:hidden;
+  transition:all 0.3s;
+  display:flex;flex-direction:column;
+}
+.proj-card::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--sf-blue),var(--sf-teal));
+  opacity:0;transition:opacity 0.3s;
+}
+.proj-card:hover{
+  background:var(--surface2);
+  border-color:var(--border2);
+  transform:translateY(-6px);
+  box-shadow:0 20px 60px rgba(1,118,211,0.15);
+}
+.proj-card:hover::before{opacity:1;}
+
+/* glow orb inside card */
+.proj-card::after{
+  content:'';
+  position:absolute;
+  width:180px;height:180px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(1,118,211,0.12),transparent 70%);
+  top:-60px;right:-60px;
+  transition:all 0.4s;
+  opacity:0;
+}
+.proj-card:hover::after{opacity:1;transform:scale(1.3);}
+
+.proj-type{
+  font-family:var(--f-mono);font-size:10.5px;
+  color:var(--sf-teal);letter-spacing:1px;
+  text-transform:uppercase;margin-bottom:10px;
+}
+.proj-title{
+  font-family:var(--f-display);
+  font-size:18px;font-weight:700;
+  color:var(--white);letter-spacing:-0.3px;
+  margin-bottom:12px;
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.new-badge{
+  font-family:var(--f-mono);font-size:9.5px;
+  font-weight:600;letter-spacing:1px;
+  color:var(--sf-sky);
+  background:rgba(27,150,255,0.12);
+  border:1px solid rgba(27,150,255,0.3);
+  padding:2px 8px;border-radius:4px;
+  text-transform:uppercase;
+}
+.proj-desc{
+  font-size:13.5px;line-height:1.75;
+  color:var(--muted);margin-bottom:18px;flex:1;
+}
 .proj-stack{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;}
-.stack-tag{background:var(--card);border:1px solid var(--border);color:var(--text);padding:3px 9px;border-radius:5px;font-size:11px;font-family:var(--mono);}
-.proj-link{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--sf-blue);text-decoration:none;transition:opacity .18s;}
-.proj-link:hover{opacity:.7;}
-.proj-link-arrow{font-size:14px;}
+.proj-tag{
+  font-family:var(--f-mono);font-size:10.5px;
+  color:var(--muted);
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--border);
+  padding:2px 8px;border-radius:4px;
+}
+.proj-footer{
+  display:flex;justify-content:space-between;
+  align-items:center;
+  border-top:1px solid var(--border);
+  padding-top:16px;
+  margin-top:auto;
+}
+.proj-link{
+  font-size:12.5px;font-weight:600;
+  color:var(--sf-sky);text-decoration:none;
+  display:flex;align-items:center;gap:5px;
+  transition:gap 0.2s;
+}
+.proj-link:hover{gap:9px;text-decoration:none;}
+.proj-link::after{content:'→';}
 
-/* ── SKILLS ─────────────────────────────────────────────────── */
-.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;}
-.skill-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;transition:border-color .2s,transform .2s;}
-.skill-card:hover{border-color:var(--sf-sky);transform:translateY(-3px);}
-.skill-icon{font-size:24px;margin-bottom:12px;}
-.skill-name{font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:10px;}
-.skill-tags{display:flex;flex-wrap:wrap;gap:5px;}
-.skill-tag{background:rgba(1,118,211,.07);color:var(--sf-blue);padding:3px 8px;border-radius:4px;font-size:10.5px;font-family:var(--mono);}
+/* featured card — full width */
+.proj-card.featured{grid-column:1/-1;}
+.proj-card.featured .proj-desc{max-width:680px;}
 
-/* ── EXPERIENCE ──────────────────────────────────────────────── */
-.exp-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:30px 32px;margin-bottom:18px;}
-.exp-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;}
-.exp-jobtitle{font-size:17px;font-weight:700;color:var(--ink);}
-.exp-date{font-family:var(--mono);font-size:11.5px;color:var(--sf-blue);background:rgba(1,118,211,.08);padding:4px 12px;border-radius:20px;}
-.exp-company{font-size:13.5px;color:var(--sf-blue);font-weight:500;margin-bottom:18px;}
+/* ═══════════════════════════════════════════
+   EXPERIENCE — timeline
+═══════════════════════════════════════════ */
+.exp-timeline{position:relative;padding-left:28px;}
+.exp-timeline::before{
+  content:'';
+  position:absolute;left:0;top:8px;bottom:8px;
+  width:1px;background:linear-gradient(to bottom,var(--sf-blue),transparent);
+}
+.exp-item{
+  position:relative;
+  padding:0 0 48px 36px;
+}
+.exp-item:last-child{padding-bottom:0;}
+.exp-dot{
+  position:absolute;left:-34px;top:4px;
+  width:12px;height:12px;
+  border-radius:50%;
+  background:var(--sf-blue);
+  box-shadow:0 0 0 3px rgba(1,118,211,0.2),0 0 12px rgba(1,118,211,0.4);
+  transition:box-shadow 0.3s;
+}
+.exp-item:hover .exp-dot{
+  box-shadow:0 0 0 4px rgba(1,118,211,0.3),0 0 20px rgba(1,118,211,0.6);
+}
+.exp-period{
+  font-family:var(--f-mono);font-size:11px;
+  color:var(--sf-teal);letter-spacing:0.5px;
+  margin-bottom:8px;
+}
+.exp-title{
+  font-family:var(--f-display);
+  font-size:19px;font-weight:700;
+  color:var(--white);letter-spacing:-0.3px;
+  margin-bottom:3px;
+}
+.exp-co{
+  font-size:14px;font-weight:500;
+  color:var(--sf-sky);margin-bottom:16px;
+}
 .exp-bullets{list-style:none;}
-.exp-bullets li{font-size:13px;color:var(--muted);padding:4px 0 4px 16px;position:relative;line-height:1.7;}
-.exp-bullets li::before{content:'▸';position:absolute;left:0;color:var(--ai-teal);font-size:11px;top:6px;}
+.exp-bullets li{
+  font-size:13.5px;color:var(--muted);
+  line-height:1.75;padding-left:16px;
+  position:relative;margin-bottom:5px;
+}
+.exp-bullets li::before{
+  content:'▸';position:absolute;left:0;
+  color:var(--sf-blue);font-size:10px;top:5px;
+}
+.exp-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;}
+.exp-chip{
+  font-family:var(--f-mono);font-size:11px;
+  color:var(--muted);
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--border);
+  padding:3px 10px;border-radius:4px;
+}
 
-/* ── CERTIFICATIONS ──────────────────────────────────────────── */
-.certs-bg{background:#fff;}
-.certs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;}
-.cert-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;display:flex;gap:16px;align-items:flex-start;transition:border-color .2s,transform .2s;}
-.cert-card:hover{border-color:var(--green);transform:translateY(-3px);}
-.cert-icon{width:42px;height:42px;background:linear-gradient(135deg,var(--sf-blue),var(--sf-sky));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
-.cert-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:3px;}
-.cert-meta{font-size:11.5px;color:var(--muted);}
-.cert-active{display:inline-block;background:#ECFDF5;color:#065F46;border:1px solid #BBF7D0;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;margin-top:5px;}
+/* ═══════════════════════════════════════════
+   CERTIFICATIONS — horizontal cards
+═══════════════════════════════════════════ */
+.certs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.cert-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:24px;
+  transition:all 0.25s;
+  position:relative;overflow:hidden;
+}
+.cert-card::before{
+  content:'';position:absolute;
+  inset:0;border-radius:16px;
+  background:linear-gradient(135deg,rgba(1,118,211,0.07),transparent);
+  opacity:0;transition:opacity 0.3s;
+}
+.cert-card:hover{
+  border-color:var(--border2);
+  transform:translateY(-4px);
+  box-shadow:0 16px 40px rgba(1,118,211,0.12);
+}
+.cert-card:hover::before{opacity:1;}
+.cert-icon{
+  width:44px;height:44px;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--sf-blue),var(--sf-indigo));
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;
+  margin-bottom:16px;
+  box-shadow:0 4px 14px rgba(1,118,211,0.3);
+}
+.cert-name{
+  font-family:var(--f-display);
+  font-size:14px;font-weight:600;
+  color:var(--white);line-height:1.4;
+  margin-bottom:6px;
+}
+.cert-meta{font-size:12px;color:var(--muted);margin-bottom:10px;}
+.cert-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  font-family:var(--f-mono);font-size:10px;
+  font-weight:600;letter-spacing:0.5px;
+  color:var(--green);
+  background:rgba(34,211,165,0.1);
+  border:1px solid rgba(34,211,165,0.25);
+  padding:3px 10px;border-radius:4px;
+}
+.cert-badge::before{content:'✓';}
 
-/* ── CONTACT ─────────────────────────────────────────────────── */
-.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:14px;}
-.contact-card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:18px;text-align:center;text-decoration:none;color:var(--text);transition:all .2s;}
-.contact-card:hover{border-color:var(--sf-blue);transform:translateY(-3px);box-shadow:0 8px 24px rgba(1,118,211,.10);}
-.contact-emoji{font-size:22px;margin-bottom:7px;}
-.contact-lbl{font-size:10.5px;color:var(--muted);font-weight:500;margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px;}
-.contact-val{font-size:12.5px;font-weight:600;color:var(--sf-blue);}
+/* trailhead row */
+.trailhead-row{
+  margin-top:16px;
+  background:linear-gradient(135deg,rgba(3,45,96,0.6),rgba(1,118,211,0.15));
+  border:1px solid rgba(1,118,211,0.3);
+  border-radius:16px;
+  padding:24px 28px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.trailhead-info h4{
+  font-family:var(--f-display);
+  font-size:16px;font-weight:700;color:var(--white);
+  margin-bottom:4px;
+}
+.trailhead-info p{font-size:13px;color:var(--muted);}
+.trailhead-stats{display:flex;gap:32px;}
+.ts-num{
+  font-family:var(--f-display);
+  font-size:26px;font-weight:800;
+  color:var(--sf-sky);line-height:1;
+}
+.ts-lbl{font-size:11px;color:var(--muted);margin-top:4px;}
 
-/* ── FOOTER ──────────────────────────────────────────────────── */
-footer{border-top:1px solid var(--border);padding:28px 40px;text-align:center;font-size:12px;color:var(--muted);}
-footer strong{color:var(--sf-blue);}
+/* ═══════════════════════════════════════════
+   CONTACT
+═══════════════════════════════════════════ */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.contact-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:20px 22px;
+  text-decoration:none;
+  display:block;
+  transition:all 0.2s;
+}
+.contact-card:hover{
+  background:var(--surface2);
+  border-color:var(--border2);
+  transform:translateY(-3px);
+  box-shadow:0 12px 30px rgba(1,118,211,0.1);
+  text-decoration:none;
+}
+.contact-lbl{
+  font-family:var(--f-mono);font-size:10.5px;
+  color:var(--muted);letter-spacing:0.8px;
+  text-transform:uppercase;margin-bottom:5px;
+}
+.contact-val{
+  font-size:14px;font-weight:500;color:var(--sf-sky);
+}
 
-/* ── ANIMATIONS ──────────────────────────────────────────────── */
-@keyframes fadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
-.fade-up{opacity:0;animation:fadeUp .65s ease forwards;}
-.fade-up-d1{animation-delay:.1s;}
-.fade-up-d2{animation-delay:.22s;}
-.fade-up-d3{animation-delay:.34s;}
+/* ═══════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════ */
+footer{
+  border-top:1px solid var(--border);
+  padding:28px 0;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:12.5px;color:var(--muted);
+}
+footer strong{color:var(--text);font-weight:500;}
 
-/* AI glow badge */
-.ai-badge{display:inline-flex;align-items:center;gap:6px;background:var(--ai-glow);border:1px solid rgba(6,182,212,.3);color:var(--ai-teal);padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;font-family:var(--mono);margin-bottom:18px;}
-.ai-dot{width:6px;height:6px;border-radius:50%;background:var(--ai-teal);animation:pulse 1.8s infinite;}
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+/* ═══════════════════════════════════════════
+   SCROLL REVEAL
+═══════════════════════════════════════════ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:none;}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+.reveal.visible{opacity:1;transform:none;}
+.reveal-d1{transition-delay:0.1s;}
+.reveal-d2{transition-delay:0.2s;}
+.reveal-d3{transition-delay:0.3s;}
+.reveal-d4{transition-delay:0.4s;}
 
-@media(max-width:900px){
-  nav{padding:0 20px;}
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media(max-width:768px){
+  .wrap{padding:0 18px;}
   .nav-links{display:none;}
-  .hero{grid-template-columns:1fr;padding:90px 24px 40px;}
-  .hero-right{display:none;}
-  .section-wrap{padding:60px 24px;}
+  .hero{padding:80px 0 60px;}
+  .hero-name{font-size:48px;}
+  .metrics-strip{grid-template-columns:1fr 1fr;}
+  .projects-grid{grid-template-columns:1fr;}
+  .proj-card.featured{grid-column:auto;}
+  .certs-grid{grid-template-columns:1fr;}
+  .contact-grid{grid-template-columns:1fr;}
+  .trailhead-row{flex-direction:column;gap:20px;}
+  footer{flex-direction:column;gap:8px;text-align:center;}
+  .skill-row{grid-template-columns:1fr;gap:10px;}
 }
 </style>
 </head>
 <body>
 
+<!-- ANIMATED BACKGROUND CANVAS -->
+<canvas id="bg-canvas"></canvas>
+
 <!-- NAV -->
 <nav>
-  <div class="logo">vetrivel.k()</div>
-  <ul class="nav-links">
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#certifications">Certifications</a></li>
-    <li><a href="#contact" class="nav-hire">Hire Me</a></li>
-  </ul>
+  <div class="nav-inner">
+    <div class="nav-logo"><em>vetrivel</em>.k()</div>
+    <ul class="nav-links">
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#certifications">Certs</a></li>
+      <li><a href="#contact" class="nav-cta">Hire Me</a></li>
+    </ul>
+  </div>
 </nav>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-left fade-up">
-    <div class="ai-badge"><span class="ai-dot"></span> Agentforce Specialist · Jan 2025</div>
-    <div class="hero-eyebrow">Salesforce Developer · Chennai, India</div>
-    <h1 class="hero-name">Vetrivel <span class="highlight">K</span></h1>
-    <div class="hero-role">Apex · LWC · Agentforce AI · Integrations</div>
-    <p class="hero-desc">3+ years building production Salesforce solutions — clean bulkified Apex, reusable LWC components, and AI agent configuration. Zero governor-limit violations. 90%+ test coverage across every deployment.</p>
-    <div class="cert-strip">
-      <span class="cert-pill"><svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#065F46" stroke-width="1.5"/><path d="M3.5 6l1.5 1.5L8.5 4.5" stroke="#065F46" stroke-width="1.5" stroke-linecap="round"/></svg>Agentforce Specialist</span>
-      <span class="cert-pill"><svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#065F46" stroke-width="1.5"/><path d="M3.5 6l1.5 1.5L8.5 4.5" stroke="#065F46" stroke-width="1.5" stroke-linecap="round"/></svg>Platform Developer I</span>
-      <span class="cert-pill"><svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#065F46" stroke-width="1.5"/><path d="M3.5 6l1.5 1.5L8.5 4.5" stroke="#065F46" stroke-width="1.5" stroke-linecap="round"/></svg>Platform Administrator</span>
+<div class="wrap">
+
+<!-- ═══════ HERO ════════════════════════════════ -->
+<section class="hero" id="about">
+  <div class="hero-label">
+    <span class="status-dot"></span>
+    Open to opportunities · Chennai, India
+  </div>
+
+  <h1 class="hero-name">
+    Vetrivel <span class="blue-word">K</span>
+  </h1>
+  <p class="hero-role">Salesforce Developer &nbsp;—&nbsp; Apex · LWC · Agentforce AI</p>
+
+  <p class="hero-desc">
+    Three years building enterprise Salesforce systems at Minuscule Technologies.
+    <strong>Clean, bulkified Apex</strong> — zero governor-limit violations in production.
+    <strong>Reusable LWC components</strong>, end-to-end REST integrations, and
+    <strong>Agentforce AI agents</strong> configured from scratch.
+    90%+ test coverage on every deployment, without exception.
+  </p>
+
+  <div class="cert-strip">
+    <span class="cert-chip">Agentforce Specialist</span>
+    <span class="cert-chip">Platform Developer I</span>
+    <span class="cert-chip">Platform Administrator</span>
+  </div>
+
+  <div class="hero-actions">
+    <a href="mailto:kvetrivel919@gmail.com" class="btn-glow">Get in touch</a>
+    <a href="https://github.com/vetrivel9445" target="_blank" class="btn-ghost">GitHub</a>
+    <a href="https://linkedin.com/in/vetrivel-k-b42658154" target="_blank" class="btn-ghost">LinkedIn</a>
+  </div>
+
+  <div class="metrics-strip">
+    <div class="metric-cell">
+      <div class="metric-num">3<sub>+</sub></div>
+      <div class="metric-lbl">Years in production</div>
     </div>
-    <div class="hero-actions">
-      <a href="#projects" class="btn-primary">View Projects</a>
-      <a href="mailto:kvetrivel919@gmail.com" class="btn-ghost">Get in Touch</a>
+    <div class="metric-cell">
+      <div class="metric-num">3<sub>×</sub></div>
+      <div class="metric-lbl">SF Certifications</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-num">90<sub>%+</sub></div>
+      <div class="metric-lbl">Apex test coverage</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-num">0</div>
+      <div class="metric-lbl">Gov. limit violations</div>
     </div>
   </div>
-  <div class="hero-right fade-up fade-up-d2">
-    <div class="stat-card">
-      <div class="stat-num">3+</div>
-      <div class="stat-label">Years Experience</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num">3×</div>
-      <div class="stat-label">SF Certified</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num">90%+</div>
-      <div class="stat-label">Apex Test Coverage</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num">0</div>
-      <div class="stat-label">Gov. Limit Violations</div>
-    </div>
-    <div class="trailhead-wide">
-      <div class="trail-badge">🏆</div>
-      <div class="trail-text">
-        <h4>Trailhead Ranger</h4>
-        <p>90,775 Points &nbsp;·&nbsp; 114 Badges &nbsp;·&nbsp; 12 Trails</p>
-      </div>
-    </div>
+</section>
+
+<!-- ═══════ SKILLS ═══════════════════════════════ -->
+<section class="sec-wrap" id="skills">
+  <div class="sec-head reveal">
+    <span class="sec-eye">Skills</span>
+    <div class="sec-rule"></div>
   </div>
-</div>
-
-<!-- PROJECTS -->
-<div class="projects-bg" id="projects">
-  <div class="section-wrap">
-    <div class="section-eyebrow">// things I've built</div>
-    <h2 class="section-title">Featured Projects</h2>
-    <div class="projects-grid">
-
-      <div class="proj-card">
-        <div class="proj-tag-row">
-          <span class="proj-tag">Agentforce AI</span>
-          <span class="proj-tag proj-new">NEW</span>
-        </div>
-        <div class="proj-title">SF Agentforce Case Bot</div>
-        <div class="proj-desc">AI-powered Service Cloud agent that auto-triages incoming cases, suggests Knowledge Base solutions, and routes to correct queue — cutting manual triage time by 70%.</div>
-        <div class="proj-stack">
-          <span class="stack-tag">Agentforce</span><span class="stack-tag">Apex</span>
-          <span class="stack-tag">Atlas Engine</span><span class="stack-tag">LWC</span>
-          <span class="stack-tag">Service Cloud</span>
-        </div>
-        <a href="https://github.com/vetrivel9445/sf-agentforce-case-bot" class="proj-link" target="_blank">View on GitHub <span class="proj-link-arrow">→</span></a>
+  <div class="skills-grid">
+    <div class="skill-row reveal reveal-d1">
+      <div class="skill-cat">Apex</div>
+      <div class="skill-pills">
+        <span class="skill-pill">Triggers</span><span class="skill-pill">Batch Apex</span>
+        <span class="skill-pill">Queueable</span><span class="skill-pill">Schedulable</span>
+        <span class="skill-pill">SOQL</span><span class="skill-pill">SOSL</span>
+        <span class="skill-pill">Governor Limits</span><span class="skill-pill">Test Classes</span>
       </div>
-
-      <div class="proj-card">
-        <div class="proj-tag-row">
-          <span class="proj-tag">Apex Framework</span>
-          <span class="proj-tag proj-new">NEW</span>
-        </div>
-        <div class="proj-title">Apex Trigger Framework</div>
-        <div class="proj-desc">Enterprise TriggerHandler pattern framework — one trigger per object, bypass logic for Data Loader migrations, loop prevention, and 95%+ test coverage baked in.</div>
-        <div class="proj-stack">
-          <span class="stack-tag">Apex</span><span class="stack-tag">Triggers</span>
-          <span class="stack-tag">Design Patterns</span><span class="stack-tag">SFDX</span>
-          <span class="stack-tag">Unit Tests</span>
-        </div>
-        <a href="https://github.com/vetrivel9445/sf-apex-trigger-framework" class="proj-link" target="_blank">View on GitHub <span class="proj-link-arrow">→</span></a>
-      </div>
-
-      <div class="proj-card">
-        <div class="proj-tag-row">
-          <span class="proj-tag">LWC + Apex</span>
-          <span class="proj-tag proj-new">NEW</span>
-        </div>
-        <div class="proj-title">Smart Lead Qualifier</div>
-        <div class="proj-desc">LWC dashboard that scores Sales Cloud leads 0–100 using a custom Apex engine. Surfaces hot leads, auto-creates follow-up tasks, and tracks score history per lead.</div>
-        <div class="proj-stack">
-          <span class="stack-tag">LWC</span><span class="stack-tag">Apex</span>
-          <span class="stack-tag">Sales Cloud</span><span class="stack-tag">SOQL</span>
-          <span class="stack-tag">Flows</span>
-        </div>
-        <a href="https://github.com/vetrivel9445/sf-smart-lead-qualifier" class="proj-link" target="_blank">View on GitHub <span class="proj-link-arrow">→</span></a>
-      </div>
-
-      <div class="proj-card">
-        <div class="proj-tag-row">
-          <span class="proj-tag">LWC Component</span>
-        </div>
-        <div class="proj-title">DataTable with Inline Picklist</div>
-        <div class="proj-desc">Reusable LWC DataTable with inline Rating Picklist editing — real-time record updates without page reload. Uses @wire adapters, custom events, and reactive properties.</div>
-        <div class="proj-stack">
-          <span class="stack-tag">LWC</span><span class="stack-tag">JavaScript</span>
-          <span class="stack-tag">Apex</span><span class="stack-tag">@wire</span>
-        </div>
-        <a href="https://github.com/vetrivel9445" class="proj-link" target="_blank">View on GitHub <span class="proj-link-arrow">→</span></a>
-      </div>
-
-      <div class="proj-card">
-        <div class="proj-tag-row">
-          <span class="proj-tag">Client · Out-of-Box</span>
-        </div>
-        <div class="proj-title">Trip Summary & Construction PM</div>
-        <div class="proj-desc">Custom objects, Flows, validation rules, approval processes, and executive dashboards for two separate clients — full lifecycle management with zero custom code.</div>
-        <div class="proj-stack">
-          <span class="stack-tag">Flows</span><span class="stack-tag">Custom Objects</span>
-          <span class="stack-tag">Reports</span><span class="stack-tag">Approvals</span>
-        </div>
-      </div>
-
-      <div class="proj-card">
-        <div class="proj-tag-row">
-          <span class="proj-tag">Client · Data Migration</span>
-        </div>
-        <div class="proj-title">Mass Email & Attachment Migration</div>
-        <div class="proj-desc">Large-scale Data Loader migration of email records and binary attachments — full field mapping, transformation logic, and zero data loss across the complete dataset.</div>
-        <div class="proj-stack">
-          <span class="stack-tag">Data Loader</span><span class="stack-tag">SOQL</span>
-          <span class="stack-tag">Data Migration</span>
-        </div>
-      </div>
-
     </div>
-  </div>
-</div>
-
-<!-- SKILLS -->
-<div id="skills">
-  <div class="section-wrap">
-    <div class="section-eyebrow">// what I build with</div>
-    <h2 class="section-title">Technical Skills</h2>
-    <div class="skills-grid">
-      <div class="skill-card">
-        <div class="skill-icon">⚡</div>
-        <div class="skill-name">Apex & Backend</div>
-        <div class="skill-tags">
-          <span class="skill-tag">Apex</span><span class="skill-tag">Triggers</span><span class="skill-tag">Batch</span>
-          <span class="skill-tag">Queueable</span><span class="skill-tag">Schedulable</span><span class="skill-tag">SOQL</span>
-          <span class="skill-tag">SOSL</span><span class="skill-tag">Test Classes</span>
-        </div>
+    <div class="skill-row reveal reveal-d2">
+      <div class="skill-cat">LWC</div>
+      <div class="skill-pills">
+        <span class="skill-pill">@wire</span><span class="skill-pill">@api</span>
+        <span class="skill-pill">Custom Events</span><span class="skill-pill">LMS</span>
+        <span class="skill-pill">JavaScript ES6+</span><span class="skill-pill">HTML5</span><span class="skill-pill">CSS3</span>
       </div>
-      <div class="skill-card">
-        <div class="skill-icon">🎨</div>
-        <div class="skill-name">LWC & Frontend</div>
-        <div class="skill-tags">
-          <span class="skill-tag">LWC</span><span class="skill-tag">JavaScript</span><span class="skill-tag">HTML5</span>
-          <span class="skill-tag">CSS3</span><span class="skill-tag">@wire</span><span class="skill-tag">LMS</span>
-          <span class="skill-tag">Custom Events</span>
-        </div>
+    </div>
+    <div class="skill-row reveal reveal-d3">
+      <div class="skill-cat">Agentforce AI</div>
+      <div class="skill-pills">
+        <span class="skill-pill">Agent Identity</span><span class="skill-pill">Topics</span>
+        <span class="skill-pill">Actions</span><span class="skill-pill">Atlas Reasoning Engine</span>
+        <span class="skill-pill">Prompt Builder</span><span class="skill-pill">Einstein</span>
       </div>
-      <div class="skill-card">
-        <div class="skill-icon">🤖</div>
-        <div class="skill-name">Agentforce AI</div>
-        <div class="skill-tags">
-          <span class="skill-tag">Agentforce</span><span class="skill-tag">Atlas Engine</span>
-          <span class="skill-tag">Prompt Builder</span><span class="skill-tag">Einstein</span>
-          <span class="skill-tag">AI Agents</span>
-        </div>
+    </div>
+    <div class="skill-row reveal reveal-d1">
+      <div class="skill-cat">Integrations</div>
+      <div class="skill-pills">
+        <span class="skill-pill">REST API</span><span class="skill-pill">SOAP API</span>
+        <span class="skill-pill">Named Credentials</span><span class="skill-pill">OAuth 2.0</span>
+        <span class="skill-pill">Platform Events</span><span class="skill-pill">CDC</span>
       </div>
-      <div class="skill-card">
-        <div class="skill-icon">🔗</div>
-        <div class="skill-name">Integrations</div>
-        <div class="skill-tags">
-          <span class="skill-tag">REST API</span><span class="skill-tag">SOAP API</span><span class="skill-tag">OAuth 2.0</span>
-          <span class="skill-tag">Named Credentials</span><span class="skill-tag">Platform Events</span><span class="skill-tag">CDC</span>
-        </div>
+    </div>
+    <div class="skill-row reveal reveal-d2">
+      <div class="skill-cat">Automation</div>
+      <div class="skill-pills">
+        <span class="skill-pill">Screen Flows</span><span class="skill-pill">Record-Triggered</span>
+        <span class="skill-pill">Scheduled Flows</span><span class="skill-pill">Approval Processes</span>
+        <span class="skill-pill">Data Loader</span>
       </div>
-      <div class="skill-card">
-        <div class="skill-icon">☁️</div>
-        <div class="skill-name">Salesforce Clouds</div>
-        <div class="skill-tags">
-          <span class="skill-tag">Sales Cloud</span><span class="skill-tag">Service Cloud</span>
-          <span class="skill-tag">Experience Cloud</span><span class="skill-tag">Flows</span>
-          <span class="skill-tag">Approvals</span>
-        </div>
-      </div>
-      <div class="skill-card">
-        <div class="skill-icon">🛠️</div>
-        <div class="skill-name">DevOps & Tools</div>
-        <div class="skill-tags">
-          <span class="skill-tag">Git</span><span class="skill-tag">SFDX</span><span class="skill-tag">VS Code</span>
-          <span class="skill-tag">Change Sets</span><span class="skill-tag">Data Loader</span><span class="skill-tag">GitHub</span>
-        </div>
+    </div>
+    <div class="skill-row reveal reveal-d3">
+      <div class="skill-cat">Clouds & DevOps</div>
+      <div class="skill-pills">
+        <span class="skill-pill">Sales Cloud</span><span class="skill-pill">Service Cloud</span>
+        <span class="skill-pill">Experience Cloud</span><span class="skill-pill">Git</span>
+        <span class="skill-pill">SFDX</span><span class="skill-pill">VS Code</span><span class="skill-pill">Change Sets</span>
       </div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- EXPERIENCE -->
-<div class="projects-bg" id="experience">
-  <div class="section-wrap">
-    <div class="section-eyebrow">// where I've worked</div>
-    <h2 class="section-title">Experience</h2>
+<!-- ═══════ PROJECTS ══════════════════════════════ -->
+<section class="sec-wrap" id="projects">
+  <div class="sec-head reveal">
+    <span class="sec-eye">Projects</span>
+    <div class="sec-rule"></div>
+  </div>
+  <div class="projects-grid">
 
-    <div class="exp-card">
-      <div class="exp-top">
-        <div class="exp-jobtitle">Salesforce Developer</div>
-        <div class="exp-date">Nov 2022 – Present · 3+ yrs</div>
+    <div class="proj-card featured reveal">
+      <div class="proj-type">Agentforce AI · Service Cloud</div>
+      <div class="proj-title">Agentforce Case Bot <span class="new-badge">New</span></div>
+      <p class="proj-desc">AI agent wired into Service Cloud that triages every incoming case automatically — scores priority, detects category, suggests Knowledge Base articles, and routes to the correct queue. Built with <code>@InvocableMethod</code> Apex and the Atlas Reasoning Engine. Reduces manual triage by 70%.</p>
+      <div class="proj-stack">
+        <span class="proj-tag">Agentforce</span><span class="proj-tag">Apex</span>
+        <span class="proj-tag">Atlas Reasoning Engine</span><span class="proj-tag">LWC</span>
+        <span class="proj-tag">Service Cloud</span><span class="proj-tag">@InvocableMethod</span>
       </div>
-      <div class="exp-company">Minuscule Technologies Pvt Ltd · Chennai, Tamil Nadu</div>
+      <div class="proj-footer">
+        <span style="font-size:12px;color:var(--muted);">93% test coverage · Bulkified · Production-ready</span>
+        <a href="https://github.com/vetrivel9445/sf-agentforce-case-bot" target="_blank" class="proj-link">GitHub</a>
+      </div>
+    </div>
+
+    <div class="proj-card reveal reveal-d1">
+      <div class="proj-type">Custom Engine · Apex · LWC</div>
+      <div class="proj-title">Custom Approval Engine <span class="new-badge">New</span></div>
+      <p class="proj-desc">Multi-step approval system with no native restrictions. Send notifications and emails to any person — internal, external, vendor. Required documents and actions enforced per step. Full notification audit log.</p>
+      <div class="proj-stack">
+        <span class="proj-tag">Apex</span><span class="proj-tag">LWC</span>
+        <span class="proj-tag">Custom Objects</span><span class="proj-tag">Messaging API</span>
+      </div>
+      <div class="proj-footer">
+        <span style="font-size:12px;color:var(--muted);">92% coverage</span>
+        <a href="https://github.com/vetrivel9445/sf-custom-approval-engine" target="_blank" class="proj-link">GitHub</a>
+      </div>
+    </div>
+
+    <div class="proj-card reveal reveal-d2">
+      <div class="proj-type">Apex Framework · Design Pattern</div>
+      <div class="proj-title">Apex Trigger Framework <span class="new-badge">New</span></div>
+      <p class="proj-desc">Enterprise TriggerHandler pattern — one trigger per object, bypass API for Data Loader, loop prevention at five iterations. 95% test coverage. Drop-in for any org.</p>
+      <div class="proj-stack">
+        <span class="proj-tag">Apex</span><span class="proj-tag">TriggerHandler</span>
+        <span class="proj-tag">SFDX</span><span class="proj-tag">Unit Tests</span>
+      </div>
+      <div class="proj-footer">
+        <span style="font-size:12px;color:var(--muted);">95% coverage</span>
+        <a href="https://github.com/vetrivel9445/sf-apex-trigger-framework" target="_blank" class="proj-link">GitHub</a>
+      </div>
+    </div>
+
+    <div class="proj-card reveal reveal-d3">
+      <div class="proj-type">LWC · Sales Cloud</div>
+      <div class="proj-title">Smart Lead Qualifier <span class="new-badge">New</span></div>
+      <p class="proj-desc">Scores every Sales Cloud lead 0–100 by title, industry, source and engagement. LWC dashboard surfaces hot leads. Auto-creates follow-up tasks for scores above 70.</p>
+      <div class="proj-stack">
+        <span class="proj-tag">LWC</span><span class="proj-tag">Apex</span>
+        <span class="proj-tag">@AuraEnabled</span><span class="proj-tag">Sales Cloud</span>
+      </div>
+      <div class="proj-footer">
+        <span style="font-size:12px;color:var(--muted);">91% coverage</span>
+        <a href="https://github.com/vetrivel9445/sf-smart-lead-qualifier" target="_blank" class="proj-link">GitHub</a>
+      </div>
+    </div>
+
+    <div class="proj-card reveal reveal-d1">
+      <div class="proj-type">LWC Component · Personal</div>
+      <div class="proj-title">DataTable with Inline Picklist</div>
+      <p class="proj-desc">Reusable LWC DataTable with inline Rating Picklist that saves without a page reload. Reference implementation for @wire, custom events, and reactive property patterns.</p>
+      <div class="proj-stack">
+        <span class="proj-tag">LWC</span><span class="proj-tag">@wire</span>
+        <span class="proj-tag">Custom Events</span><span class="proj-tag">Apex</span>
+      </div>
+      <div class="proj-footer">
+        <span style="font-size:12px;color:var(--muted);">Personal project</span>
+        <a href="https://github.com/vetrivel9445" target="_blank" class="proj-link">GitHub</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════ EXPERIENCE ════════════════════════════ -->
+<section class="sec-wrap" id="experience">
+  <div class="sec-head reveal">
+    <span class="sec-eye">Experience</span>
+    <div class="sec-rule"></div>
+  </div>
+  <div class="exp-timeline">
+    <div class="exp-item reveal">
+      <div class="exp-dot"></div>
+      <div class="exp-period">Nov 2022 — Present · 3+ years</div>
+      <div class="exp-title">Salesforce Developer</div>
+      <div class="exp-co">Minuscule Technologies Pvt Ltd · Chennai, Tamil Nadu</div>
       <ul class="exp-bullets">
-        <li>Architected Apex classes, triggers, and batch/queueable jobs automating critical business processes — <strong>zero governor-limit violations</strong> in production across all deployments</li>
-        <li>Built reusable LWC component library for Lightning App pages and Experience Cloud portals — reduced UI delivery time by ~30%</li>
-        <li>Designed end-to-end automation using Screen Flows, Record-Triggered Flows, Scheduled Flows, and Approval Processes</li>
-        <li>Integrated Salesforce with external systems via REST/SOAP APIs, Named Credentials, Platform Events — idempotent, retry-safe pipelines</li>
-        <li>Configured <strong>Agentforce AI agents</strong> using Atlas Reasoning Engine and Prompt Builder for intelligent case routing and contextual responses</li>
-        <li>Maintained <strong>90%+ Apex test coverage</strong> across all components; managed releases via Git branching and change sets</li>
+        <li>Architected Apex classes, triggers, and batch jobs automating business-critical processes — zero governor-limit violations across every production deployment.</li>
+        <li>Built a reusable LWC component library for Lightning App pages and Experience Cloud portals, cutting UI delivery time by ~30%.</li>
+        <li>Designed end-to-end workflow automation using Screen Flows, Record-Triggered Flows, Scheduled Flows, and Approval Processes.</li>
+        <li>Integrated Salesforce with external systems via REST/SOAP APIs, Named Credentials, and Platform Events — all pipelines idempotent and retry-safe.</li>
+        <li>Configured Agentforce AI agents using the Atlas Reasoning Engine and Prompt Builder for intelligent case triage and routing.</li>
+        <li>Maintained 90%+ Apex test coverage; managed all releases via Git branching and change sets.</li>
+      </ul>
+      <div class="exp-chips">
+        <span class="exp-chip">Apex</span><span class="exp-chip">LWC</span>
+        <span class="exp-chip">Flows</span><span class="exp-chip">REST API</span>
+        <span class="exp-chip">Agentforce</span><span class="exp-chip">Sales Cloud</span>
+        <span class="exp-chip">Service Cloud</span><span class="exp-chip">Git</span>
+      </div>
+    </div>
+    <div class="exp-item reveal">
+      <div class="exp-dot"></div>
+      <div class="exp-period">Nov 2022 · 3 months</div>
+      <div class="exp-title">Salesforce Developer Trainee</div>
+      <div class="exp-co">AJ Skills Academy · Chennai</div>
+      <ul class="exp-bullets">
+        <li>Completed intensive Salesforce Lightning development training — platform fundamentals, Apex, and LWC.</li>
+        <li>Earned Platform Administrator (Dec 2022) and Platform Developer I (Feb 2023) certifications.</li>
       </ul>
     </div>
+  </div>
+</section>
 
-    <div class="exp-card">
-      <div class="exp-top">
-        <div class="exp-jobtitle">Salesforce Developer Trainee</div>
-        <div class="exp-date">Nov 2022 · 3 months</div>
-      </div>
-      <div class="exp-company">AJ Skills Academy · Chennai</div>
-      <ul class="exp-bullets">
-        <li>Completed intensive Salesforce Lightning Development training — platform fundamentals, Apex, and LWC</li>
-        <li>Earned Platform Administrator (Dec 2022) and Platform Developer I (Feb 2023) certifications</li>
-      </ul>
+<!-- ═══════ CERTIFICATIONS ════════════════════════ -->
+<section class="sec-wrap" id="certifications">
+  <div class="sec-head reveal">
+    <span class="sec-eye">Certifications</span>
+    <div class="sec-rule"></div>
+  </div>
+  <div class="certs-grid">
+    <div class="cert-card reveal reveal-d1">
+      <div class="cert-icon">🤖</div>
+      <div class="cert-name">Agentforce Specialist</div>
+      <div class="cert-meta">Issued January 2025</div>
+      <span class="cert-badge">Active</span>
+    </div>
+    <div class="cert-card reveal reveal-d2">
+      <div class="cert-icon">💻</div>
+      <div class="cert-name">Platform Developer I</div>
+      <div class="cert-meta">Feb 2023 · ID 3021489</div>
+      <span class="cert-badge">Active</span>
+    </div>
+    <div class="cert-card reveal reveal-d3">
+      <div class="cert-icon">⚙️</div>
+      <div class="cert-name">Platform Administrator</div>
+      <div class="cert-meta">Dec 2022 · ID 2805329</div>
+      <span class="cert-badge">Active</span>
     </div>
   </div>
-</div>
-
-<!-- CERTIFICATIONS -->
-<div class="certs-bg" id="certifications">
-  <div class="section-wrap">
-    <div class="section-eyebrow">// verified credentials</div>
-    <h2 class="section-title">Certifications</h2>
-    <div class="certs-grid">
-      <div class="cert-card">
-        <div class="cert-icon">🤖</div>
-        <div>
-          <div class="cert-name">Salesforce Certified Agentforce Specialist</div>
-          <div class="cert-meta">Issued: January 2025</div>
-          <span class="cert-active">✓ Active</span>
-        </div>
-      </div>
-      <div class="cert-card">
-        <div class="cert-icon">💻</div>
-        <div>
-          <div class="cert-name">Salesforce Certified Platform Developer I</div>
-          <div class="cert-meta">Issued: Feb 2023 · ID: 3021489</div>
-          <span class="cert-active">✓ Active</span>
-        </div>
-      </div>
-      <div class="cert-card">
-        <div class="cert-icon">⚙️</div>
-        <div>
-          <div class="cert-name">Salesforce Certified Platform Administrator</div>
-          <div class="cert-meta">Issued: Dec 2022 · ID: 2805329</div>
-          <span class="cert-active">✓ Active</span>
-        </div>
-      </div>
-      <div class="cert-card">
-        <div class="cert-icon">🏆</div>
-        <div>
-          <div class="cert-name">Trailhead Ranger</div>
-          <div class="cert-meta">90,775 Points · 114 Badges · 12 Trails</div>
-          <span class="cert-active">✓ Verified</span>
-        </div>
-      </div>
+  <div class="trailhead-row reveal">
+    <div class="trailhead-info">
+      <h4>Trailhead Ranger</h4>
+      <p>Verified · <a href="https://trailblazer.me/id/vsalesforce35" target="_blank" style="color:var(--sf-sky);">trailblazer.me/id/vsalesforce35</a></p>
+    </div>
+    <div class="trailhead-stats">
+      <div><div class="ts-num">90,775</div><div class="ts-lbl">Points</div></div>
+      <div><div class="ts-num">114</div><div class="ts-lbl">Badges</div></div>
+      <div><div class="ts-num">12</div><div class="ts-lbl">Trails</div></div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- CONTACT -->
-<div id="contact">
-  <div class="section-wrap">
-    <div class="section-eyebrow">// get in touch</div>
-    <h2 class="section-title">Contact</h2>
-    <div class="contact-grid">
-      <a href="mailto:kvetrivel919@gmail.com" class="contact-card">
-        <div class="contact-emoji">📧</div>
-        <div class="contact-lbl">Email</div>
-        <div class="contact-val">kvetrivel919@gmail.com</div>
-      </a>
-      <a href="tel:+919445535605" class="contact-card">
-        <div class="contact-emoji">📱</div>
-        <div class="contact-lbl">Phone</div>
-        <div class="contact-val">+91-94455 35605</div>
-      </a>
-      <a href="https://linkedin.com/in/vetrivel-k-b42658154" target="_blank" class="contact-card">
-        <div class="contact-emoji">💼</div>
-        <div class="contact-lbl">LinkedIn</div>
-        <div class="contact-val">vetrivel-k-b42658154</div>
-      </a>
-      <a href="https://github.com/vetrivel9445" target="_blank" class="contact-card">
-        <div class="contact-emoji">💻</div>
-        <div class="contact-lbl">GitHub</div>
-        <div class="contact-val">github.com/vetrivel9445</div>
-      </a>
-      <a href="https://trailblazer.me/id/vsalesforce35" target="_blank" class="contact-card">
-        <div class="contact-emoji">🏆</div>
-        <div class="contact-lbl">Trailhead</div>
-        <div class="contact-val">Ranger · 90,775 pts</div>
-      </a>
-    </div>
+<!-- ═══════ CONTACT ═══════════════════════════════ -->
+<section class="sec-wrap" id="contact">
+  <div class="sec-head reveal">
+    <span class="sec-eye">Contact</span>
+    <div class="sec-rule"></div>
   </div>
-</div>
+  <div class="contact-grid">
+    <a href="mailto:kvetrivel919@gmail.com" class="contact-card reveal reveal-d1">
+      <div class="contact-lbl">Email</div>
+      <div class="contact-val">kvetrivel919@gmail.com</div>
+    </a>
+    <a href="tel:+919445535605" class="contact-card reveal reveal-d2">
+      <div class="contact-lbl">Phone</div>
+      <div class="contact-val">+91 94455 35605</div>
+    </a>
+    <a href="https://linkedin.com/in/vetrivel-k-b42658154" target="_blank" class="contact-card reveal reveal-d1">
+      <div class="contact-lbl">LinkedIn</div>
+      <div class="contact-val">vetrivel-k-b42658154</div>
+    </a>
+    <a href="https://github.com/vetrivel9445" target="_blank" class="contact-card reveal reveal-d2">
+      <div class="contact-lbl">GitHub</div>
+      <div class="contact-val">github.com/vetrivel9445</div>
+    </a>
+  </div>
+</section>
 
 <footer>
-  <strong>Vetrivel K</strong> · Salesforce Developer · 3× Certified · Chennai, India · Open to hybrid &amp; remote opportunities
+  <strong>Vetrivel K</strong> &nbsp;·&nbsp; Salesforce Developer &nbsp;·&nbsp; Chennai, India
+  <span>Open to on-site · hybrid · remote</span>
 </footer>
 
+</div><!-- .wrap -->
+
+<script>
+/* ── ANIMATED PARTICLE MESH BACKGROUND ─────────────── */
+(function(){
+  const canvas = document.getElementById('bg-canvas');
+  const ctx    = canvas.getContext('2d');
+  let W, H, particles, animId;
+
+  const SF_BLUE  = 'rgba(1,118,211,';
+  const SF_TEAL  = 'rgba(6,174,213,';
+  const SF_INDIGO= 'rgba(58,73,204,';
+
+  function resize(){
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function randomColor(){
+    const c=[SF_BLUE,SF_TEAL,SF_INDIGO];
+    return c[Math.floor(Math.random()*c.length)];
+  }
+
+  function initParticles(){
+    const count = Math.min(Math.floor(W*H/12000), 80);
+    particles=[];
+    for(let i=0;i<count;i++){
+      particles.push({
+        x: Math.random()*W,
+        y: Math.random()*H,
+        vx: (Math.random()-0.5)*0.3,
+        vy: (Math.random()-0.5)*0.3,
+        r:  Math.random()*1.8+0.5,
+        alpha: Math.random()*0.5+0.15,
+        color: randomColor(),
+        pulse: Math.random()*Math.PI*2,
+        pulseSpeed: 0.015+Math.random()*0.01
+      });
+    }
+  }
+
+  function drawConnections(){
+    const maxDist = 140;
+    for(let i=0;i<particles.length;i++){
+      for(let j=i+1;j<particles.length;j++){
+        const dx=particles[i].x-particles[j].x;
+        const dy=particles[i].y-particles[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<maxDist){
+          const alpha=(1-d/maxDist)*0.12;
+          ctx.beginPath();
+          ctx.strokeStyle=`rgba(1,118,211,${alpha})`;
+          ctx.lineWidth=0.6;
+          ctx.moveTo(particles[i].x,particles[i].y);
+          ctx.lineTo(particles[j].x,particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+
+    // subtle radial gradient base
+    const grad=ctx.createRadialGradient(W*0.3,H*0.2,0,W*0.3,H*0.2,W*0.7);
+    grad.addColorStop(0,'rgba(1,118,211,0.04)');
+    grad.addColorStop(1,'transparent');
+    ctx.fillStyle=grad;
+    ctx.fillRect(0,0,W,H);
+
+    const grad2=ctx.createRadialGradient(W*0.75,H*0.7,0,W*0.75,H*0.7,W*0.5);
+    grad2.addColorStop(0,'rgba(6,174,213,0.03)');
+    grad2.addColorStop(1,'transparent');
+    ctx.fillStyle=grad2;
+    ctx.fillRect(0,0,W,H);
+
+    drawConnections();
+
+    particles.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy;
+      p.pulse+=p.pulseSpeed;
+      if(p.x<0||p.x>W) p.vx*=-1;
+      if(p.y<0||p.y>H) p.vy*=-1;
+
+      const pulseAlpha = p.alpha*(0.7+0.3*Math.sin(p.pulse));
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.color+pulseAlpha+')';
+      ctx.fill();
+    });
+
+    animId=requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize',()=>{
+    cancelAnimationFrame(animId);
+    resize(); initParticles(); draw();
+  });
+
+  resize(); initParticles(); draw();
+})();
+
+/* ── MOUSE PARALLAX on hero ─────────────────────── */
+document.addEventListener('mousemove',e=>{
+  const x=(e.clientX/window.innerWidth -0.5)*8;
+  const y=(e.clientY/window.innerHeight-0.5)*8;
+  const hero=document.querySelector('.hero');
+  if(hero) hero.style.transform=`translate(${x*0.15}px,${y*0.15}px)`;
+});
+
+/* ── SCROLL REVEAL ───────────────────────────────── */
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+/* ── NAV ACTIVE HIGHLIGHT ────────────────────────── */
+const sections=document.querySelectorAll('section[id]');
+const navLinks=document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  sections.forEach(s=>{
+    if(window.scrollY>=s.offsetTop-100) cur=s.id;
+  });
+  navLinks.forEach(a=>{
+    a.style.color=a.getAttribute('href')==='#'+cur
+      ?'var(--white)':'';
+  });
+},{ passive:true });
+
+/* ── COUNTER ANIMATION ───────────────────────────── */
+function animateCounter(el,target,suffix=''){
+  let start=0;
+  const dur=1400;
+  const step=timestamp=>{
+    if(!el._start) el._start=timestamp;
+    const prog=Math.min((timestamp-el._start)/dur,1);
+    const ease=1-Math.pow(1-prog,3);
+    el.textContent=Math.floor(ease*target).toLocaleString()+suffix;
+    if(prog<1) requestAnimationFrame(step);
+    else el.textContent=target.toLocaleString()+suffix;
+  };
+  requestAnimationFrame(step);
+}
+
+const metricObserver=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const cells=e.target.querySelectorAll('.metric-num');
+      const data=[{v:3,s:'+'},{v:3,s:'×'},{v:90,s:'%+'},{v:0,s:''}];
+      cells.forEach((c,i)=>{
+        setTimeout(()=>animateCounter(c,data[i].v,data[i].s),i*120);
+      });
+      metricObserver.unobserve(e.target);
+    }
+  });
+},{threshold:0.3});
+const strip=document.querySelector('.metrics-strip');
+if(strip) metricObserver.observe(strip);
+</script>
 </body>
 </html>
