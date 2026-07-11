@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<meta name="description" content="Vetrivel K — Salesforce Developer. 3× Certified. Apex · LWC · Agentforce AI. Chennai, India."/>
+<meta name="description" content="Vetrivel K — Salesforce Developer. 2× Certified. Apex · LWC · Agentforce AI. Chennai, India."/>
 <title>Vetrivel K — Salesforce Developer</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%230176D3%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%231B96FF%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2216%22%20fill%3D%22url%28%23g%29%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2241%22%20font-family%3D%22Arial%2C%20Helvetica%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20fill%3D%22%23ffffff%22%20text-anchor%3D%22middle%22%3EVK%3C/text%3E%3C/svg%3E"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -57,6 +57,8 @@
   --space:      #02040D;
   --space-glow: rgba(58,73,204,0.22);
   --star-opacity: 0.9;
+  --accent:     #1B96FF;
+  --accent2:    #06AED5;
   --sea-back:   rgba(6,25,54,0.55);
   --sea-front:  rgba(3,15,35,0.88);
   --f-display:  'Sora', sans-serif;
@@ -80,6 +82,8 @@ html[data-theme="night"]{
   --space:      #02040D;
   --space-glow: rgba(58,73,204,0.22);
   --star-opacity: 0.9;
+  --accent:     #1B96FF;
+  --accent2:    #06AED5;
   --sea-back:   rgba(6,25,54,0.55);
   --sea-front:  rgba(3,15,35,0.88);
 }
@@ -101,6 +105,8 @@ html[data-theme="light"]{
   --space:      #D6EBFB;
   --space-glow: rgba(27,150,255,0.14);
   --star-opacity: 0.25;
+  --accent:     #0176D3;
+  --accent2:    #0A7E95;
   --sea-back:   rgba(6,174,213,0.32);
   --sea-front:  rgba(1,118,211,0.45);
 }
@@ -121,6 +127,8 @@ html[data-theme="morning"]{
   --space:      #FBE6D2;
   --space-glow: rgba(255,150,80,0.16);
   --star-opacity: 0.2;
+  --accent:     #D3560F;
+  --accent2:    #A16207;
   --sea-back:   rgba(255,183,120,0.35);
   --sea-front:  rgba(8,140,175,0.55);
 }
@@ -141,6 +149,8 @@ html[data-theme="evening"]{
   --space:      #1E1035;
   --space-glow: rgba(255,140,120,0.18);
   --star-opacity: 0.75;
+  --accent:     #FFAB91;
+  --accent2:    #FFCC80;
   --sea-back:   rgba(255,140,105,0.25);
   --sea-front:  rgba(30,20,60,0.8);
 }
@@ -209,7 +219,7 @@ nav{
   color:var(--white);
   letter-spacing:0.5px;
 }
-.nav-logo em{color:var(--sf-sky);font-style:normal;}
+.nav-logo em{color:var(--accent);font-style:normal;}
 .nav-right{display:flex;align-items:center;gap:12px;}
 .nav-links{display:flex;gap:6px;list-style:none;}
 .nav-links a{
@@ -263,7 +273,7 @@ nav{
   text-align:left;cursor:pointer;transition:background 0.15s,color 0.15s;
 }
 .theme-menu-item:hover{background:rgba(255,255,255,0.09);color:#fff;}
-.theme-menu-item.active{background:rgba(27,150,255,0.16);color:var(--sf-sky);font-weight:700;}
+.theme-menu-item.active{background:rgba(27,150,255,0.16);color:var(--accent);font-weight:700;}
 
 /* ═══════════════════════════════════════════
    LAYOUT
@@ -312,7 +322,7 @@ nav{
 .hero-label{
   font-family:var(--f-mono);
   font-size:11.5px;font-weight:500;
-  color:var(--sf-teal);
+  color:var(--accent2);
   letter-spacing:2px;text-transform:uppercase;
   margin-bottom:24px;
   display:flex;align-items:center;gap:10px;
@@ -426,7 +436,7 @@ nav{
 }
 .btn-ghost:hover{
   color:var(--heading);
-  border-color:var(--sf-sky);
+  border-color:var(--accent);
   background:rgba(27,150,255,0.08);
   text-decoration:none;
 }
@@ -458,7 +468,7 @@ nav{
   margin-bottom:6px;
 }
 .metric-num sub{
-  font-size:20px;color:var(--sf-sky);
+  font-size:20px;color:var(--accent);
   font-weight:700;vertical-align:baseline;
 }
 .metric-lbl{font-size:12px;color:var(--muted);font-weight:400;line-height:1.4;}
@@ -473,7 +483,7 @@ nav{
 }
 .sec-eye{
   font-family:var(--f-mono);font-size:11px;
-  color:var(--sf-sky);letter-spacing:2px;
+  color:var(--accent);letter-spacing:2px;
   text-transform:uppercase;white-space:nowrap;
 }
 .sec-rule{flex:1;height:1px;background:var(--border);}
@@ -515,7 +525,7 @@ nav{
 .skill-pills{display:flex;flex-wrap:wrap;gap:6px;}
 .skill-pill{
   font-family:var(--f-mono);font-size:11px;
-  color:var(--sf-sky);
+  color:var(--accent);
   background:rgba(27,150,255,0.08);
   border:1px solid rgba(27,150,255,0.2);
   padding:3px 10px;border-radius:4px;
@@ -569,7 +579,7 @@ nav{
 
 .proj-type{
   font-family:var(--f-mono);font-size:10.5px;
-  color:var(--sf-teal);letter-spacing:1px;
+  color:var(--accent2);letter-spacing:1px;
   text-transform:uppercase;margin-bottom:10px;
 }
 .proj-title{
@@ -582,7 +592,7 @@ nav{
 .new-badge{
   font-family:var(--f-mono);font-size:9.5px;
   font-weight:600;letter-spacing:1px;
-  color:var(--sf-sky);
+  color:var(--accent);
   background:rgba(27,150,255,0.12);
   border:1px solid rgba(27,150,255,0.3);
   padding:2px 8px;border-radius:4px;
@@ -609,7 +619,7 @@ nav{
 }
 .proj-link{
   font-size:12.5px;font-weight:600;
-  color:var(--sf-sky);text-decoration:none;
+  color:var(--accent);text-decoration:none;
   display:flex;align-items:center;gap:5px;
   transition:gap 0.2s;
 }
@@ -631,7 +641,7 @@ nav{
 .proj-usage-title{
   font-family:var(--f-mono);font-size:10.5px;font-weight:600;
   letter-spacing:1.5px;text-transform:uppercase;
-  color:var(--sf-teal);margin-bottom:14px;
+  color:var(--accent2);margin-bottom:14px;
 }
 .proj-usage-grid{
   display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
@@ -639,7 +649,7 @@ nav{
 .proj-usage-item{min-width:0;}
 .pu-name{
   font-family:var(--f-mono);font-size:12px;font-weight:600;
-  color:var(--sf-sky);margin-bottom:8px;
+  color:var(--accent);margin-bottom:8px;
 }
 .proj-usage-item pre{
   background:rgba(2,8,20,0.45);
@@ -695,7 +705,7 @@ html[data-theme="morning"] .proj-usage-item pre{
 }
 .exp-period{
   font-family:var(--f-mono);font-size:11px;
-  color:var(--sf-teal);letter-spacing:0.5px;
+  color:var(--accent2);letter-spacing:0.5px;
   margin-bottom:8px;
 }
 .exp-title{
@@ -706,7 +716,7 @@ html[data-theme="morning"] .proj-usage-item pre{
 }
 .exp-co{
   font-size:14px;font-weight:500;
-  color:var(--sf-sky);margin-bottom:16px;
+  color:var(--accent);margin-bottom:16px;
 }
 .exp-bullets{list-style:none;}
 .exp-bullets li{
@@ -730,7 +740,7 @@ html[data-theme="morning"] .proj-usage-item pre{
 /* ═══════════════════════════════════════════
    CERTIFICATIONS — horizontal cards
 ═══════════════════════════════════════════ */
-.certs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.certs-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
 .cert-card{
   background:var(--surface);
   border:1px solid var(--border);
@@ -797,7 +807,7 @@ html[data-theme="morning"] .proj-usage-item pre{
 .ts-num{
   font-family:var(--f-display);
   font-size:26px;font-weight:800;
-  color:var(--sf-sky);line-height:1;
+  color:var(--accent);line-height:1;
 }
 .ts-lbl{font-size:11px;color:var(--muted);margin-top:4px;}
 
@@ -827,7 +837,7 @@ html[data-theme="morning"] .proj-usage-item pre{
   text-transform:uppercase;margin-bottom:5px;
 }
 .contact-val{
-  font-size:14px;font-weight:500;color:var(--sf-sky);
+  font-size:14px;font-weight:500;color:var(--accent);
 }
 
 /* ═══════════════════════════════════════════
@@ -890,12 +900,12 @@ body.is-loading{overflow:hidden;height:100vh;}
   position:absolute;inset:0;border-radius:50%;
   border:2px solid var(--border);
   border-top-color:var(--sf-blue);
-  border-right-color:var(--sf-teal);
+  border-right-color:var(--accent2);
   animation:preloaderSpin 0.9s linear infinite;
 }
 .preloader-logo{
   font-family:var(--f-mono);font-weight:500;font-size:13px;
-  color:var(--sf-sky);letter-spacing:0.5px;
+  color:var(--accent);letter-spacing:0.5px;
   animation:preloaderPulse 1.1s ease-in-out infinite;
 }
 @keyframes preloaderSpin{to{transform:rotate(360deg);}}
@@ -1235,10 +1245,10 @@ body.is-loading{overflow:hidden;height:100vh;}
 .marquee-item{
   font-family:var(--f-mono);font-size:13px;font-weight:500;
   letter-spacing:1px;text-transform:uppercase;
-  color:var(--sf-sky);padding:0 1.4rem;
+  color:var(--accent);padding:0 1.4rem;
 }
 .marquee-item strong{color:var(--heading);font-weight:600;}
-.marquee-dot{color:var(--sf-teal);opacity:0.6;}
+.marquee-dot{color:var(--accent2);opacity:0.6;}
 @keyframes marqueeScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 @media (prefers-reduced-motion: reduce){
   .agentforce-flyby{display:none;}
@@ -1258,7 +1268,7 @@ body.is-loading{overflow:hidden;height:100vh;}
   transition:opacity 0.3s,transform 0.35s cubic-bezier(0.34,1.56,0.64,1),border-color 0.3s;
 }
 #backToTop.visible{opacity:1;transform:translateY(0) scale(1);pointer-events:auto;}
-#backToTop:hover{border-color:var(--sf-sky);box-shadow:0 8px 30px rgba(1,118,211,0.35);}
+#backToTop:hover{border-color:var(--accent);box-shadow:0 8px 30px rgba(1,118,211,0.35);}
 
 /* ═══════════════════════════════════════════
    PREMIUM POLISH — glossy 3D-toy pass on
@@ -1268,7 +1278,7 @@ body.is-loading{overflow:hidden;height:100vh;}
 /* Cinematic headings: gradient ink + soft depth */
 .hero{transform-origin:50% 18%;will-change:transform,opacity;}
 .hero-name{
-  background:linear-gradient(180deg,var(--heading) 55%,var(--sf-sky) 130%);
+  background:linear-gradient(180deg,var(--heading) 55%,var(--accent) 130%);
   -webkit-background-clip:text;background-clip:text;
   -webkit-text-fill-color:transparent;color:transparent;
   filter:drop-shadow(0 6px 18px rgba(1,118,211,0.28));
@@ -1287,13 +1297,13 @@ body.is-loading{overflow:hidden;height:100vh;}
   50%{opacity:0.86;}
 }
 .hero-name .blue-word{
-  background:linear-gradient(160deg,#7EC4FF 0%,var(--sf-sky) 40%,var(--sf-teal) 100%);
+  background:linear-gradient(160deg,color-mix(in srgb,var(--accent) 55%,#FFFFFF) 0%,var(--accent) 40%,var(--accent2) 100%);
   -webkit-background-clip:text;background-clip:text;
   -webkit-text-fill-color:transparent;
   filter:drop-shadow(0 4px 14px rgba(27,150,255,0.55));
 }
 .sec-title{
-  background:linear-gradient(180deg,var(--heading) 60%,var(--sf-sky) 160%);
+  background:linear-gradient(180deg,var(--heading) 60%,var(--accent) 160%);
   -webkit-background-clip:text;background-clip:text;
   -webkit-text-fill-color:transparent;color:transparent;
   filter:drop-shadow(0 3px 10px rgba(1,118,211,0.2));
@@ -1353,6 +1363,14 @@ body.is-loading{overflow:hidden;height:100vh;}
 /* Pills glow softly on hover, like backlit plastic */
 .skill-pill:hover,.proj-tag:hover{
   box-shadow:0 0 14px rgba(27,150,255,0.35), inset 0 1px 0 rgba(255,255,255,0.25);
+}
+
+/* Cursor-tracked spotlight: a soft accent glow follows the pointer
+   across any tilt card (position fed by the tilt handler via --mx/--my) */
+.tilt{--mx:50%;--my:50%;}
+.proj-card:hover,.skill-row:hover,.cert-card:hover,.contact-card:hover,.metric-cell:hover{
+  background-image:radial-gradient(420px circle at var(--mx) var(--my),
+    color-mix(in srgb, var(--accent) 12%, transparent), transparent 46%);
 }
 
 @media (prefers-reduced-motion: reduce){
@@ -1615,7 +1633,6 @@ body.is-loading{overflow:hidden;height:100vh;}
   </p>
 
   <div class="cert-strip">
-    <span class="cert-chip">Agentforce Specialist</span>
     <span class="cert-chip">Platform Developer I</span>
     <span class="cert-chip">Platform Administrator</span>
   </div>
@@ -1632,7 +1649,7 @@ body.is-loading{overflow:hidden;height:100vh;}
       <div class="metric-lbl">Years in production</div>
     </div>
     <div class="metric-cell tilt">
-      <div class="metric-num">3<sub>×</sub></div>
+      <div class="metric-num">2<sub>×</sub></div>
       <div class="metric-lbl">SF Certifications</div>
     </div>
     <div class="metric-cell tilt">
@@ -1913,12 +1930,6 @@ catch (e) { await handleError(this, e); }</code></pre>
     <div class="sec-rule"></div>
   </div>
   <div class="certs-grid">
-    <div class="cert-card tilt reveal reveal-d1">
-      <div class="cert-icon">🤖</div>
-      <div class="cert-name">Agentforce Specialist</div>
-      <div class="cert-meta">Issued January 2025</div>
-      <span class="cert-badge">Active</span>
-    </div>
     <div class="cert-card tilt reveal reveal-d2">
       <div class="cert-icon">💻</div>
       <div class="cert-name">Platform Developer I</div>
@@ -1935,7 +1946,7 @@ catch (e) { await handleError(this, e); }</code></pre>
   <div class="trailhead-row reveal-scale">
     <div class="trailhead-info">
       <h4>Trailhead Ranger</h4>
-      <p>Verified · <a href="https://trailblazer.me/id/vsalesforce35" target="_blank" style="color:var(--sf-sky);">trailblazer.me/id/vsalesforce35</a></p>
+      <p>Verified · <a href="https://trailblazer.me/id/vsalesforce35" target="_blank" style="color:var(--accent);">trailblazer.me/id/vsalesforce35</a></p>
     </div>
     <div class="trailhead-stats">
       <div><div class="ts-num">90,775</div><div class="ts-lbl">Points</div></div>
@@ -2159,7 +2170,7 @@ const metricObserver=new IntersectionObserver(entries=>{
   entries.forEach(e=>{
     if(e.isIntersecting){
       const cells=e.target.querySelectorAll('.metric-num');
-      const data=[{v:3,s:'+'},{v:3,s:'×'},{v:90,s:'%+'},{v:0,s:''}];
+      const data=[{v:3,s:'+'},{v:2,s:'×'},{v:90,s:'%+'},{v:0,s:''}];
       cells.forEach((c,i)=>{
         setTimeout(()=>animateCounter(c,data[i].v,data[i].s),i*120);
       });
@@ -2378,13 +2389,15 @@ if(isFinePointer && !reducedMotion){
     btn.addEventListener('mouseleave',()=>{ btn.style.transform=''; });
   });
 
-  // 3D tilt cards
+  // 3D tilt cards + cursor-tracked glow spotlight
   document.querySelectorAll('.tilt').forEach(card=>{
     card.addEventListener('mousemove',(e)=>{
       const r=card.getBoundingClientRect();
       const px=(e.clientX-r.left)/r.width-0.5;
       const py=(e.clientY-r.top)/r.height-0.5;
       card.style.transform=`perspective(700px) rotateX(${(-py*8).toFixed(2)}deg) rotateY(${(px*10).toFixed(2)}deg) translateY(-4px)`;
+      card.style.setProperty('--mx',(e.clientX-r.left)+'px');
+      card.style.setProperty('--my',(e.clientY-r.top)+'px');
     });
     card.addEventListener('mouseleave',()=>{ card.style.transform=''; });
   });
@@ -2582,6 +2595,13 @@ import * as THREE from './vendor/three.module.min.js';
   const SORTIE_EVERY = 18, SORTIE_LEN = 7;
   let nextSortie = 9, sortieStart = -1;
 
+  /* Click anywhere (except links/buttons/menus) → the robot launches
+     its sortie + backflip immediately instead of waiting for the timer */
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('a,button,input,textarea,select,.theme-menu,.theme-switcher')) return;
+    if (sortieStart < 0) nextSortie = t;
+  });
+
   function animate() {
     requestAnimationFrame(animate);
     const dt = Math.min(clock.getDelta(), 0.05);
@@ -2608,9 +2628,11 @@ import * as THREE from './vendor/three.module.min.js';
     }
 
     robot.position.set(x, y + Math.sin(t * 1.3) * 0.16, 0);
+    // gaze: the robot subtly turns to follow the visitor's cursor
+    const gaze = sortieStart < 0 ? 1 : 0.25;
     robot.rotation.set(
-      rotX + Math.sin(t * 0.9) * 0.03,
-      rotY + Math.sin(t * 0.55) * 0.12,
+      rotX + Math.sin(t * 0.9) * 0.03 + mouseY * 0.1 * gaze,
+      rotY + Math.sin(t * 0.55) * 0.12 + mouseX * 0.3 * gaze,
       rotZ + Math.sin(t * 0.75) * 0.05
     );
 
