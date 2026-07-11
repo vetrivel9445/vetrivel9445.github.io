@@ -1244,16 +1244,17 @@ body.is-loading{overflow:hidden;height:100vh;}
       </div>
     </div>
 
-    <div class="proj-card tilt reveal reveal-d2">
-      <div class="proj-type">LWC · Component Library</div>
+    <div class="proj-card tilt featured reveal-scale">
+      <div class="proj-type">LWC · Component Library · Refactor</div>
       <div class="proj-title">Reusable LWC Component Library <span class="new-badge">New</span></div>
-      <p class="proj-desc">A small library of dependency-free, configuration-driven Lightning Web Components — a drop-in error handler with a pluggable logging hook, a JSON-configured record highlight panel with relationship-field and visibility-rule support, and a datatable URL column extension. Genericized from production components with every org-specific dependency removed.</p>
+      <p class="proj-desc">Three production components rebuilt into a dependency-free, org-agnostic library. <code>errorHandlerUtility</code> normalizes any Apex/wire/fetch error shape into a readable toast in one call, with a pluggable <code>onLog</code> hook replacing a hard dependency on a specific logging package. <code>recordHighlightPanel</code> renders any record page's header from a single JSON config — fields, relationship fields via dot notation, and AND/OR visibility rules — with the SharePoint-specific Apex integration, hardcoded managed-package fields, and hardcoded profile checks it originally carried stripped out. <code>customUrlDatatable</code> adds a self-contained hyperlink column type to <code>lightning-datatable</code>, replacing a reference to a sibling component that wasn't part of the original export. Along the way I also fixed a module-level shared-state bug that let multiple highlight-panel instances on the same page corrupt each other's field list.</p>
       <div class="proj-stack">
         <span class="proj-tag">LWC</span><span class="proj-tag">Error Handling</span>
         <span class="proj-tag">Config-Driven</span><span class="proj-tag">Datatable</span>
+        <span class="proj-tag">Relationship Fields</span><span class="proj-tag">Zero Dependencies</span>
       </div>
       <div class="proj-footer">
-        <span style="font-size:12px;color:var(--muted);">Zero external dependencies</span>
+        <span style="font-size:12px;color:var(--muted);">3 components · Zero external dependencies · MIT licensed</span>
         <a href="https://github.com/vetrivel9445/sf-reusable-lwc-components" target="_blank" class="proj-link">GitHub</a>
       </div>
     </div>
