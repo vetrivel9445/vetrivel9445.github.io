@@ -54,6 +54,9 @@
   --panel:      rgba(8,20,38,0.85);
   --sky-top:    #050D1A;
   --sky-bottom: #081426;
+  --space:      #02040D;
+  --space-glow: rgba(58,73,204,0.22);
+  --star-opacity: 0.9;
   --sea-back:   rgba(6,25,54,0.55);
   --sea-front:  rgba(3,15,35,0.88);
   --f-display:  'Sora', sans-serif;
@@ -74,6 +77,9 @@ html[data-theme="night"]{
   --panel:      rgba(8,20,38,0.85);
   --sky-top:    #050D1A;
   --sky-bottom: #081426;
+  --space:      #02040D;
+  --space-glow: rgba(58,73,204,0.22);
+  --star-opacity: 0.9;
   --sea-back:   rgba(6,25,54,0.55);
   --sea-front:  rgba(3,15,35,0.88);
 }
@@ -92,6 +98,9 @@ html[data-theme="light"]{
   --panel:      rgba(255,255,255,0.85);
   --sky-top:    #BFE3FB;
   --sky-bottom: #EAF6FF;
+  --space:      #D6EBFB;
+  --space-glow: rgba(27,150,255,0.14);
+  --star-opacity: 0.25;
   --sea-back:   rgba(6,174,213,0.32);
   --sea-front:  rgba(1,118,211,0.45);
 }
@@ -109,6 +118,9 @@ html[data-theme="morning"]{
   --panel:      rgba(255,247,240,0.88);
   --sky-top:    #FFD9B0;
   --sky-bottom: #FFF3E6;
+  --space:      #FBE6D2;
+  --space-glow: rgba(255,150,80,0.16);
+  --star-opacity: 0.2;
   --sea-back:   rgba(255,183,120,0.35);
   --sea-front:  rgba(8,140,175,0.55);
 }
@@ -126,18 +138,29 @@ html[data-theme="evening"]{
   --panel:      rgba(43,27,61,0.85);
   --sky-top:    #FF8A65;
   --sky-bottom: #4A2360;
+  --space:      #1E1035;
+  --space-glow: rgba(255,140,120,0.18);
+  --star-opacity: 0.75;
   --sea-back:   rgba(255,140,105,0.25);
   --sea-front:  rgba(30,20,60,0.8);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
+html{scroll-behavior:smooth;background:var(--bg);}
 body{
   font-family:var(--f-body);
-  background:linear-gradient(180deg,var(--sky-top),var(--sky-bottom) 45%,var(--bg) 75%);
+  /* Vertical world: clouds/sky up top → deep space through the middle → back down to the sea */
+  background:linear-gradient(180deg,
+    var(--sky-top) 0%,
+    var(--sky-bottom) 18%,
+    var(--space) 42%,
+    var(--space) 66%,
+    var(--bg2) 84%,
+    var(--bg) 100%);
   color:var(--text);
   overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
   transition:background 0.6s ease,color 0.4s ease;
+  position:relative;
 }
 
 /* ═══════════════════════════════════════════
@@ -582,6 +605,54 @@ nav{
 .proj-card.featured{grid-column:1/-1;}
 .proj-card.featured .proj-desc{max-width:680px;}
 
+/* usage / how-to block inside a project card */
+.proj-usage{
+  margin:4px 0 20px;
+  border:1px solid var(--border);
+  border-radius:16px;
+  background:var(--surface);
+  padding:18px 20px;
+}
+.proj-usage-title{
+  font-family:var(--f-mono);font-size:10.5px;font-weight:600;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--sf-teal);margin-bottom:14px;
+}
+.proj-usage-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+}
+.proj-usage-item{min-width:0;}
+.pu-name{
+  font-family:var(--f-mono);font-size:12px;font-weight:600;
+  color:var(--sf-sky);margin-bottom:8px;
+}
+.proj-usage-item pre{
+  background:rgba(2,8,20,0.45);
+  border:1px solid var(--border);
+  border-radius:10px;padding:10px 12px;
+  overflow-x:auto;margin-bottom:8px;
+}
+html[data-theme="afternoon"] .proj-usage-item pre,
+html[data-theme="light"] .proj-usage-item pre,
+html[data-theme="morning"] .proj-usage-item pre{
+  background:rgba(5,29,65,0.06);
+}
+.proj-usage-item pre code{
+  font-family:var(--f-mono);font-size:10.5px;line-height:1.6;
+  color:var(--text);white-space:pre;
+}
+.proj-usage-item p{
+  font-size:12px;line-height:1.65;color:var(--muted);
+}
+.proj-usage-deploy{
+  margin-top:14px;padding-top:12px;
+  border-top:1px dashed var(--border);
+  font-size:12px;color:var(--muted);
+}
+@media (max-width:900px){
+  .proj-usage-grid{grid-template-columns:1fr;}
+}
+
 /* ═══════════════════════════════════════════
    EXPERIENCE — timeline
 ═══════════════════════════════════════════ */
@@ -889,6 +960,72 @@ body.is-loading{overflow:hidden;height:100vh;}
 }
 
 /* ═══════════════════════════════════════════
+   SPACE BAND — STARFIELD MID-PAGE
+   The page is a vertical world: clouds at the
+   top, deep space through the middle sections,
+   and the sea at the bottom. This band scrolls
+   WITH the document (absolute, not fixed).
+═══════════════════════════════════════════ */
+.space-band{
+  position:absolute;left:0;right:0;top:34%;height:38%;
+  z-index:0;pointer-events:none;overflow:hidden;
+  opacity:var(--star-opacity);
+  transition:opacity 0.6s ease;
+  -webkit-mask-image:linear-gradient(180deg,transparent,black 12%,black 88%,transparent);
+  mask-image:linear-gradient(180deg,transparent,black 12%,black 88%,transparent);
+}
+.space-stars,.space-stars-2{
+  position:absolute;inset:0;
+  background-image:
+    radial-gradient(1.6px 1.6px at 8% 12%, #fff, transparent),
+    radial-gradient(1.2px 1.2px at 22% 68%, #CFE8FF, transparent),
+    radial-gradient(2px 2px at 37% 30%, #fff, transparent),
+    radial-gradient(1.2px 1.2px at 52% 80%, #BFE3FB, transparent),
+    radial-gradient(1.6px 1.6px at 66% 18%, #fff, transparent),
+    radial-gradient(1.2px 1.2px at 78% 55%, #CFE8FF, transparent),
+    radial-gradient(2px 2px at 90% 34%, #fff, transparent),
+    radial-gradient(1.2px 1.2px at 14% 88%, #fff, transparent),
+    radial-gradient(1.6px 1.6px at 45% 6%, #BFE3FB, transparent),
+    radial-gradient(1.2px 1.2px at 84% 82%, #fff, transparent);
+  background-repeat:repeat;
+  background-size:640px 480px;
+  animation:starTwinkle 4.5s ease-in-out infinite;
+}
+.space-stars-2{
+  background-size:920px 700px;
+  animation-duration:6.5s;animation-delay:-2.2s;
+  opacity:0.7;
+}
+@keyframes starTwinkle{0%,100%{opacity:1;}50%{opacity:0.45;}}
+.space-nebula{
+  position:absolute;border-radius:50%;filter:blur(60px);
+  background:radial-gradient(circle,var(--space-glow),transparent 70%);
+}
+.space-nebula-1{width:46vw;height:30vw;top:12%;left:-8vw;}
+.space-nebula-2{width:38vw;height:26vw;bottom:18%;right:-6vw;}
+.space-planet{
+  position:absolute;top:22%;right:8%;width:120px;height:120px;
+  animation:planetDrift 40s ease-in-out infinite alternate;
+}
+.space-planet svg{width:100%;height:100%;display:block;filter:drop-shadow(0 0 30px var(--space-glow));}
+@keyframes planetDrift{from{transform:translateY(0) rotate(-6deg);}to{transform:translateY(40px) rotate(6deg);}}
+.shooting-star{
+  position:absolute;top:14%;left:70%;width:130px;height:2px;border-radius:2px;
+  background:linear-gradient(90deg,#fff,transparent);
+  transform:rotate(-32deg);opacity:0;
+  animation:shootStar 7s linear infinite;
+}
+.shooting-star.ss-2{top:58%;left:22%;width:90px;animation-delay:3.6s;animation-duration:9s;}
+@keyframes shootStar{
+  0%,88%{opacity:0;transform:translate(0,0) rotate(-32deg);}
+  90%{opacity:1;}
+  100%{opacity:0;transform:translate(-260px,163px) rotate(-32deg);}
+}
+@media (max-width:640px){
+  .space-planet{width:70px;height:70px;right:4%;}
+}
+
+/* ═══════════════════════════════════════════
    SKY — PARALLAX DRIFTING CLOUDS
 ═══════════════════════════════════════════ */
 .sky-clouds{
@@ -1014,7 +1151,7 @@ body.is-loading{overflow:hidden;height:100vh;}
 ═══════════════════════════════════════════ */
 .agentforce-flyby{
   position:fixed;bottom:-140px;left:-140px;z-index:0;pointer-events:none;
-  animation:agentforceFly 17s ease-in-out infinite;
+  animation:agentforceFly 26s ease-in-out infinite;
   will-change:transform;
 }
 .agentforce-flyby .af-trail{
@@ -1039,12 +1176,23 @@ body.is-loading{overflow:hidden;height:100vh;}
   0%,100%{transform:rotate(-4deg);}
   50%{transform:rotate(4deg);}
 }
+/* Action-packed flight: launch → hover pause → loop-the-loop → dash exit */
 @keyframes agentforceFly{
   0%{transform:translate(0,0) rotate(-45deg);opacity:0;}
-  6%{opacity:1;}
-  50%{transform:translate(64vw,-60vh) rotate(-45deg);}
-  94%{opacity:1;}
-  100%{transform:translate(126vw,-118vh) rotate(-45deg);opacity:0;}
+  5%{opacity:1;}
+  22%{transform:translate(34vw,-42vh) rotate(-30deg);}
+  /* hover pause: level off and float in place */
+  30%{transform:translate(42vw,-52vh) rotate(0deg);}
+  40%{transform:translate(44vw,-49vh) rotate(0deg);}
+  /* loop-the-loop */
+  46%{transform:translate(50vw,-60vh) rotate(-140deg);}
+  52%{transform:translate(56vw,-52vh) rotate(-250deg);}
+  58%{transform:translate(52vw,-45vh) rotate(-360deg);}
+  /* recover, wave-worthy pause, then dash */
+  68%{transform:translate(60vw,-55vh) rotate(-345deg);}
+  80%{transform:translate(84vw,-80vh) rotate(-390deg);}
+  95%{opacity:1;}
+  100%{transform:translate(128vw,-120vh) rotate(-405deg);opacity:0;}
 }
 @media (max-width:640px){
   .agentforce-flyby .af-craft svg{width:80px;height:100px;}
@@ -1095,9 +1243,92 @@ body.is-loading{overflow:hidden;height:100vh;}
 #backToTop.visible{opacity:1;transform:translateY(0) scale(1);pointer-events:auto;}
 #backToTop:hover{border-color:var(--sf-sky);box-shadow:0 8px 30px rgba(1,118,211,0.35);}
 
+/* ═══════════════════════════════════════════
+   PREMIUM POLISH — glossy 3D-toy pass on
+   typography, nav tabs, cards, and buttons
+═══════════════════════════════════════════ */
+
+/* Cinematic headings: gradient ink + soft depth */
+.hero-name{
+  background:linear-gradient(180deg,var(--heading) 55%,var(--sf-sky) 130%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+  filter:drop-shadow(0 6px 18px rgba(1,118,211,0.28));
+}
+.hero-name .blue-word{
+  background:linear-gradient(160deg,#7EC4FF 0%,var(--sf-sky) 40%,var(--sf-teal) 100%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 4px 14px rgba(27,150,255,0.55));
+}
+.sec-title{
+  background:linear-gradient(180deg,var(--heading) 60%,var(--sf-sky) 160%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+  filter:drop-shadow(0 3px 10px rgba(1,118,211,0.2));
+}
+
+/* Nav: rounder capsule + glossy tab pills */
+.nav-inner{
+  border-radius:999px;padding:0 12px 0 24px;
+  box-shadow:0 10px 34px rgba(2,8,20,0.35), inset 0 1px 0 rgba(255,255,255,0.14);
+}
+.nav-links a{
+  border-radius:999px;padding:7px 16px;
+  position:relative;
+}
+.nav-links a:hover{
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.18), 0 3px 10px rgba(2,8,20,0.3);
+}
+.nav-cta{
+  border-radius:999px !important;
+  background:linear-gradient(180deg,#3FA6F5 0%,var(--sf-blue) 55%,#015CA5 100%) !important;
+  box-shadow:0 0 20px rgba(1,118,211,0.35), inset 0 1.5px 0 rgba(255,255,255,0.45), inset 0 -2px 4px rgba(0,30,70,0.35);
+}
+.theme-toggle-btn{border-radius:999px;}
+
+/* Cards: rounded glossy "toy shell" — soft top light, deep soft shadow */
+.proj-card,.skill-row,.cert-card,.contact-card,.trailhead-row{
+  border-radius:22px;
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,0.16),
+    0 2px 6px rgba(2,8,20,0.12),
+    0 18px 44px rgba(2,8,20,0.16);
+  backdrop-filter:blur(10px);
+}
+.proj-card:hover,.cert-card:hover,.contact-card:hover{
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,0.22),
+    0 6px 14px rgba(1,118,211,0.14),
+    0 30px 70px rgba(1,118,211,0.2);
+}
+.metrics-strip{border-radius:26px;box-shadow:0 18px 50px rgba(2,8,20,0.22), inset 0 1.5px 0 rgba(255,255,255,0.12);}
+.metric-cell{position:relative;}
+.metric-cell::after{
+  content:'';position:absolute;top:0;left:8%;right:8%;height:42%;
+  background:linear-gradient(180deg,rgba(255,255,255,0.09),transparent);
+  border-radius:20px 20px 40% 40%;pointer-events:none;
+}
+
+/* Buttons: candy gloss */
+.btn-glow{
+  border-radius:999px;
+  background:linear-gradient(180deg,#3FA6F5 0%,var(--sf-blue) 55%,#015CA5 100%);
+  box-shadow:0 6px 22px rgba(1,118,211,0.45), inset 0 1.5px 0 rgba(255,255,255,0.5), inset 0 -3px 6px rgba(0,30,70,0.3);
+}
+.btn-ghost{border-radius:999px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.12);}
+.cert-chip,.skill-pill,.proj-tag,.exp-chip{border-radius:999px;}
+
+/* Pills glow softly on hover, like backlit plastic */
+.skill-pill:hover,.proj-tag:hover{
+  box-shadow:0 0 14px rgba(27,150,255,0.35), inset 0 1px 0 rgba(255,255,255,0.25);
+}
+
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation-duration:0.001ms !important;animation-iteration-count:1 !important;transition-duration:0.001ms !important;scroll-behavior:auto !important;}
   .sf-space{display:none;}
+  .space-stars,.space-stars-2,.shooting-star,.space-planet{animation:none;}
+  .shooting-star{display:none;}
 }
 </style>
 </head>
@@ -1125,6 +1356,30 @@ body.is-loading{overflow:hidden;height:100vh;}
 
 <!-- ═══════ SKY WITH DRIFTING CLOUDS ═══════ -->
 <div class="sky-clouds" id="skyClouds" aria-hidden="true"></div>
+
+<!-- ═══════ SPACE BAND (mid-page starfield) ═══════ -->
+<div class="space-band" aria-hidden="true">
+  <div class="space-stars"></div>
+  <div class="space-stars-2"></div>
+  <div class="space-nebula space-nebula-1"></div>
+  <div class="space-nebula space-nebula-2"></div>
+  <span class="shooting-star"></span>
+  <span class="shooting-star ss-2"></span>
+  <div class="space-planet">
+    <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="planetBody" cx="35%" cy="30%" r="80%">
+          <stop offset="0" stop-color="#8FD4FF"/>
+          <stop offset="0.55" stop-color="#1B96FF"/>
+          <stop offset="1" stop-color="#0B3E7A"/>
+        </radialGradient>
+      </defs>
+      <ellipse cx="60" cy="62" rx="52" ry="10" fill="none" stroke="#9BC4EF" stroke-width="3" opacity="0.65" transform="rotate(-18 60 62)"/>
+      <circle cx="60" cy="60" r="30" fill="url(#planetBody)"/>
+      <ellipse cx="50" cy="50" rx="12" ry="7" fill="#FFFFFF" opacity="0.35"/>
+    </svg>
+  </div>
+</div>
 
 <!-- ═══════ SEA WITH ANIMATED WAVES ═══════ -->
 <div class="sea-layer sea-back" aria-hidden="true">
@@ -1531,6 +1786,40 @@ body.is-loading{overflow:hidden;height:100vh;}
       <div class="proj-type">LWC · Component Library · Refactor</div>
       <div class="proj-title">Reusable LWC Component Library <span class="new-badge">New</span></div>
       <p class="proj-desc">Three production components rebuilt into a dependency-free, org-agnostic library, then extended with batteries-included features on top. <code>errorHandlerUtility</code> normalizes any Apex/wire/fetch error shape into a readable toast in one call — with a pluggable <code>onLog</code> hook instead of a hard logging-package dependency, a <code>withErrorHandling</code> wrapper that removes try/catch boilerplate, and a <code>retryable</code> helper with exponential backoff for transient errors. <code>recordHighlightPanel</code> renders any record page's header from a single JSON config — fields, relationship fields via dot notation, and AND/OR visibility rules — with the SharePoint-specific Apex integration, hardcoded managed-package fields, and hardcoded profile checks it originally carried stripped out, and now ships an opt-in inline quick-edit mode, a collapse/expand toggle, a built-in Copy Link action, and currency/percent/date formatting for relationship fields. <code>customUrlDatatable</code> adds three column types <code>lightning-datatable</code> doesn't ship out of the box — a hyperlink cell, a colored status badge, and a percent progress bar — replacing a reference to a sibling component that wasn't part of the original export. Along the way I also fixed a module-level shared-state bug that let multiple highlight-panel instances on the same page corrupt each other's field list.</p>
+      <div class="proj-usage">
+        <div class="proj-usage-title">How to use</div>
+        <div class="proj-usage-grid">
+          <div class="proj-usage-item">
+            <div class="pu-name">errorHandlerUtility</div>
+            <pre><code>import { handleError } from 'c/errorHandlerUtility';
+
+try { await save(); }
+catch (e) { await handleError(this, e); }</code></pre>
+            <p>One call per catch block — it parses the error, shows a readable toast, and logs it. Pass <code>onLog</code> to route into Nebula Logger or your own <code>Log__c</code> writer.</p>
+          </div>
+          <div class="proj-usage-item">
+            <div class="pu-name">recordHighlightPanel</div>
+            <pre><code>{ "iconName": "standard:opportunity",
+  "fields": [
+    { "fieldApiName": "StageName" },
+    { "fieldApiName": "Account.Industry",
+      "label": "Industry" } ],
+  "actions": [
+    { "apiName": "CopyLink", "label": "Copy Link",
+      "showWhen": "true" } ] }</code></pre>
+            <p>Drop it on any record page in App Builder and paste a JSON config — no code, no Apex. Visibility rules like <code>StageName != 'Closed Lost'</code> supported per field/action.</p>
+          </div>
+          <div class="proj-usage-item">
+            <div class="pu-name">customUrlDatatable</div>
+            <pre><code>columns = [{ label: 'Doc', type: 'customUrl',
+  typeAttributes: {
+    url: { fieldName: 'docUrl' },
+    labelVal: { fieldName: 'docLabel' } } }];</code></pre>
+            <p>Use <code>&lt;c-custom-url-datatable&gt;</code> instead of <code>lightning-datatable</code> and three extra column types unlock: <code>customUrl</code>, <code>badge</code>, and <code>percentBar</code>.</p>
+          </div>
+        </div>
+        <p class="proj-usage-deploy">Deploy everything in one line: <code>sf project deploy start --source-dir force-app</code> — base Lightning modules only, works in any org.</p>
+      </div>
       <div class="proj-stack">
         <span class="proj-tag">LWC</span><span class="proj-tag">Error Handling</span>
         <span class="proj-tag">Config-Driven</span><span class="proj-tag">Datatable</span>
