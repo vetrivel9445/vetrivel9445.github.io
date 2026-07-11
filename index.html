@@ -277,21 +277,32 @@ nav{
   overflow:hidden;
 }
 .hero-cloud-backdrop{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:-1;}
+
+/* Volumetric cloud: stacked soft radial-gradient puffs, heavily blurred,
+   so overlapping layers read as depth rather than a flat sticker. */
+.vcloud{
+  background:
+    radial-gradient(ellipse 34% 52% at 24% 66%, rgba(255,255,255,0.95), transparent 68%),
+    radial-gradient(ellipse 42% 66% at 48% 42%, rgba(255,255,255,1), transparent 70%),
+    radial-gradient(ellipse 32% 48% at 72% 60%, rgba(255,255,255,0.9), transparent 66%),
+    radial-gradient(ellipse 26% 40% at 88% 72%, rgba(255,255,255,0.75), transparent 64%),
+    radial-gradient(ellipse 78% 38% at 50% 84%, rgba(255,255,255,0.92), transparent 74%);
+  filter:blur(14px);
+}
 .hero-cloud{
-  position:absolute;line-height:1;opacity:0.3;
-  filter:blur(1px) drop-shadow(0 24px 50px rgba(0,0,0,0.18));
+  position:absolute;opacity:0.5;
   animation:heroCloudDrift ease-in-out infinite;
 }
-.hero-cloud-1{font-size:16rem;top:-6rem;left:-5rem;animation-duration:22s;}
-.hero-cloud-2{font-size:11rem;top:8rem;right:-4rem;animation-duration:26s;animation-delay:-9s;}
-.hero-cloud-3{font-size:8rem;bottom:-3rem;left:20%;animation-duration:19s;animation-delay:-4s;opacity:0.22;}
+.hero-cloud-1{width:560px;height:240px;top:-6rem;left:-8rem;animation-duration:22s;}
+.hero-cloud-2{width:400px;height:180px;top:7rem;right:-6rem;animation-duration:26s;animation-delay:-9s;opacity:0.4;}
+.hero-cloud-3{width:300px;height:130px;bottom:-2rem;left:20%;animation-duration:19s;animation-delay:-4s;opacity:0.3;}
 @keyframes heroCloudDrift{
   0%,100%{transform:translate(0,0) scale(1);}
-  50%{transform:translate(22px,-16px) scale(1.03);}
+  50%{transform:translate(26px,-14px) scale(1.05);}
 }
 @media (max-width:768px){
-  .hero-cloud-1{font-size:9rem;}
-  .hero-cloud-2{font-size:7rem;}
+  .hero-cloud-1{width:300px;height:130px;}
+  .hero-cloud-2{width:220px;height:100px;}
   .hero-cloud-3{display:none;}
 }
 .hero-label{
@@ -831,8 +842,11 @@ footer strong{color:var(--text);font-weight:500;}
 ═══════════════════════════════════════════ */
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:none;}}
 @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
-.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
-.reveal.visible{opacity:1;transform:none;}
+.reveal{
+  opacity:0;transform:translateY(28px);filter:blur(10px);
+  transition:opacity 0.9s cubic-bezier(0.22,1,0.36,1),transform 0.9s cubic-bezier(0.22,1,0.36,1),filter 0.9s cubic-bezier(0.22,1,0.36,1);
+}
+.reveal.visible{opacity:1;transform:none;filter:blur(0);}
 .reveal-d1{transition-delay:0.1s;}
 .reveal-d2{transition-delay:0.2s;}
 .reveal-d3{transition-delay:0.3s;}
@@ -928,8 +942,8 @@ body.is-loading{overflow:hidden;height:100vh;}
 /* ═══════════════════════════════════════════
    REVEAL VARIANTS
 ═══════════════════════════════════════════ */
-.reveal-scale{opacity:0;transform:scale(0.88);transition:opacity 0.7s ease,transform 0.6s cubic-bezier(0.34,1.56,0.64,1);}
-.reveal-scale.visible{opacity:1;transform:scale(1);}
+.reveal-scale{opacity:0;transform:scale(0.9);filter:blur(12px);transition:opacity 0.9s ease,transform 0.8s cubic-bezier(0.22,1,0.36,1),filter 0.9s ease;}
+.reveal-scale.visible{opacity:1;transform:scale(1);filter:blur(0);}
 .reveal-left{opacity:0;transform:translateX(-42px);transition:opacity 0.7s ease,transform 0.7s ease;}
 .reveal-left.visible{opacity:1;transform:translateX(0);}
 .reveal-right{opacity:0;transform:translateX(42px);transition:opacity 0.7s ease,transform 0.7s ease;}
@@ -1033,15 +1047,14 @@ body.is-loading{overflow:hidden;height:100vh;}
   transition:transform 0.05s linear;will-change:transform;
 }
 .cloud-drift{
-  position:absolute;left:0;opacity:0;line-height:1;
-  filter:blur(0.3px) drop-shadow(0 8px 16px rgba(0,0,0,0.12));
+  position:absolute;left:0;opacity:0;
   animation:cloudDrift linear infinite;will-change:transform,opacity;
 }
 @keyframes cloudDrift{
-  0%{transform:translateX(-160px);opacity:0;}
+  0%{transform:translateX(-560px);opacity:0;}
   10%{opacity:var(--cloud-opacity,0.5);}
   90%{opacity:var(--cloud-opacity,0.5);}
-  100%{transform:translateX(calc(100vw + 160px));opacity:0;}
+  100%{transform:translateX(calc(100vw + 560px));opacity:0;}
 }
 
 /* ═══════════════════════════════════════════
@@ -1249,11 +1262,25 @@ body.is-loading{overflow:hidden;height:100vh;}
 ═══════════════════════════════════════════ */
 
 /* Cinematic headings: gradient ink + soft depth */
+.hero{transform-origin:50% 18%;will-change:transform,opacity;}
 .hero-name{
   background:linear-gradient(180deg,var(--heading) 55%,var(--sf-sky) 130%);
   -webkit-background-clip:text;background-clip:text;
   -webkit-text-fill-color:transparent;color:transparent;
   filter:drop-shadow(0 6px 18px rgba(1,118,211,0.28));
+  /* keep the original staged entrance, then breathe forever after it lands */
+  animation:fadeUp 0.7s 0.2s ease forwards, heroBreathe 7s ease-in-out 1.4s infinite;
+  transform-origin:left 60%;
+}
+@keyframes heroBreathe{
+  0%,100%{transform:scale(1);}
+  50%{transform:scale(1.014);}
+}
+.hero-role{animation:fadeUp 0.7s 0.3s ease forwards, heroBreatheSoft 9s ease-in-out 1.6s infinite;}
+.hero-desc{animation:fadeUp 0.7s 0.4s ease forwards, heroBreatheSoft 9s ease-in-out 1.8s infinite;}
+@keyframes heroBreatheSoft{
+  0%,100%{opacity:1;}
+  50%{opacity:0.86;}
 }
 .hero-name .blue-word{
   background:linear-gradient(160deg,#7EC4FF 0%,var(--sf-sky) 40%,var(--sf-teal) 100%);
@@ -1560,9 +1587,9 @@ body.is-loading{overflow:hidden;height:100vh;}
 <!-- ═══════ HERO ════════════════════════════════ -->
 <section class="hero" id="about">
   <div class="hero-cloud-backdrop" aria-hidden="true">
-    <span class="hero-cloud hero-cloud-1">☁️</span>
-    <span class="hero-cloud hero-cloud-2">☁️</span>
-    <span class="hero-cloud hero-cloud-3">☁️</span>
+    <span class="hero-cloud vcloud hero-cloud-1"></span>
+    <span class="hero-cloud vcloud hero-cloud-2"></span>
+    <span class="hero-cloud vcloud hero-cloud-3"></span>
   </div>
   <div class="hero-label">
     <span class="status-dot"></span>
@@ -1785,7 +1812,7 @@ body.is-loading{overflow:hidden;height:100vh;}
     <div class="proj-card tilt featured reveal-scale">
       <div class="proj-type">LWC · Component Library · Refactor</div>
       <div class="proj-title">Reusable LWC Component Library <span class="new-badge">New</span></div>
-      <p class="proj-desc">Three production components rebuilt into a dependency-free, org-agnostic library, then extended with batteries-included features on top. <code>errorHandlerUtility</code> normalizes any Apex/wire/fetch error shape into a readable toast in one call — with a pluggable <code>onLog</code> hook instead of a hard logging-package dependency, a <code>withErrorHandling</code> wrapper that removes try/catch boilerplate, and a <code>retryable</code> helper with exponential backoff for transient errors. <code>recordHighlightPanel</code> renders any record page's header from a single JSON config — fields, relationship fields via dot notation, and AND/OR visibility rules — with the SharePoint-specific Apex integration, hardcoded managed-package fields, and hardcoded profile checks it originally carried stripped out, and now ships an opt-in inline quick-edit mode, a collapse/expand toggle, a built-in Copy Link action, and currency/percent/date formatting for relationship fields. <code>customUrlDatatable</code> adds three column types <code>lightning-datatable</code> doesn't ship out of the box — a hyperlink cell, a colored status badge, and a percent progress bar — replacing a reference to a sibling component that wasn't part of the original export. Along the way I also fixed a module-level shared-state bug that let multiple highlight-panel instances on the same page corrupt each other's field list.</p>
+      <p class="proj-desc">Three production components rebuilt into a fully self-contained, org-agnostic library — no server-side code, no managed packages, nothing to install first. <code>errorHandlerUtility</code> normalizes any wire, fetch, or platform error shape into a readable toast in one call — with a pluggable <code>onLog</code> hook so it works with whatever logging you already use, a <code>withErrorHandling</code> wrapper that removes try/catch boilerplate, and a <code>retryable</code> helper with exponential backoff for transient errors. <code>recordHighlightPanel</code> renders any record page's header from a single JSON config — fields, relationship fields via dot notation, and AND/OR visibility rules — plus an opt-in inline quick-edit mode, a collapse/expand toggle, a built-in Copy Link action, and currency/percent/date formatting for relationship fields. <code>customUrlDatatable</code> adds three column types <code>lightning-datatable</code> doesn't ship out of the box — a hyperlink cell, a colored status badge, and a percent progress bar — all driven purely by row data. Every component runs on base Lightning modules alone and deploys to any org in one line.</p>
       <div class="proj-usage">
         <div class="proj-usage-title">How to use</div>
         <div class="proj-usage-grid">
@@ -1807,7 +1834,7 @@ catch (e) { await handleError(this, e); }</code></pre>
   "actions": [
     { "apiName": "CopyLink", "label": "Copy Link",
       "showWhen": "true" } ] }</code></pre>
-            <p>Drop it on any record page in App Builder and paste a JSON config — no code, no Apex. Visibility rules like <code>StageName != 'Closed Lost'</code> supported per field/action.</p>
+            <p>Drop it on any record page in App Builder and paste a JSON config — no code, no server-side setup. Visibility rules like <code>StageName != 'Closed Lost'</code> supported per field/action.</p>
           </div>
           <div class="proj-usage-item">
             <div class="pu-name">customUrlDatatable</div>
@@ -2056,13 +2083,28 @@ function lazyStart(fn){
   lazyStart(()=>{ resize(); initParticles(); draw(); });
 })();
 
-/* ── MOUSE PARALLAX on hero ─────────────────────── */
-document.addEventListener('mousemove',e=>{
-  const x=(e.clientX/window.innerWidth -0.5)*8;
-  const y=(e.clientY/window.innerHeight-0.5)*8;
-  const hero=document.querySelector('.hero');
-  if(hero) hero.style.transform=`translate(${x*0.15}px,${y*0.15}px)`;
-});
+/* ── CINEMATIC HERO: mouse parallax + scroll scale/fade ── */
+(function(){
+  const heroEl=document.querySelector('.hero');
+  if(!heroEl) return;
+  const heroReduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(heroReduced) return;
+  let mx=0,my=0,prog=0;
+  function renderHero(){
+    const scale=1-prog*0.06;
+    heroEl.style.transform=`translate(${mx}px,${my-prog*46}px) scale(${scale})`;
+    heroEl.style.opacity=String(1-prog*0.85);
+  }
+  document.addEventListener('mousemove',e=>{
+    mx=(e.clientX/window.innerWidth -0.5)*1.2;
+    my=(e.clientY/window.innerHeight-0.5)*1.2;
+    renderHero();
+  });
+  window.addEventListener('scroll',()=>{
+    prog=Math.min(window.scrollY/(window.innerHeight*0.85),1);
+    renderHero();
+  },{passive:true});
+})();
 
 /* ── SCROLL REVEAL ───────────────────────────────── */
 const observer=new IntersectionObserver(entries=>{
@@ -2266,15 +2308,15 @@ function initSkyClouds(){
   const frag=document.createDocumentFragment();
   for(let i=0;i<count;i++){
     const el=document.createElement('span');
-    el.className='cloud-drift';
-    el.textContent='☁️';
+    el.className='cloud-drift vcloud';
     const duration=(46+Math.random()*44).toFixed(1);
     const delay=(Math.random()*-70).toFixed(1);
     const top=(4+Math.random()*46).toFixed(1);
-    const size=(4+Math.random()*6).toFixed(2);
-    const opacity=(0.22+Math.random()*0.32).toFixed(2);
+    const width=Math.round(180+Math.random()*320);
+    const opacity=(0.3+Math.random()*0.35).toFixed(2);
     el.style.top=top+'%';
-    el.style.fontSize=size+'rem';
+    el.style.width=width+'px';
+    el.style.height=Math.round(width*0.42)+'px';
     el.style.animationDuration=duration+'s';
     el.style.animationDelay=delay+'s';
     el.style.setProperty('--cloud-opacity',opacity);
