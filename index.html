@@ -1010,10 +1010,10 @@ body.is-loading{overflow:hidden;height:100vh;}
 }
 
 /* ═══════════════════════════════════════════
-   AGENTFORCE ROBOT — ROCKET FLYBY
+   AGENTFORCE BOT — GLOSSY 3D-TOY MASCOT FLYBY
 ═══════════════════════════════════════════ */
 .agentforce-flyby{
-  position:fixed;bottom:-90px;left:-90px;z-index:0;pointer-events:none;
+  position:fixed;bottom:-140px;left:-140px;z-index:0;pointer-events:none;
   animation:agentforceFly 17s ease-in-out infinite;
   will-change:transform;
 }
@@ -1030,8 +1030,14 @@ body.is-loading{overflow:hidden;height:100vh;}
   transform:translateY(-50%);filter:blur(6px);
 }
 .agentforce-flyby .af-craft{
-  position:relative;display:flex;align-items:center;gap:2px;font-size:3rem;line-height:1;
-  filter:drop-shadow(0 0 14px rgba(27,150,255,0.65)) drop-shadow(0 0 26px rgba(255,255,255,0.3));
+  position:relative;display:block;line-height:1;
+  animation:botWaggle 2.4s ease-in-out infinite;
+  filter:drop-shadow(0 14px 26px rgba(27,150,255,0.4)) drop-shadow(0 0 22px rgba(255,255,255,0.25));
+}
+.agentforce-flyby .af-craft svg{width:118px;height:148px;display:block;}
+@keyframes botWaggle{
+  0%,100%{transform:rotate(-4deg);}
+  50%{transform:rotate(4deg);}
 }
 @keyframes agentforceFly{
   0%{transform:translate(0,0) rotate(-45deg);opacity:0;}
@@ -1041,7 +1047,7 @@ body.is-loading{overflow:hidden;height:100vh;}
   100%{transform:translate(126vw,-118vh) rotate(-45deg);opacity:0;}
 }
 @media (max-width:640px){
-  .agentforce-flyby .af-craft{font-size:2.2rem;}
+  .agentforce-flyby .af-craft svg{width:80px;height:100px;}
   .agentforce-flyby .af-trail{width:110px;height:6px;}
 }
 
@@ -1202,7 +1208,70 @@ body.is-loading{overflow:hidden;height:100vh;}
 
 <div class="agentforce-flyby" id="agentforceFlyby" aria-hidden="true">
   <span class="af-trail"></span>
-  <span class="af-craft">🤖🚀</span>
+  <div class="af-craft">
+    <svg viewBox="0 0 160 200" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="botBody" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#F5FAFF"/>
+          <stop offset="0.55" stop-color="#D3E4FA"/>
+          <stop offset="1" stop-color="#A9BEDD"/>
+        </linearGradient>
+        <linearGradient id="botHead" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#FFFFFF"/>
+          <stop offset="1" stop-color="#CFE2FA"/>
+        </linearGradient>
+        <radialGradient id="botVisor" cx="35%" cy="30%" r="80%">
+          <stop offset="0" stop-color="#16233D"/>
+          <stop offset="1" stop-color="#020712"/>
+        </radialGradient>
+        <radialGradient id="botGem" cx="35%" cy="30%" r="75%">
+          <stop offset="0" stop-color="#BFF3FF"/>
+          <stop offset="0.5" stop-color="#1B96FF"/>
+          <stop offset="1" stop-color="#0176D3"/>
+        </radialGradient>
+        <radialGradient id="botFlame" cx="50%" cy="20%" r="80%">
+          <stop offset="0" stop-color="#FFF6D8"/>
+          <stop offset="0.4" stop-color="#FFB648"/>
+          <stop offset="1" stop-color="#FF7A18" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="botShine" cx="50%" cy="50%" r="50%">
+          <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.9"/>
+          <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+
+      <ellipse cx="60" cy="196" rx="14" ry="22" fill="url(#botFlame)"/>
+      <ellipse cx="100" cy="196" rx="14" ry="22" fill="url(#botFlame)"/>
+
+      <rect x="46" y="168" width="26" height="22" rx="8" fill="#3C4A63"/>
+      <rect x="88" y="168" width="26" height="22" rx="8" fill="#2E3A50"/>
+
+      <ellipse cx="80" cy="132" rx="54" ry="50" fill="url(#botBody)"/>
+      <path d="M40,120 Q80,138 120,120" stroke="#8FA8CC" stroke-width="2" fill="none" opacity="0.6"/>
+      <polygon points="80,104 92,118 80,132 68,118" fill="url(#botGem)"/>
+      <circle cx="76" cy="112" r="3" fill="#FFFFFF" opacity="0.85"/>
+
+      <circle cx="34" cy="52" r="11" fill="url(#botHead)"/>
+      <circle cx="126" cy="52" r="11" fill="url(#botHead)"/>
+      <rect x="77" y="10" width="6" height="18" rx="3" fill="#8FA8CC"/>
+      <circle cx="80" cy="8" r="6" fill="#1B96FF"/>
+
+      <circle cx="80" cy="66" r="50" fill="url(#botHead)"/>
+
+      <rect x="38" y="52" width="84" height="34" rx="17" fill="url(#botVisor)"/>
+      <g fill="#5FE0FF">
+        <rect x="50" y="62" width="6" height="6" rx="1.5"/>
+        <rect x="60" y="62" width="6" height="6" rx="1.5"/>
+        <rect x="70" y="62" width="6" height="6" rx="1.5"/>
+        <rect x="94" y="62" width="6" height="6" rx="1.5"/>
+        <rect x="104" y="62" width="6" height="6" rx="1.5"/>
+        <rect x="114" y="62" width="6" height="6" rx="1.5"/>
+      </g>
+
+      <ellipse cx="58" cy="42" rx="20" ry="14" fill="url(#botShine)"/>
+      <ellipse cx="58" cy="112" rx="16" ry="10" fill="url(#botShine)" opacity="0.6"/>
+    </svg>
+  </div>
 </div>
 
 <!-- NAV -->
