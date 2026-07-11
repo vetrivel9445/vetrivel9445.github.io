@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <meta name="description" content="Vetrivel K — Salesforce Developer. 3× Certified. Apex · LWC · Agentforce AI. Chennai, India."/>
 <title>Vetrivel K — Salesforce Developer</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%230176D3%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%231B96FF%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2216%22%20fill%3D%22url%28%23g%29%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2241%22%20font-family%3D%22Arial%2C%20Helvetica%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20fill%3D%22%23ffffff%22%20text-anchor%3D%22middle%22%3EVK%3C/text%3E%3C/svg%3E"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
@@ -741,6 +742,71 @@ body.is-loading{overflow:hidden;height:100vh;}
 }
 
 /* ═══════════════════════════════════════════
+   AGENTFORCE ROBOT — ROCKET FLYBY
+═══════════════════════════════════════════ */
+.agentforce-flyby{
+  position:fixed;bottom:-90px;left:-90px;z-index:2;pointer-events:none;
+  animation:agentforceFly 17s ease-in-out infinite;
+  will-change:transform;
+}
+.agentforce-flyby .af-trail{
+  position:absolute;right:100%;top:50%;
+  width:150px;height:7px;border-radius:999px;
+  background:linear-gradient(90deg,transparent,rgba(1,118,211,0.55) 35%,rgba(255,255,255,0.9) 92%);
+  transform:translateY(-50%);transform-origin:right center;
+  filter:blur(2px);
+}
+.agentforce-flyby .af-trail::before{
+  content:'';position:absolute;right:20%;top:50%;width:34px;height:34px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,0.55),transparent 70%);
+  transform:translateY(-50%);filter:blur(6px);
+}
+.agentforce-flyby .af-craft{
+  position:relative;display:flex;align-items:center;gap:2px;font-size:2.4rem;line-height:1;
+  filter:drop-shadow(0 0 14px rgba(27,150,255,0.65)) drop-shadow(0 0 26px rgba(255,255,255,0.3));
+}
+@keyframes agentforceFly{
+  0%{transform:translate(0,0) rotate(-45deg);opacity:0;}
+  6%{opacity:1;}
+  50%{transform:translate(64vw,-60vh) rotate(-45deg);}
+  94%{opacity:1;}
+  100%{transform:translate(126vw,-118vh) rotate(-45deg);opacity:0;}
+}
+@media (max-width:640px){
+  .agentforce-flyby .af-craft{font-size:1.8rem;}
+  .agentforce-flyby .af-trail{width:100px;height:5px;}
+}
+
+/* ═══════════════════════════════════════════
+   MARQUEE — AUTO-SCROLLING SKILL TICKER
+═══════════════════════════════════════════ */
+.marquee-wrap{
+  width:100vw;margin-left:calc(50% - 50vw);position:relative;z-index:1;
+  overflow:hidden;
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  background:var(--surface);
+  padding:16px 0;
+}
+.marquee-track{
+  display:flex;width:max-content;white-space:nowrap;
+  animation:marqueeScroll 32s linear infinite;
+}
+.marquee-wrap:hover .marquee-track{animation-play-state:paused;}
+.marquee-group{display:flex;align-items:center;flex-shrink:0;}
+.marquee-item{
+  font-family:var(--f-mono);font-size:13px;font-weight:500;
+  letter-spacing:1px;text-transform:uppercase;
+  color:var(--sf-sky);padding:0 1.4rem;
+}
+.marquee-item strong{color:var(--white);font-weight:600;}
+.marquee-dot{color:var(--sf-teal);opacity:0.6;}
+@keyframes marqueeScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+@media (prefers-reduced-motion: reduce){
+  .agentforce-flyby{display:none;}
+  .marquee-track{animation:none;}
+}
+
+/* ═══════════════════════════════════════════
    BACK TO TOP
 ═══════════════════════════════════════════ */
 #backToTop{
@@ -782,6 +848,10 @@ body.is-loading{overflow:hidden;height:100vh;}
 <!-- ANIMATED BACKGROUND CANVAS -->
 <canvas id="bg-canvas"></canvas>
 <div class="sf-space" id="sfSpace" aria-hidden="true"></div>
+<div class="agentforce-flyby" id="agentforceFlyby" aria-hidden="true">
+  <span class="af-trail"></span>
+  <span class="af-craft">🤖🚀</span>
+</div>
 
 <!-- NAV -->
 <nav>
@@ -850,6 +920,36 @@ body.is-loading{overflow:hidden;height:100vh;}
     </div>
   </div>
 </section>
+
+<!-- ═══════ MARQUEE ═══════ -->
+<div class="marquee-wrap" aria-hidden="true">
+  <div class="marquee-track" id="marqueeTrack">
+    <div class="marquee-group">
+      <span class="marquee-item"><strong>Apex</strong></span><span class="marquee-dot">•</span>
+      <span class="marquee-item"><strong>Lightning Web Components</strong></span><span class="marquee-dot">•</span>
+      <span class="marquee-item"><strong>Agentforce AI</strong></span><span class="marquee-dot">•</span>
+      <span class="marquee-item">Flows &amp; Automation</span><span class="marquee-dot">•</span>
+      <span class="marquee-item">Trigger Frameworks</span><span class="marquee-dot">•</span>
+      <span class="marquee-item">SOQL / SOSL</span><span class="marquee-dot">•</span>
+      <span class="marquee-item">REST &amp; SOAP APIs</span><span class="marquee-dot">•</span>
+      <span class="marquee-item"><strong>Sales Cloud</strong></span><span class="marquee-dot">•</span>
+      <span class="marquee-item">Service Cloud</span><span class="marquee-dot">•</span>
+      <span class="marquee-item">90%+ Test Coverage</span><span class="marquee-dot">•</span>
+    </div>
+    <div class="marquee-group" aria-hidden="true">
+      <span class="marquee-item"><strong>Apex</strong></span><span class="marquee-dot">•</span>
+      <span class="marquee-item"><strong>Lightning Web Components</strong></span><span class="marquee-dot">•</span>
+      <span class="marquee-item"><strong>Agentforce AI</strong></span><span class="marquee-dot">•</span>
+      <span class="marquee-item">Flows &amp; Automation</span><span class="marquee-dot">•</span>
+      <span class="marquee-item">Trigger Frameworks</span><span class="marquee-dot">•</span>
+      <span class="marquee-item">SOQL / SOSL</span><span class="marquee-dot">•</span>
+      <span class="marquee-item">REST &amp; SOAP APIs</span><span class="marquee-dot">•</span>
+      <span class="marquee-item"><strong>Sales Cloud</strong></span><span class="marquee-dot">•</span>
+      <span class="marquee-item">Service Cloud</span><span class="marquee-dot">•</span>
+      <span class="marquee-item">90%+ Test Coverage</span><span class="marquee-dot">•</span>
+    </div>
+  </div>
+</div>
 
 <!-- ═══════ SKILLS ═══════════════════════════════ -->
 <section class="sec-wrap" id="skills">
@@ -1108,6 +1208,12 @@ body.is-loading{overflow:hidden;height:100vh;}
 <button id="backToTop" aria-label="Back to top">↑</button>
 
 <script>
+/* ── LAZY LOADING: defer non-critical background work until idle ── */
+function lazyStart(fn){
+  if('requestIdleCallback' in window){ requestIdleCallback(fn,{timeout:1500}); }
+  else { setTimeout(fn,200); }
+}
+
 /* ── ANIMATED PARTICLE MESH BACKGROUND ─────────────── */
 (function(){
   const canvas = document.getElementById('bg-canvas');
@@ -1205,7 +1311,7 @@ body.is-loading{overflow:hidden;height:100vh;}
     resize(); initParticles(); draw();
   });
 
-  resize(); initParticles(); draw();
+  lazyStart(()=>{ resize(); initParticles(); draw(); });
 })();
 
 /* ── MOUSE PARALLAX on hero ─────────────────────── */
@@ -1327,7 +1433,7 @@ function initSpaceIcons(){
   }
   container.appendChild(frag);
 }
-initSpaceIcons();
+lazyStart(initSpaceIcons);
 
 /* ── DESKTOP-ONLY: CUSTOM CURSOR, MAGNETIC BUTTONS, 3D TILT ── */
 const isFinePointer=window.matchMedia('(hover:hover) and (pointer:fine)').matches;
