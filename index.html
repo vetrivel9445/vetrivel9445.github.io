@@ -889,9 +889,12 @@ body.is-loading{overflow:hidden;height:100vh;}
 }
 
 /* ═══════════════════════════════════════════
-   SKY — DRIFTING CLOUDS
+   SKY — PARALLAX DRIFTING CLOUDS
 ═══════════════════════════════════════════ */
-.sky-clouds{position:fixed;top:0;left:0;right:0;height:60vh;z-index:0;pointer-events:none;overflow:hidden;}
+.sky-clouds{
+  position:fixed;top:0;left:0;right:0;height:60vh;z-index:0;pointer-events:none;overflow:hidden;
+  transition:transform 0.05s linear;will-change:transform;
+}
 .cloud-drift{
   position:absolute;left:0;opacity:0;line-height:1;
   filter:blur(0.3px) drop-shadow(0 8px 16px rgba(0,0,0,0.12));
@@ -905,11 +908,17 @@ body.is-loading{overflow:hidden;height:100vh;}
 }
 
 /* ═══════════════════════════════════════════
-   SEA — ANIMATED WAVES
+   SEA — PARALLAX ANIMATED WAVES
 ═══════════════════════════════════════════ */
-.sea-layer{position:fixed;left:0;right:0;bottom:0;z-index:0;pointer-events:none;overflow:hidden;}
+.sea-layer{
+  position:fixed;left:0;right:0;bottom:0;z-index:0;pointer-events:none;overflow:hidden;
+  will-change:transform;
+}
 .sea-layer.sea-back{height:120px;opacity:0.9;}
 .sea-layer.sea-front{height:90px;opacity:1;}
+.sea-breathe{width:100%;height:100%;animation:seaBreathe 6s ease-in-out infinite;}
+.sea-front .sea-breathe{animation-duration:4.5s;animation-delay:-1.5s;}
+@keyframes seaBreathe{0%,100%{transform:translateY(0);}50%{transform:translateY(5px);}}
 .sea-track{display:flex;width:max-content;height:100%;}
 .sea-back .sea-track{animation:seaScrollBack 22s linear infinite;}
 .sea-front .sea-track{animation:seaScrollFront 14s linear infinite;}
@@ -920,17 +929,17 @@ body.is-loading{overflow:hidden;height:100vh;}
 @keyframes seaScrollFront{from{transform:translateX(0);}to{transform:translateX(-1200px);}}
 
 /* ═══════════════════════════════════════════
-   CLOUD BUDDY — FLYING MASCOT CHARACTER
+   CLOUD BUDDY — FLYING MASCOT CHARACTER (behind text)
 ═══════════════════════════════════════════ */
 .cloud-buddy{
-  position:fixed;top:14%;left:-160px;z-index:2;pointer-events:none;
+  position:fixed;top:14%;left:-200px;z-index:0;pointer-events:none;
   animation:cloudBuddyFly 26s ease-in-out infinite;will-change:transform;
 }
 .cloud-buddy-bob{
   animation:cloudBuddyBob 3.2s ease-in-out infinite;
   filter:drop-shadow(0 10px 18px rgba(1,118,211,0.3));
 }
-.cloud-buddy svg{width:96px;height:64px;display:block;}
+.cloud-buddy svg{width:132px;height:88px;display:block;}
 @keyframes cloudBuddyFly{
   0%{transform:translate(0,0);opacity:0;}
   6%{opacity:1;}
@@ -948,14 +957,14 @@ body.is-loading{overflow:hidden;height:100vh;}
    MECH FLYBY — LARGE SCI-FI FLYING MACHINE
 ═══════════════════════════════════════════ */
 .mech-flyby{
-  position:fixed;top:24%;left:-300px;z-index:3;pointer-events:none;
+  position:fixed;top:24%;left:-360px;z-index:0;pointer-events:none;
   animation:mechFly 24s ease-in-out infinite;will-change:transform;
 }
 .mech-bob{
   animation:mechBob 2.6s ease-in-out infinite;
   filter:drop-shadow(0 16px 30px rgba(27,150,255,0.4));
 }
-.mech-flyby svg{width:220px;height:100px;display:block;}
+.mech-flyby svg{width:270px;height:122px;display:block;}
 @keyframes mechFly{
   0%{transform:translate(0,0) rotate(-4deg);opacity:0;}
   7%{opacity:1;}
@@ -989,39 +998,39 @@ body.is-loading{overflow:hidden;height:100vh;}
 }
 
 @media (max-width:640px){
-  .cloud-buddy svg{width:68px;height:46px;}
-  .mech-flyby svg{width:130px;height:60px;}
+  .cloud-buddy svg{width:90px;height:60px;}
+  .mech-flyby svg{width:160px;height:74px;}
   .shark-swim svg{width:76px;height:32px;}
   .sea-layer.sea-back{height:80px;}
   .sea-layer.sea-front{height:60px;}
 }
 @media (prefers-reduced-motion: reduce){
   .cloud-drift,.cloud-buddy,.mech-flyby,.shark-swim,.hero-cloud{display:none;}
-  .sea-track{animation:none;}
+  .sea-track,.sea-breathe{animation:none;}
 }
 
 /* ═══════════════════════════════════════════
    AGENTFORCE ROBOT — ROCKET FLYBY
 ═══════════════════════════════════════════ */
 .agentforce-flyby{
-  position:fixed;bottom:-90px;left:-90px;z-index:2;pointer-events:none;
+  position:fixed;bottom:-90px;left:-90px;z-index:0;pointer-events:none;
   animation:agentforceFly 17s ease-in-out infinite;
   will-change:transform;
 }
 .agentforce-flyby .af-trail{
   position:absolute;right:100%;top:50%;
-  width:150px;height:7px;border-radius:999px;
+  width:180px;height:8px;border-radius:999px;
   background:linear-gradient(90deg,transparent,rgba(1,118,211,0.55) 35%,rgba(255,255,255,0.9) 92%);
   transform:translateY(-50%);transform-origin:right center;
   filter:blur(2px);
 }
 .agentforce-flyby .af-trail::before{
-  content:'';position:absolute;right:20%;top:50%;width:34px;height:34px;border-radius:50%;
+  content:'';position:absolute;right:20%;top:50%;width:40px;height:40px;border-radius:50%;
   background:radial-gradient(circle,rgba(255,255,255,0.55),transparent 70%);
   transform:translateY(-50%);filter:blur(6px);
 }
 .agentforce-flyby .af-craft{
-  position:relative;display:flex;align-items:center;gap:2px;font-size:2.4rem;line-height:1;
+  position:relative;display:flex;align-items:center;gap:2px;font-size:3rem;line-height:1;
   filter:drop-shadow(0 0 14px rgba(27,150,255,0.65)) drop-shadow(0 0 26px rgba(255,255,255,0.3));
 }
 @keyframes agentforceFly{
@@ -1032,8 +1041,8 @@ body.is-loading{overflow:hidden;height:100vh;}
   100%{transform:translate(126vw,-118vh) rotate(-45deg);opacity:0;}
 }
 @media (max-width:640px){
-  .agentforce-flyby .af-craft{font-size:1.8rem;}
-  .agentforce-flyby .af-trail{width:100px;height:5px;}
+  .agentforce-flyby .af-craft{font-size:2.2rem;}
+  .agentforce-flyby .af-trail{width:110px;height:6px;}
 }
 
 /* ═══════════════════════════════════════════
@@ -1113,15 +1122,19 @@ body.is-loading{overflow:hidden;height:100vh;}
 
 <!-- ═══════ SEA WITH ANIMATED WAVES ═══════ -->
 <div class="sea-layer sea-back" aria-hidden="true">
-  <div class="sea-track">
-    <svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,60 C100,90 200,30 300,60 C400,90 500,30 600,60 C700,90 800,30 900,60 C1000,90 1100,30 1200,60 L1200,120 L0,120 Z"/></svg>
-    <svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,60 C100,90 200,30 300,60 C400,90 500,30 600,60 C700,90 800,30 900,60 C1000,90 1100,30 1200,60 L1200,120 L0,120 Z"/></svg>
+  <div class="sea-breathe">
+    <div class="sea-track">
+      <svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,60 C100,90 200,30 300,60 C400,90 500,30 600,60 C700,90 800,30 900,60 C1000,90 1100,30 1200,60 L1200,120 L0,120 Z"/></svg>
+      <svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,60 C100,90 200,30 300,60 C400,90 500,30 600,60 C700,90 800,30 900,60 C1000,90 1100,30 1200,60 L1200,120 L0,120 Z"/></svg>
+    </div>
   </div>
 </div>
 <div class="sea-layer sea-front" aria-hidden="true">
-  <div class="sea-track">
-    <svg viewBox="0 0 1200 100" preserveAspectRatio="none"><path d="M0,50 C150,20 300,80 450,50 C600,20 750,80 900,50 C1050,20 1200,80 1200,50 L1200,100 L0,100 Z"/></svg>
-    <svg viewBox="0 0 1200 100" preserveAspectRatio="none"><path d="M0,50 C150,20 300,80 450,50 C600,20 750,80 900,50 C1050,20 1200,80 1200,50 L1200,100 L0,100 Z"/></svg>
+  <div class="sea-breathe">
+    <div class="sea-track">
+      <svg viewBox="0 0 1200 100" preserveAspectRatio="none"><path d="M0,50 C150,20 300,80 450,50 C600,20 750,80 900,50 C1050,20 1200,80 1200,50 L1200,100 L0,100 Z"/></svg>
+      <svg viewBox="0 0 1200 100" preserveAspectRatio="none"><path d="M0,50 C150,20 300,80 450,50 C600,20 750,80 900,50 C1050,20 1200,80 1200,50 L1200,100 L0,100 Z"/></svg>
+    </div>
   </div>
 </div>
 
@@ -1826,6 +1839,34 @@ window.addEventListener('scroll',()=>{
   backToTopEl.classList.toggle('visible',window.scrollY>600);
 },{passive:true});
 backToTopEl.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+/* ── PARALLAX CLOUDS & SEA ────────────────────────── */
+const parallaxReducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(!parallaxReducedMotion){
+  const parallaxLayers=[
+    { el:document.getElementById('skyClouds'), rate:0.05, max:70 },
+    { el:document.querySelector('.sea-layer.sea-back'), rate:-0.06, max:50 },
+    { el:document.querySelector('.sea-layer.sea-front'), rate:-0.12, max:80 }
+  ].filter(l=>l.el);
+
+  let parallaxTicking=false;
+  function applyParallax(){
+    const y=window.scrollY;
+    parallaxLayers.forEach(({el,rate,max})=>{
+      const raw=y*rate;
+      const clamped=Math.sign(raw)*Math.min(Math.abs(raw),max);
+      el.style.transform=`translateY(${clamped}px)`;
+    });
+    parallaxTicking=false;
+  }
+  window.addEventListener('scroll',()=>{
+    if(!parallaxTicking){
+      requestAnimationFrame(applyParallax);
+      parallaxTicking=true;
+    }
+  },{passive:true});
+  applyParallax();
+}
 
 /* ── SALESFORCE ICONS DRIFTING THROUGH SPACE ─────── */
 const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
