@@ -166,10 +166,14 @@ body{
 /* ═══════════════════════════════════════════
    CANVAS BACKGROUND — animated cloud mesh
 ═══════════════════════════════════════════ */
-#bg-canvas{
+#bg-canvas,#three-canvas{
   position:fixed;top:0;left:0;width:100%;height:100%;
   z-index:0;pointer-events:none;
 }
+/* When the WebGL scene is live, the 2D fallback mesh and the SVG robot
+   flyby step aside — the 3D robot takes over as THE robot. */
+.has-three #bg-canvas{display:none;}
+.has-three .agentforce-flyby{display:none;}
 
 /* ═══════════════════════════════════════════
    SCROLLBAR
@@ -1379,6 +1383,7 @@ body.is-loading{overflow:hidden;height:100vh;}
 
 <!-- ANIMATED BACKGROUND CANVAS -->
 <canvas id="bg-canvas"></canvas>
+<canvas id="three-canvas" aria-hidden="true"></canvas>
 <div class="sf-space" id="sfSpace" aria-hidden="true"></div>
 
 <!-- ═══════ SKY WITH DRIFTING CLOUDS ═══════ -->
@@ -2080,7 +2085,11 @@ function lazyStart(fn){
     resize(); initParticles(); draw();
   });
 
-  lazyStart(()=>{ resize(); initParticles(); draw(); });
+  // 2D mesh is the FALLBACK — skipped when the Three.js scene initialized
+  lazyStart(()=>{
+    if(document.documentElement.classList.contains('has-three')) return;
+    resize(); initParticles(); draw();
+  });
 })();
 
 /* ── CINEMATIC HERO: mouse parallax + scroll scale/fade ── */
@@ -2380,6 +2389,253 @@ if(isFinePointer && !reducedMotion){
     card.addEventListener('mouseleave',()=>{ card.style.transform=''; });
   });
 }
+</script>
+
+<!-- ═══════ THREE.JS SCENE — glossy 3D robot mascot, particles, planet ═══════
+     Vendored locally (vendor/three.module.min.js) so the site has no CDN
+     dependency. Falls back to the 2D mesh + SVG robot when WebGL or module
+     support is unavailable, or when the visitor prefers reduced motion. -->
+<script type="module">
+import * as THREE from './vendor/three.module.min.js';
+
+(function(){
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const canvas = document.getElementById('three-canvas');
+  if (!canvas) return;
+
+  let renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  } catch (e) {
+    return; // no WebGL — CSS world + 2D mesh + SVG robot remain
+  }
+  renderer.setClearColor(0x000000, 0);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 100);
+  camera.position.set(0, 0, 9);
+
+  /* ---- lights ---- */
+  const ambient = new THREE.AmbientLight(0xbcd8ff, 1.6);
+  const hemi = new THREE.HemisphereLight(0xcfe8ff, 0x223355, 1.3);
+  const key = new THREE.DirectionalLight(0xffffff, 2.6);
+  key.position.set(4, 6, 7);
+  const rim = new THREE.PointLight(0x1b96ff, 14, 40);
+  rim.position.set(-5, -2, 4);
+  scene.add(ambient, hemi, key, rim);
+
+  /* ---- materials (glossy toy shells) ---- */
+  const shellMat = new THREE.MeshPhysicalMaterial({
+    color: 0xf2f7ff, roughness: 0.3, metalness: 0.05,
+    clearcoat: 0.7, clearcoatRoughness: 0.4
+  });
+  const darkMat = new THREE.MeshPhysicalMaterial({
+    color: 0x0a1222, roughness: 0.08, metalness: 0.1,
+    clearcoat: 1, clearcoatRoughness: 0.05
+  });
+  const bootMat = new THREE.MeshPhysicalMaterial({
+    color: 0x3c4a63, roughness: 0.4, clearcoat: 0.6
+  });
+  const gemMat = new THREE.MeshPhysicalMaterial({
+    color: 0x66c9ff, emissive: 0x1b96ff, emissiveIntensity: 1.4,
+    roughness: 0.1, clearcoat: 1
+  });
+  const ledMat = new THREE.MeshBasicMaterial({ color: 0x5fe0ff });
+  const flameMat = new THREE.MeshBasicMaterial({
+    color: 0xffb648, transparent: true, opacity: 0.85, depthWrite: false
+  });
+
+  /* ---- robot ---- */
+  const robot = new THREE.Group();
+
+  const body = new THREE.Mesh(new THREE.SphereGeometry(1, 40, 32), shellMat);
+  body.scale.set(1, 1.12, 0.95);
+  robot.add(body);
+
+  const gem = new THREE.Mesh(new THREE.OctahedronGeometry(0.24), gemMat);
+  gem.position.set(0, -0.08, 0.9);
+  robot.add(gem);
+
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.74, 40, 32), shellMat);
+  head.position.y = 1.42;
+  robot.add(head);
+
+  const visor = new THREE.Mesh(new THREE.CapsuleGeometry(0.26, 0.58, 8, 20), darkMat);
+  visor.rotation.z = Math.PI / 2;
+  visor.position.set(0, 1.46, 0.62);
+  visor.scale.set(1, 1, 0.5);
+  robot.add(visor);
+
+  const eyeGeo = new THREE.BoxGeometry(0.1, 0.1, 0.02);
+  for (const ex of [-0.18, 0.18]) {
+    const eye = new THREE.Mesh(eyeGeo, ledMat);
+    eye.position.set(ex, 1.47, 0.82);
+    robot.add(eye);
+  }
+
+  for (const sx of [-0.76, 0.76]) {
+    const ear = new THREE.Mesh(new THREE.SphereGeometry(0.16, 20, 16), shellMat);
+    ear.position.set(sx, 1.44, 0);
+    robot.add(ear);
+  }
+
+  const antenna = new THREE.Mesh(new THREE.CylinderGeometry(0.028, 0.028, 0.34, 10), bootMat);
+  antenna.position.y = 2.3;
+  robot.add(antenna);
+  const antennaTip = new THREE.Mesh(new THREE.SphereGeometry(0.09, 16, 12), gemMat);
+  antennaTip.position.y = 2.5;
+  robot.add(antennaTip);
+
+  const armGeo = new THREE.CapsuleGeometry(0.17, 0.42, 6, 14);
+  for (const ax of [-1.02, 1.02]) {
+    const arm = new THREE.Mesh(armGeo, shellMat);
+    arm.position.set(ax, 0.15, 0);
+    arm.rotation.z = ax < 0 ? 0.5 : -0.5;
+    robot.add(arm);
+  }
+
+  const flames = [];
+  for (const bx of [-0.42, 0.42]) {
+    const boot = new THREE.Mesh(new THREE.CapsuleGeometry(0.21, 0.3, 6, 14), bootMat);
+    boot.position.set(bx, -1.22, 0);
+    robot.add(boot);
+    const flame = new THREE.Mesh(new THREE.ConeGeometry(0.15, 0.55, 12), flameMat);
+    flame.rotation.x = Math.PI; // point down
+    flame.position.set(bx, -1.75, 0);
+    robot.add(flame);
+    flames.push(flame);
+  }
+
+  robot.scale.setScalar(0.78);
+  scene.add(robot);
+
+  /* ---- floating particles ---- */
+  const isNarrow = window.innerWidth < 700;
+  const starCount = isNarrow ? 140 : 320;
+  const positions = new Float32Array(starCount * 3);
+  for (let i = 0; i < starCount; i++) {
+    positions[i * 3]     = (Math.random() - 0.5) * 20;
+    positions[i * 3 + 1] = (Math.random() - 0.5) * 12;
+    positions[i * 3 + 2] = -5 + Math.random() * 7;
+  }
+  const starGeo = new THREE.BufferGeometry();
+  starGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  const starMat = new THREE.PointsMaterial({
+    color: 0x7ec4ff, size: 0.05, transparent: true, opacity: 0.7,
+    blending: THREE.AdditiveBlending, depthWrite: false
+  });
+  const stars = new THREE.Points(starGeo, starMat);
+  scene.add(stars);
+
+  /* ---- ringed planet, far background ---- */
+  const planet = new THREE.Group();
+  const globe = new THREE.Mesh(
+    new THREE.SphereGeometry(0.85, 32, 24),
+    new THREE.MeshStandardMaterial({ color: 0x1b96ff, roughness: 0.6, emissive: 0x0b3e7a, emissiveIntensity: 0.5 })
+  );
+  const ring = new THREE.Mesh(
+    new THREE.TorusGeometry(1.35, 0.045, 10, 60),
+    new THREE.MeshStandardMaterial({ color: 0x9bc4ef, roughness: 0.5, transparent: true, opacity: 0.8 })
+  );
+  ring.rotation.x = Math.PI / 2.4;
+  planet.add(globe, ring);
+  planet.position.set(-7.5, 3.6, -7);
+  scene.add(planet);
+
+  /* ---- theme adaptation ---- */
+  function applyTheme() {
+    const t = document.documentElement.getAttribute('data-theme') || 'night';
+    const day = (t === 'afternoon' || t === 'morning' || t === 'light');
+    ambient.intensity = day ? 2.6 : 1.4;
+    starMat.opacity = day ? 0.3 : 0.75;
+    rim.intensity = day ? 8 : 14;
+  }
+  applyTheme();
+  new MutationObserver(applyTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+  /* ---- interaction state ---- */
+  let mouseX = 0, mouseY = 0;
+  window.addEventListener('mousemove', (e) => {
+    mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+    mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+  }, { passive: true });
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+
+  function anchorX() { return camera.aspect > 1 ? 3.0 : 0.9; }
+  const anchorY = 0.2;
+
+  function smoothstep(a, b, x) {
+    const t = Math.min(Math.max((x - a) / (b - a), 0), 1);
+    return t * t * (3 - 2 * t);
+  }
+
+  /* ---- animation: idle bob + periodic sortie with a backflip ---- */
+  const clock = new THREE.Clock();
+  let t = 0;
+  const SORTIE_EVERY = 18, SORTIE_LEN = 7;
+  let nextSortie = 9, sortieStart = -1;
+
+  function animate() {
+    requestAnimationFrame(animate);
+    const dt = Math.min(clock.getDelta(), 0.05);
+    t += dt;
+
+    const ax = anchorX();
+    let x = ax, y = anchorY, rotX = 0, rotY = 0, rotZ = 0, flameBoost = 1;
+
+    if (sortieStart < 0 && t >= nextSortie) sortieStart = t;
+    if (sortieStart >= 0) {
+      const p = (t - sortieStart) / SORTIE_LEN;
+      if (p >= 1) {
+        sortieStart = -1;
+        nextSortie = t + SORTIE_EVERY;
+      } else {
+        const reach = ax + 4.6;
+        x = ax - Math.sin(p * Math.PI) * reach;
+        y = anchorY + Math.sin(p * Math.PI * 2) * 1.15;
+        rotY = -Math.sin(p * Math.PI) * 0.65;
+        rotZ = Math.sin(p * Math.PI * 2) * 0.3;
+        rotX = -Math.PI * 2 * smoothstep(0.42, 0.62, p); // backflip mid-flight
+        flameBoost = 1 + Math.sin(p * Math.PI) * 0.9;
+      }
+    }
+
+    robot.position.set(x, y + Math.sin(t * 1.3) * 0.16, 0);
+    robot.rotation.set(
+      rotX + Math.sin(t * 0.9) * 0.03,
+      rotY + Math.sin(t * 0.55) * 0.12,
+      rotZ + Math.sin(t * 0.75) * 0.05
+    );
+
+    for (let i = 0; i < flames.length; i++) {
+      const f = flames[i];
+      const flick = 0.75 + Math.sin(t * 19 + i * 2.1) * 0.25;
+      f.scale.set(1, flick * flameBoost, 1);
+      f.material.opacity = 0.55 + flick * 0.35;
+    }
+
+    stars.rotation.y += dt * 0.012;
+    planet.rotation.y += dt * 0.15;
+    ring.rotation.z += dt * 0.05;
+    planet.position.y = 3.6 + Math.sin(t * 0.4) * 0.2;
+
+    camera.position.x += (mouseX * 0.55 - camera.position.x) * 0.04;
+    camera.position.y += (-mouseY * 0.35 - camera.position.y) * 0.04;
+    camera.lookAt(0, 0, 0);
+
+    renderer.render(scene, camera);
+  }
+
+  animate();
+  document.documentElement.classList.add('has-three');
+})();
 </script>
 </body>
 </html>
