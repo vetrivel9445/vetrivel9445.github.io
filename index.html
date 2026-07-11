@@ -636,12 +636,152 @@ footer strong{color:var(--text);font-weight:500;}
   footer{flex-direction:column;gap:8px;text-align:center;}
   .skill-row{grid-template-columns:1fr;gap:10px;}
 }
+
+/* ═══════════════════════════════════════════
+   PRELOADER
+═══════════════════════════════════════════ */
+body.is-loading{overflow:hidden;height:100vh;}
+#preloader{
+  position:fixed;inset:0;z-index:9999;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--bg);
+  transition:opacity 0.7s ease,visibility 0.7s;
+}
+#preloader.hidden{opacity:0;visibility:hidden;pointer-events:none;}
+.preloader-mark{position:relative;width:84px;height:84px;display:flex;align-items:center;justify-content:center;}
+.preloader-ring{
+  position:absolute;inset:0;border-radius:50%;
+  border:2px solid var(--border);
+  border-top-color:var(--sf-blue);
+  border-right-color:var(--sf-teal);
+  animation:preloaderSpin 0.9s linear infinite;
+}
+.preloader-logo{
+  font-family:var(--f-mono);font-weight:500;font-size:13px;
+  color:var(--sf-sky);letter-spacing:0.5px;
+  animation:preloaderPulse 1.1s ease-in-out infinite;
+}
+@keyframes preloaderSpin{to{transform:rotate(360deg);}}
+@keyframes preloaderPulse{0%,100%{opacity:1;}50%{opacity:0.45;}}
+
+/* ═══════════════════════════════════════════
+   SCROLL PROGRESS BAR
+═══════════════════════════════════════════ */
+#scrollProgress{
+  position:fixed;top:0;left:0;height:2.5px;width:0%;
+  background:linear-gradient(90deg,var(--sf-blue),var(--sf-sky),var(--sf-teal));
+  z-index:300;box-shadow:0 0 10px rgba(27,150,255,0.5);
+  transition:width 0.08s linear;
+}
+
+/* ═══════════════════════════════════════════
+   CUSTOM CURSOR (desktop only)
+═══════════════════════════════════════════ */
+@media (hover:hover) and (pointer:fine){
+  body.custom-cursor,body.custom-cursor a,body.custom-cursor button{cursor:none;}
+  .cursor-glow{
+    position:fixed;top:0;left:0;width:440px;height:440px;border-radius:50%;
+    background:radial-gradient(circle,rgba(1,118,211,0.14),rgba(6,174,213,0.05) 45%,transparent 70%);
+    pointer-events:none;z-index:1;transform:translate(-50%,-50%);will-change:transform;
+  }
+  .cursor-dot{
+    position:fixed;top:0;left:0;width:7px;height:7px;border-radius:50%;
+    background:var(--sf-sky);pointer-events:none;z-index:9998;
+    transform:translate(-50%,-50%);mix-blend-mode:difference;
+  }
+  .cursor-ring{
+    position:fixed;top:0;left:0;width:32px;height:32px;border-radius:50%;
+    border:1.5px solid var(--sf-blue);pointer-events:none;z-index:9997;opacity:0.65;
+    transform:translate(-50%,-50%);
+    transition:width 0.25s ease,height 0.25s ease,border-color 0.25s,background 0.25s;
+  }
+  .cursor-ring.hovering{width:54px;height:54px;border-color:var(--green);background:rgba(34,211,165,0.08);}
+}
+@media (hover:none),(pointer:coarse){
+  .cursor-glow,.cursor-dot,.cursor-ring{display:none;}
+}
+
+/* ═══════════════════════════════════════════
+   3D TILT CARDS
+═══════════════════════════════════════════ */
+.tilt{transition:transform 0.12s ease-out;will-change:transform;}
+
+/* ═══════════════════════════════════════════
+   REVEAL VARIANTS
+═══════════════════════════════════════════ */
+.reveal-scale{opacity:0;transform:scale(0.88);transition:opacity 0.7s ease,transform 0.6s cubic-bezier(0.34,1.56,0.64,1);}
+.reveal-scale.visible{opacity:1;transform:scale(1);}
+.reveal-left{opacity:0;transform:translateX(-42px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal-left.visible{opacity:1;transform:translateX(0);}
+.reveal-right{opacity:0;transform:translateX(42px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal-right.visible{opacity:1;transform:translateX(0);}
+
+/* ═══════════════════════════════════════════
+   TACTILE / iOS-STYLE PRESS FEEDBACK
+═══════════════════════════════════════════ */
+.btn-glow:active,.btn-ghost:active,.nav-cta:active,.cert-chip:active,.contact-card:active,#backToTop:active{
+  transform:scale(0.94);transition:transform 0.12s ease;
+}
+
+/* ═══════════════════════════════════════════
+   SALESFORCE ICONS — FLOATING THROUGH SPACE
+═══════════════════════════════════════════ */
+.sf-space{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.sf-icon{
+  position:absolute;top:-60px;left:0;opacity:0;line-height:1;
+  filter:drop-shadow(0 0 10px rgba(1,118,211,0.35));
+  animation:sfFall linear infinite;will-change:transform,opacity;
+}
+@keyframes sfFall{
+  0%{transform:translate3d(0,0,0) rotate(0deg);opacity:0;}
+  8%{opacity:var(--sf-opacity,0.3);}
+  50%{transform:translate3d(var(--drift,30px),55vh,0) rotate(180deg);}
+  92%{opacity:var(--sf-opacity,0.3);}
+  100%{transform:translate3d(0,calc(100vh + 140px),0) rotate(360deg);opacity:0;}
+}
+
+/* ═══════════════════════════════════════════
+   BACK TO TOP
+═══════════════════════════════════════════ */
+#backToTop{
+  position:fixed;bottom:1.6rem;right:1.6rem;width:44px;height:44px;border-radius:50%;
+  border:1px solid var(--border);background:rgba(8,20,38,0.85);backdrop-filter:blur(14px);
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;
+  color:var(--text);cursor:pointer;z-index:290;
+  opacity:0;transform:translateY(18px) scale(0.8);pointer-events:none;
+  box-shadow:0 8px 30px rgba(0,0,0,0.4);
+  transition:opacity 0.3s,transform 0.35s cubic-bezier(0.34,1.56,0.64,1),border-color 0.3s;
+}
+#backToTop.visible{opacity:1;transform:translateY(0) scale(1);pointer-events:auto;}
+#backToTop:hover{border-color:var(--sf-sky);box-shadow:0 8px 30px rgba(1,118,211,0.35);}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:0.001ms !important;animation-iteration-count:1 !important;transition-duration:0.001ms !important;scroll-behavior:auto !important;}
+  .sf-space{display:none;}
+}
 </style>
 </head>
-<body>
+<body class="is-loading">
+
+<!-- ═══════ PRELOADER ═══════ -->
+<div id="preloader" aria-hidden="true">
+  <div class="preloader-mark">
+    <div class="preloader-ring"></div>
+    <div class="preloader-logo">vk()</div>
+  </div>
+</div>
+
+<!-- ═══════ SCROLL PROGRESS ═══════ -->
+<div id="scrollProgress"></div>
+
+<!-- ═══════ CUSTOM CURSOR ═══════ -->
+<div class="cursor-glow" id="cursorGlow"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="cursor-dot" id="cursorDot"></div>
 
 <!-- ANIMATED BACKGROUND CANVAS -->
 <canvas id="bg-canvas"></canvas>
+<div class="sf-space" id="sfSpace" aria-hidden="true"></div>
 
 <!-- NAV -->
 <nav>
@@ -692,19 +832,19 @@ footer strong{color:var(--text);font-weight:500;}
   </div>
 
   <div class="metrics-strip">
-    <div class="metric-cell">
+    <div class="metric-cell tilt">
       <div class="metric-num">3<sub>+</sub></div>
       <div class="metric-lbl">Years in production</div>
     </div>
-    <div class="metric-cell">
+    <div class="metric-cell tilt">
       <div class="metric-num">3<sub>×</sub></div>
       <div class="metric-lbl">SF Certifications</div>
     </div>
-    <div class="metric-cell">
+    <div class="metric-cell tilt">
       <div class="metric-num">90<sub>%+</sub></div>
       <div class="metric-lbl">Apex test coverage</div>
     </div>
-    <div class="metric-cell">
+    <div class="metric-cell tilt">
       <div class="metric-num">0</div>
       <div class="metric-lbl">Gov. limit violations</div>
     </div>
@@ -718,7 +858,7 @@ footer strong{color:var(--text);font-weight:500;}
     <div class="sec-rule"></div>
   </div>
   <div class="skills-grid">
-    <div class="skill-row reveal reveal-d1">
+    <div class="skill-row tilt reveal reveal-d1">
       <div class="skill-cat">Apex</div>
       <div class="skill-pills">
         <span class="skill-pill">Triggers</span><span class="skill-pill">Batch Apex</span>
@@ -727,7 +867,7 @@ footer strong{color:var(--text);font-weight:500;}
         <span class="skill-pill">Governor Limits</span><span class="skill-pill">Test Classes</span>
       </div>
     </div>
-    <div class="skill-row reveal reveal-d2">
+    <div class="skill-row tilt reveal reveal-d2">
       <div class="skill-cat">LWC</div>
       <div class="skill-pills">
         <span class="skill-pill">@wire</span><span class="skill-pill">@api</span>
@@ -735,7 +875,7 @@ footer strong{color:var(--text);font-weight:500;}
         <span class="skill-pill">JavaScript ES6+</span><span class="skill-pill">HTML5</span><span class="skill-pill">CSS3</span>
       </div>
     </div>
-    <div class="skill-row reveal reveal-d3">
+    <div class="skill-row tilt reveal reveal-d3">
       <div class="skill-cat">Agentforce AI</div>
       <div class="skill-pills">
         <span class="skill-pill">Agent Identity</span><span class="skill-pill">Topics</span>
@@ -743,7 +883,7 @@ footer strong{color:var(--text);font-weight:500;}
         <span class="skill-pill">Prompt Builder</span><span class="skill-pill">Einstein</span>
       </div>
     </div>
-    <div class="skill-row reveal reveal-d1">
+    <div class="skill-row tilt reveal reveal-d1">
       <div class="skill-cat">Integrations</div>
       <div class="skill-pills">
         <span class="skill-pill">REST API</span><span class="skill-pill">SOAP API</span>
@@ -751,7 +891,7 @@ footer strong{color:var(--text);font-weight:500;}
         <span class="skill-pill">Platform Events</span><span class="skill-pill">CDC</span>
       </div>
     </div>
-    <div class="skill-row reveal reveal-d2">
+    <div class="skill-row tilt reveal reveal-d2">
       <div class="skill-cat">Automation</div>
       <div class="skill-pills">
         <span class="skill-pill">Screen Flows</span><span class="skill-pill">Record-Triggered</span>
@@ -759,7 +899,7 @@ footer strong{color:var(--text);font-weight:500;}
         <span class="skill-pill">Data Loader</span>
       </div>
     </div>
-    <div class="skill-row reveal reveal-d3">
+    <div class="skill-row tilt reveal reveal-d3">
       <div class="skill-cat">Clouds & DevOps</div>
       <div class="skill-pills">
         <span class="skill-pill">Sales Cloud</span><span class="skill-pill">Service Cloud</span>
@@ -778,7 +918,7 @@ footer strong{color:var(--text);font-weight:500;}
   </div>
   <div class="projects-grid">
 
-    <div class="proj-card featured reveal">
+    <div class="proj-card tilt featured reveal-scale">
       <div class="proj-type">Agentforce AI · Service Cloud</div>
       <div class="proj-title">Agentforce Case Bot <span class="new-badge">New</span></div>
       <p class="proj-desc">AI agent wired into Service Cloud that triages every incoming case automatically — scores priority, detects category, suggests Knowledge Base articles, and routes to the correct queue. Built with <code>@InvocableMethod</code> Apex and the Atlas Reasoning Engine. Reduces manual triage by 70%.</p>
@@ -793,7 +933,7 @@ footer strong{color:var(--text);font-weight:500;}
       </div>
     </div>
 
-    <div class="proj-card reveal reveal-d1">
+    <div class="proj-card tilt reveal reveal-d1">
       <div class="proj-type">Custom Engine · Apex · LWC</div>
       <div class="proj-title">Custom Approval Engine <span class="new-badge">New</span></div>
       <p class="proj-desc">Multi-step approval system with no native restrictions. Send notifications and emails to any person — internal, external, vendor. Required documents and actions enforced per step. Full notification audit log.</p>
@@ -807,7 +947,7 @@ footer strong{color:var(--text);font-weight:500;}
       </div>
     </div>
 
-    <div class="proj-card reveal reveal-d2">
+    <div class="proj-card tilt reveal reveal-d2">
       <div class="proj-type">Apex Framework · Design Pattern</div>
       <div class="proj-title">Apex Trigger Framework <span class="new-badge">New</span></div>
       <p class="proj-desc">Enterprise TriggerHandler pattern — one trigger per object, bypass API for Data Loader, loop prevention at five iterations. 95% test coverage. Drop-in for any org.</p>
@@ -821,7 +961,7 @@ footer strong{color:var(--text);font-weight:500;}
       </div>
     </div>
 
-    <div class="proj-card reveal reveal-d3">
+    <div class="proj-card tilt reveal reveal-d3">
       <div class="proj-type">LWC · Sales Cloud</div>
       <div class="proj-title">Smart Lead Qualifier <span class="new-badge">New</span></div>
       <p class="proj-desc">Scores every Sales Cloud lead 0–100 by title, industry, source and engagement. LWC dashboard surfaces hot leads. Auto-creates follow-up tasks for scores above 70.</p>
@@ -835,7 +975,7 @@ footer strong{color:var(--text);font-weight:500;}
       </div>
     </div>
 
-    <div class="proj-card reveal reveal-d1">
+    <div class="proj-card tilt reveal reveal-d1">
       <div class="proj-type">LWC Component · Personal</div>
       <div class="proj-title">DataTable with Inline Picklist</div>
       <p class="proj-desc">Reusable LWC DataTable with inline Rating Picklist that saves without a page reload. Reference implementation for @wire, custom events, and reactive property patterns.</p>
@@ -899,26 +1039,26 @@ footer strong{color:var(--text);font-weight:500;}
     <div class="sec-rule"></div>
   </div>
   <div class="certs-grid">
-    <div class="cert-card reveal reveal-d1">
+    <div class="cert-card tilt reveal reveal-d1">
       <div class="cert-icon">🤖</div>
       <div class="cert-name">Agentforce Specialist</div>
       <div class="cert-meta">Issued January 2025</div>
       <span class="cert-badge">Active</span>
     </div>
-    <div class="cert-card reveal reveal-d2">
+    <div class="cert-card tilt reveal reveal-d2">
       <div class="cert-icon">💻</div>
       <div class="cert-name">Platform Developer I</div>
       <div class="cert-meta">Feb 2023 · ID 3021489</div>
       <span class="cert-badge">Active</span>
     </div>
-    <div class="cert-card reveal reveal-d3">
+    <div class="cert-card tilt reveal reveal-d3">
       <div class="cert-icon">⚙️</div>
       <div class="cert-name">Platform Administrator</div>
       <div class="cert-meta">Dec 2022 · ID 2805329</div>
       <span class="cert-badge">Active</span>
     </div>
   </div>
-  <div class="trailhead-row reveal">
+  <div class="trailhead-row reveal-scale">
     <div class="trailhead-info">
       <h4>Trailhead Ranger</h4>
       <p>Verified · <a href="https://trailblazer.me/id/vsalesforce35" target="_blank" style="color:var(--sf-sky);">trailblazer.me/id/vsalesforce35</a></p>
@@ -938,19 +1078,19 @@ footer strong{color:var(--text);font-weight:500;}
     <div class="sec-rule"></div>
   </div>
   <div class="contact-grid">
-    <a href="mailto:kvetrivel919@gmail.com" class="contact-card reveal reveal-d1">
+    <a href="mailto:kvetrivel919@gmail.com" class="contact-card tilt reveal reveal-d1">
       <div class="contact-lbl">Email</div>
       <div class="contact-val">kvetrivel919@gmail.com</div>
     </a>
-    <a href="tel:+919445535605" class="contact-card reveal reveal-d2">
+    <a href="tel:+919445535605" class="contact-card tilt reveal reveal-d2">
       <div class="contact-lbl">Phone</div>
       <div class="contact-val">+91 94455 35605</div>
     </a>
-    <a href="https://linkedin.com/in/vetrivel-k-b42658154" target="_blank" class="contact-card reveal reveal-d1">
+    <a href="https://linkedin.com/in/vetrivel-k-b42658154" target="_blank" class="contact-card tilt reveal reveal-d1">
       <div class="contact-lbl">LinkedIn</div>
       <div class="contact-val">vetrivel-k-b42658154</div>
     </a>
-    <a href="https://github.com/vetrivel9445" target="_blank" class="contact-card reveal reveal-d2">
+    <a href="https://github.com/vetrivel9445" target="_blank" class="contact-card tilt reveal reveal-d2">
       <div class="contact-lbl">GitHub</div>
       <div class="contact-val">github.com/vetrivel9445</div>
     </a>
@@ -963,6 +1103,9 @@ footer strong{color:var(--text);font-weight:500;}
 </footer>
 
 </div><!-- .wrap -->
+
+<!-- ═══════ BACK TO TOP ═══════ -->
+<button id="backToTop" aria-label="Back to top">↑</button>
 
 <script>
 /* ── ANIMATED PARTICLE MESH BACKGROUND ─────────────── */
@@ -1082,7 +1225,7 @@ const observer=new IntersectionObserver(entries=>{
     }
   });
 },{threshold:0.08});
-document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+document.querySelectorAll('.reveal, .reveal-scale, .reveal-left, .reveal-right').forEach(el=>observer.observe(el));
 
 /* ── NAV ACTIVE HIGHLIGHT ────────────────────────── */
 const sections=document.querySelectorAll('section[id]');
@@ -1127,6 +1270,119 @@ const metricObserver=new IntersectionObserver(entries=>{
 },{threshold:0.3});
 const strip=document.querySelector('.metrics-strip');
 if(strip) metricObserver.observe(strip);
+
+/* ── PRELOADER ────────────────────────────────────── */
+window.addEventListener('load',()=>{
+  const preloader=document.getElementById('preloader');
+  setTimeout(()=>{
+    preloader.classList.add('hidden');
+    document.body.classList.remove('is-loading');
+  },400);
+});
+
+/* ── SCROLL PROGRESS BAR ──────────────────────────── */
+const scrollProgressEl=document.getElementById('scrollProgress');
+function updateScrollProgress(){
+  const h=document.documentElement;
+  const max=h.scrollHeight-h.clientHeight;
+  const pct=max>0?(window.scrollY/max)*100:0;
+  scrollProgressEl.style.width=pct+'%';
+}
+window.addEventListener('scroll',updateScrollProgress,{passive:true});
+updateScrollProgress();
+
+/* ── BACK TO TOP ──────────────────────────────────── */
+const backToTopEl=document.getElementById('backToTop');
+window.addEventListener('scroll',()=>{
+  backToTopEl.classList.toggle('visible',window.scrollY>600);
+},{passive:true});
+backToTopEl.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+/* ── SALESFORCE ICONS DRIFTING THROUGH SPACE ─────── */
+const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const SF_ICONS=['☁️','⚡','🤖','⚙️','🔧','🧩','🔗','📊','💻','🎯'];
+function initSpaceIcons(){
+  if(reducedMotion) return;
+  const container=document.getElementById('sfSpace');
+  if(!container) return;
+  const count=window.innerWidth<640?10:18;
+  const frag=document.createDocumentFragment();
+  for(let i=0;i<count;i++){
+    const el=document.createElement('span');
+    el.className='sf-icon';
+    el.textContent=SF_ICONS[Math.floor(Math.random()*SF_ICONS.length)];
+    const duration=(18+Math.random()*24).toFixed(1);
+    const delay=(Math.random()*-40).toFixed(1);
+    const left=(Math.random()*100).toFixed(1);
+    const size=(1+Math.random()*1.4).toFixed(2);
+    const drift=Math.round(Math.random()*160-80)+'px';
+    const opacity=(0.1+Math.random()*0.26).toFixed(2);
+    el.style.left=left+'%';
+    el.style.fontSize=size+'rem';
+    el.style.animationDuration=duration+'s';
+    el.style.animationDelay=delay+'s';
+    el.style.setProperty('--drift',drift);
+    el.style.setProperty('--sf-opacity',opacity);
+    frag.appendChild(el);
+  }
+  container.appendChild(frag);
+}
+initSpaceIcons();
+
+/* ── DESKTOP-ONLY: CUSTOM CURSOR, MAGNETIC BUTTONS, 3D TILT ── */
+const isFinePointer=window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+if(isFinePointer && !reducedMotion){
+  document.body.classList.add('custom-cursor');
+  const dot=document.getElementById('cursorDot');
+  const ring=document.getElementById('cursorRing');
+  const glow=document.getElementById('cursorGlow');
+
+  let mouseX=window.innerWidth/2, mouseY=window.innerHeight/2;
+  let ringX=mouseX, ringY=mouseY, glowX=mouseX, glowY=mouseY;
+
+  window.addEventListener('mousemove',(e)=>{
+    mouseX=e.clientX; mouseY=e.clientY;
+    dot.style.transform=`translate(${mouseX}px, ${mouseY}px) translate(-50%,-50%)`;
+  });
+
+  function cursorLoop(){
+    ringX+=(mouseX-ringX)*0.18;
+    ringY+=(mouseY-ringY)*0.18;
+    glowX+=(mouseX-glowX)*0.08;
+    glowY+=(mouseY-glowY)*0.08;
+    ring.style.transform=`translate(${ringX}px, ${ringY}px) translate(-50%,-50%)`;
+    glow.style.transform=`translate(${glowX}px, ${glowY}px) translate(-50%,-50%)`;
+    requestAnimationFrame(cursorLoop);
+  }
+  requestAnimationFrame(cursorLoop);
+
+  document.querySelectorAll('a, button, .skill-row, .proj-card, .cert-card, .contact-card, .metric-cell').forEach(el=>{
+    el.addEventListener('mouseenter',()=>ring.classList.add('hovering'));
+    el.addEventListener('mouseleave',()=>ring.classList.remove('hovering'));
+  });
+
+  // Magnetic buttons
+  document.querySelectorAll('.btn-glow, .btn-ghost, .nav-cta').forEach(btn=>{
+    btn.addEventListener('mousemove',(e)=>{
+      const r=btn.getBoundingClientRect();
+      const relX=e.clientX-r.left-r.width/2;
+      const relY=e.clientY-r.top-r.height/2;
+      btn.style.transform=`translate(${relX*0.22}px, ${relY*0.32}px)`;
+    });
+    btn.addEventListener('mouseleave',()=>{ btn.style.transform=''; });
+  });
+
+  // 3D tilt cards
+  document.querySelectorAll('.tilt').forEach(card=>{
+    card.addEventListener('mousemove',(e)=>{
+      const r=card.getBoundingClientRect();
+      const px=(e.clientX-r.left)/r.width-0.5;
+      const py=(e.clientY-r.top)/r.height-0.5;
+      card.style.transform=`perspective(700px) rotateX(${(-py*8).toFixed(2)}deg) rotateY(${(px*10).toFixed(2)}deg) translateY(-4px)`;
+    });
+    card.addEventListener('mouseleave',()=>{ card.style.transform=''; });
+  });
+}
 </script>
 </body>
 </html>
