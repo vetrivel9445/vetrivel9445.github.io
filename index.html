@@ -1754,14 +1754,16 @@ body.is-loading{overflow:hidden;height:100vh;}
     <div class="proj-card tilt featured reveal-scale">
       <div class="proj-type">LWC · Leaflet · Platform Events</div>
       <div class="proj-title">Live Trip Tracker <span class="new-badge">New</span></div>
-      <p class="proj-desc">Uber-style live location tracking for sales teams, entirely on platform — a complete, deployable app. A rep starts their day and the browser's geolocation API streams GPS positions into Salesforce — buffered into 8-second batches, stored as trip points, and re-published as <code>Trip_Ping__e</code> platform events. The manager picks any active trip and watches the rep's marker glide across a <code>Leaflet</code> map in real time over <code>empApi</code> — push updates, no polling. Ending the day computes the total distance with the haversine formula. Ships as a full package — Lightning app, rep and manager tabs, permission set, vendored Leaflet, and the OpenStreetMap CSP site — plus a self-contained browser demo that plays the whole rep-to-manager flow offline.</p>
+      <p class="proj-desc">Uber-style live location tracking for sales teams, entirely on platform — a complete, deployable app. A rep starts their day and the browser's geolocation API streams GPS positions into Salesforce — buffered into 8-second batches, stored as trip points, and re-published as <code>Trip_Ping__e</code> platform events. The manager picks any active trip and watches the rep's marker glide across a <code>Leaflet</code> map in real time over <code>empApi</code> — push updates, no polling. The day rolls itself up into a field-visit report: start &amp; end point with reverse-geocoded addresses (OpenStreetMap Nominatim), kilometers covered by haversine, every customer visit logged with check-in/out and meeting minutes, and an auto-calculated daily allowance — a formula reading rates from custom metadata (base + km-rate + visit-rate), so admins tune payouts with no code. Ships as a full package — Lightning app, rep and manager tabs, permission set, roll-up + formula fields, vendored Leaflet, and the OpenStreetMap CSP sites — plus a self-contained browser demo that plays the whole rep-to-manager flow offline.</p>
       <div class="proj-stack">
         <span class="proj-tag">LWC</span><span class="proj-tag">Leaflet</span>
         <span class="proj-tag">Platform Events</span><span class="proj-tag">empApi</span>
         <span class="proj-tag">Geolocation</span><span class="proj-tag">Haversine</span>
+        <span class="proj-tag">Reverse Geocoding</span><span class="proj-tag">Roll-up Summary</span>
+        <span class="proj-tag">Custom Metadata</span>
       </div>
       <div class="proj-footer">
-        <span style="font-size:12px;color:var(--muted);">Full Lightning app · Live push tracking · Runnable demo</span>
+        <span style="font-size:12px;color:var(--muted);">Live push tracking · Visits &amp; allowance · Runnable demo</span>
         <a href="https://github.com/vetrivel9445/sf-trip-tracker" target="_blank" class="proj-link">GitHub</a>
       </div>
     </div>
