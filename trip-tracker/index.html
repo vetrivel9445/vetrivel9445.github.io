@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Live Trip Tracker — Working Demo</title>
+<meta name="description" content="A fully working field-team trip tracker: real Leaflet map, live GPS tracking, customer visits, meeting minutes and an auto-calculated daily allowance."/>
+<link rel="stylesheet" href="leaflet/leaflet.css"/>
+<style>
+  :root{
+    --sf-blue:#0176D3; --sf-sky:#1B96FF; --green:#2E844A; --red:#BA0517;
+    --ink:#0B1D3A; --muted:#5A7290; --line:#D8E3F0; --panel:#ffffff; --bg:#EEF4FB;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --ink:#E8F0FA; --muted:#93A7C2; --line:#22344d; --panel:#0f1e33; --bg:#0a1525; }
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);
+    color:var(--ink);min-height:100vh;padding:18px;}
+  a{color:var(--sf-blue);}
+  header{max-width:1080px;margin:0 auto 14px;display:flex;align-items:center;gap:13px;flex-wrap:wrap;}
+  .logo{width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,var(--sf-blue),var(--sf-sky));
+    display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px;
+    box-shadow:0 6px 16px rgba(1,118,211,.35);}
+  header h1{font-size:20px;letter-spacing:-.3px;}
+  header .sub{font-size:12.5px;color:var(--muted);}
+  .back{margin-left:auto;font-size:12.5px;text-decoration:none;font-weight:600;}
+  .wrap{max-width:1080px;margin:0 auto;background:var(--panel);border:1px solid var(--line);
+    border-radius:18px;overflow:hidden;box-shadow:0 16px 44px rgba(11,29,58,.14);}
+  .bar{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap;}
+  .bar h2{font-size:14.5px;} .bar .who{font-size:12px;color:var(--muted);}
+  .live{margin-left:auto;font-size:11px;font-weight:800;letter-spacing:.4px;padding:3px 11px;border-radius:999px;
+    background:rgba(128,128,128,.18);color:var(--muted);}
+  .live.on{background:#fde5e3;color:var(--red);animation:blink 1.5s ease-in-out infinite;}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.5}}
+  #map{height:440px;width:100%;background:#dde6f0;}
+  .controls{display:flex;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap;align-items:center;}
+  button{font:inherit;font-weight:700;font-size:13.5px;border:none;border-radius:10px;padding:10px 16px;cursor:pointer;
+    transition:transform .12s ease, box-shadow .2s ease, opacity .2s;}
+  button:active{transform:scale(.96);}
+  .b-start{background:linear-gradient(180deg,#3FA6F5,var(--sf-blue));color:#fff;box-shadow:0 6px 16px rgba(1,118,211,.4);}
+  .b-end{background:linear-gradient(180deg,#e06666,var(--red));color:#fff;box-shadow:0 6px 16px rgba(186,5,23,.35);}
+  .b-ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink);}
+  button:disabled{opacity:.4;cursor:not-allowed;box-shadow:none;}
+  .visitbox{display:flex;gap:8px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap;}
+  .visitbox input{flex:1;min-width:170px;font:inherit;font-size:13.5px;padding:9px 12px;border:1px solid var(--line);
+    border-radius:10px;background:var(--panel);color:var(--ink);}
+  .stat-row{display:flex;gap:8px;padding:12px 16px;flex-wrap:wrap;}
+  .stat{flex:1;min-width:96px;background:rgba(127,158,199,.09);border:1px solid var(--line);border-radius:11px;padding:9px 12px;}
+  .stat .k{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
+  .stat .v{font-size:18px;font-weight:800;}
+  .stat.allow .v{color:var(--green);}
+  .now{padding:10px 16px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted);min-height:38px;}
+  .now b{color:var(--ink);} .now .meet{color:var(--green);font-weight:700;} .now .err{color:var(--red);font-weight:700;}
+  .visit-badge{background:var(--sf-blue);color:#fff;border-radius:50%;width:26px;height:26px;
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;
+    border:2px solid #fff;box-shadow:0 2px 6px rgba(11,29,58,.4);}
+  .ab-badge{color:#fff;border-radius:50% 50% 50% 0;width:26px;height:26px;rotate:-45deg;
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;
+    border:2px solid #fff;box-shadow:0 2px 6px rgba(11,29,58,.4);}
+  .ab-badge span{rotate:45deg;}
+  .foot{max-width:1080px;margin:14px auto 0;font-size:11.5px;color:var(--muted);text-align:center;line-height:1.6;}
+  .foot code{color:var(--sf-blue);}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">VK</div>
+  <div>
+    <h1>Live Trip Tracker</h1>
+    <div class="sub">Working demo · real Leaflet map · live GPS tracking, visits &amp; daily allowance</div>
+  </div>
+  <a href="../" class="back">← Back to portfolio</a>
+</header>
+
+<div class="wrap">
+  <div class="bar">
+    <div><h2>Trip Tracker</h2><div class="who" id="who">Ready — Start Trip uses your device location</div></div>
+    <span class="live" id="live">idle</span>
+  </div>
+  <div id="map"></div>
+
+  <div class="controls">
+    <button class="b-start" id="btnStart">▶ Start Trip (my location)</button>
+    <button class="b-end" id="btnEnd" disabled>■ End Trip</button>
+    <button class="b-ghost" id="btnSim">▶ Simulate a route</button>
+  </div>
+
+  <div class="visitbox">
+    <input type="text" id="cust" placeholder="Customer name (who are you visiting?)" disabled/>
+    <button class="b-ghost" id="btnVisit" disabled>📍 Log Visit</button>
+    <button class="b-ghost" id="btnEndVisit" disabled>✓ End Visit</button>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat"><div class="k">Points</div><div class="v" id="sPoints">0</div></div>
+    <div class="stat"><div class="k">Distance</div><div class="v" id="sKm">0.0 km</div></div>
+    <div class="stat"><div class="k">Visits</div><div class="v" id="sVisits">0</div></div>
+    <div class="stat"><div class="k">Meeting min</div><div class="v" id="sMins">0</div></div>
+    <div class="stat allow"><div class="k">Daily allowance</div><div class="v" id="sAllow">₹0</div></div>
+  </div>
+  <div class="now" id="now">Press <b>Start Trip</b> to track your real location, or <b>Simulate a route</b> to watch a sample day.</div>
+</div>
+
+<div class="foot">
+  Real <code>L.map</code> + <code>L.tileLayer</code> on OpenStreetMap tiles. Live positions use the browser's
+  <code>watchPosition</code>; start / end / visit addresses are reverse-geocoded via <code>Nominatim</code>.
+  This is the same logic that runs inside the Salesforce <code>tripTracker</code> LWC — there, positions stream to a
+  manager over <code>empApi</code> platform events and the day rolls up onto a <code>Trip__c</code> record.
+  Allowance = base ₹150 + ₹8/km + ₹50/visit. &nbsp;·&nbsp; <a href="https://github.com/vetrivel9445/sf-trip-tracker" target="_blank" rel="noopener">Source on GitHub →</a>
+</div>
+
+<script src="leaflet/leaflet.js"></script>
+<script>
+const RATES={ base:150, perKm:8, perVisit:50 };
+const NOMINATIM='https://nominatim.openstreetmap.org/reverse';
+const $=id=>document.getElementById(id);
+
+/* ── Real Leaflet map ── */
+const map=L.map('map').setView([13.03,80.23],12);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+  attribution:'&copy; OpenStreetMap contributors', maxZoom:19
+}).addTo(map);
+const trail=L.polyline([],{color:'#0176D3',weight:5,opacity:.85}).addTo(map);
+const visitLayer=L.layerGroup().addTo(map);
+let marker=null, startMarker=null, endMarker=null;
+
+function abIcon(letter,color){
+  return L.divIcon({className:'',html:'<div class="ab-badge" style="background:'+color+'"><span>'+letter+'</span></div>',
+    iconSize:[26,26],iconAnchor:[13,26]});
+}
+function numIcon(n){
+  return L.divIcon({className:'',html:'<div class="visit-badge">'+n+'</div>',iconSize:[26,26],iconAnchor:[13,13]});
+}
+function haversineKm(a,b){
+  const R=6371,toRad=d=>d*Math.PI/180;
+  const dLat=toRad(b[0]-a[0]),dLon=toRad(b[1]-a[1]);
+  const s=Math.sin(dLat/2)**2+Math.cos(toRad(a[0]))*Math.cos(toRad(b[0]))*Math.sin(dLon/2)**2;
+  return R*2*Math.atan2(Math.sqrt(s),Math.sqrt(1-s));
+}
+async function reverseGeocode(lat,lng){
+  const fallback=lat.toFixed(5)+', '+lng.toFixed(5);
+  try{
+    const res=await fetch(NOMINATIM+'?format=jsonv2&lat='+lat+'&lon='+lng,{headers:{Accept:'application/json'}});
+    if(!res.ok) return fallback;
+    const d=await res.json();
+    return d&&d.display_name ? d.display_name : fallback;
+  }catch(e){ return fallback; }
+}
+
+/* ── Shared trip state ── */
+let tracking=false, dist=0, points=0, visitsDone=0, mins=0;
+let lastPos=null, startPos=null, openVisit=null, watchId=null, simTimer=null;
+
+function resetTrip(){
+  dist=0; points=0; visitsDone=0; mins=0; lastPos=null; startPos=null; openVisit=null;
+  trail.setLatLngs([]); visitLayer.clearLayers();
+  [marker,startMarker,endMarker].forEach(m=>{ if(m) map.removeLayer(m); });
+  marker=startMarker=endMarker=null;
+  $('sPoints').textContent='0'; $('sKm').textContent='0.0 km';
+  $('sVisits').textContent='0'; $('sMins').textContent='0'; $('sAllow').textContent='₹0';
+}
+function setTrackingUI(on,label){
+  tracking=on;
+  $('btnStart').disabled=on; $('btnSim').disabled=on; $('btnEnd').disabled=!on;
+  $('cust').disabled=!on; $('btnVisit').disabled=!on; $('btnEndVisit').disabled=true;
+  $('live').textContent=on?'● TRACKING':'idle'; $('live').className='live'+(on?' on':'');
+  if(label) $('who').textContent=label;
+}
+
+function onFix(lat,lng){
+  const p=[lat,lng];
+  if(!startPos){
+    startPos=p;
+    startMarker=L.marker(p,{icon:abIcon('A','#2E844A')}).addTo(map).bindPopup('<b>Start</b>');
+    map.setView(p,15);
+  }
+  if(lastPos) dist+=haversineKm(lastPos,p);
+  lastPos=p; points++;
+  trail.addLatLng(p);
+  if(!marker){ marker=L.circleMarker(p,{radius:9,color:'#fff',weight:3,fillColor:'#0176D3',fillOpacity:1}).addTo(map); }
+  else marker.setLatLng(p);
+  map.panTo(p);
+  $('sPoints').textContent=points;
+  $('sKm').textContent=dist.toFixed(1)+' km';
+}
+
+/* ── Real GPS tracking ── */
+async function startReal(){
+  if(!navigator.geolocation){ $('now').innerHTML='<span class="err">Geolocation isn\'t available — try Simulate a route.</span>'; return; }
+  resetTrip();
+  setTrackingUI(true,'Tracking your device location…');
+  $('now').innerHTML='Getting your location… allow the browser prompt.';
+  watchId=navigator.geolocation.watchPosition(async pos=>{
+    const first=!startPos;
+    onFix(pos.coords.latitude,pos.coords.longitude);
+    if(first){
+      const addr=await reverseGeocode(startPos[0],startPos[1]);
+      startMarker.bindPopup('<b>Start</b><br>'+addr).openPopup();
+      $('now').innerHTML='Started at <b>'+addr+'</b> · move around to build your route.';
+    }
+  }, err=>{
+    $('now').innerHTML='<span class="err">Location error: '+err.message+'</span> — try Simulate a route instead.';
+    if(!startPos){ stopReal(); setTrackingUI(false); }
+  }, { enableHighAccuracy:true, maximumAge:2000, timeout:15000 });
+}
+function stopReal(){ if(watchId!=null){ navigator.geolocation.clearWatch(watchId); watchId=null; } }
+
+/* ── Visits (work in both modes) ── */
+async function logVisit(){
+  if(!lastPos){ $('now').innerHTML='<span class="err">No location fix yet — wait a moment.</span>'; return; }
+  const name=$('cust').value.trim()||'Customer';
+  const n=visitsDone+ (openVisit?0:0); // index for the pin
+  const idxNum=visitLayer.getLayers().length+1;
+  const addr=await reverseGeocode(lastPos[0],lastPos[1]);
+  const pin=L.marker(lastPos,{icon:numIcon(idxNum)}).addTo(visitLayer)
+    .bindPopup('<b>'+name+'</b><br>'+addr+'<br><i>meeting in progress…</i>');
+  openVisit={ name, addr, start:Date.now(), pin };
+  $('btnVisit').disabled=true; $('btnEndVisit').disabled=false; $('cust').disabled=true;
+  $('now').innerHTML='<span class="meet">Checked in</span> with <b>'+name+'</b> at '+addr+' — meeting clock running.';
+}
+function endVisit(){
+  if(!openVisit) return;
+  const m=Math.max(1,Math.round((Date.now()-openVisit.start)/60000));
+  visitsDone++; mins+=m;
+  openVisit.pin.setPopupContent('<b>'+openVisit.name+'</b><br>'+openVisit.addr+'<br>Meeting: '+m+' min');
+  $('sVisits').textContent=visitsDone; $('sMins').textContent=mins;
+  $('now').innerHTML='<span class="meet">✓ Checked out</span> of <b>'+openVisit.name+'</b> — '+m+' min meeting logged.';
+  openVisit=null; $('cust').value='';
+  $('btnVisit').disabled=false; $('btnEndVisit').disabled=true; $('cust').disabled=false;
+}
+
+async function endTrip(){
+  stopReal(); if(simTimer){ clearInterval(simTimer); simTimer=null; }
+  if(openVisit) endVisit();
+  setTrackingUI(false);
+  const end=lastPos||startPos||[13.03,80.23];
+  const addr=await reverseGeocode(end[0],end[1]);
+  endMarker=L.marker(end,{icon:abIcon('B','#BA0517')}).addTo(map).bindPopup('<b>End</b><br>'+addr);
+  const km=+dist.toFixed(1);
+  const allowance=RATES.base+km*RATES.perKm+visitsDone*RATES.perVisit;
+  $('sAllow').textContent='₹'+allowance.toFixed(0);
+  $('live').textContent='completed';
+  $('now').innerHTML='Ended at <b>'+addr+'</b> · '+km+' km · '+visitsDone+' visits · '+mins
+    +' min · allowance <b>₹'+allowance.toFixed(0)+'</b>.';
+  if(startPos||lastPos){
+    const b=[]; if(startPos)b.push(startPos); if(lastPos)b.push(lastPos);
+    visitLayer.getLayers().forEach(l=>b.push(l.getLatLng()));
+    if(b.length>1) map.fitBounds(L.latLngBounds(b).pad(0.2));
+  }
+}
+
+/* ── Simulated Chennai route (desktop / no-GPS) ── */
+const WAYPOINTS=[[13.0418,80.2341],[13.0561,80.2472],[13.0604,80.2496],[13.0732,80.2309],
+  [13.0715,80.2160],[13.0389,80.2115],[13.0067,80.2206],[12.9990,80.1980],[12.9941,80.1709]];
+const SIM_ROUTE=(function(){const p=[];for(let i=0;i<WAYPOINTS.length-1;i++){const a=WAYPOINTS[i],b=WAYPOINTS[i+1];
+  for(let s=0;s<8;s++){const t=s/8;p.push([a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t]);}}p.push(WAYPOINTS.at(-1));return p;})();
+const SIM_VISITS={ 14:{name:'Acme Industries',mins:35}, 34:{name:'Zenith Motors',mins:50}, 54:{name:'Delta Textiles',mins:25} };
+
+function startSim(){
+  resetTrip(); setTrackingUI(true,'Simulating a sample Chennai route…');
+  $('now').innerHTML='Simulating a field day — driving a real Chennai route.';
+  map.fitBounds(L.latLngBounds(WAYPOINTS).pad(0.12));
+  let i=-1;
+  simTimer=setInterval(()=>{
+    i++; onFix(SIM_ROUTE[i][0],SIM_ROUTE[i][1]);
+    if(SIM_VISITS[i]){
+      const v=SIM_VISITS[i]; visitsDone++; mins+=v.mins;
+      L.marker(SIM_ROUTE[i],{icon:numIcon(visitLayer.getLayers().length+1)}).addTo(visitLayer)
+        .bindPopup('<b>'+v.name+'</b><br>Meeting: '+v.mins+' min');
+      $('sVisits').textContent=visitsDone; $('sMins').textContent=mins;
+      $('now').innerHTML='<span class="meet">✓ Visit '+visitsDone+':</span> met <b>'+v.name+'</b> — '+v.mins+' min.';
+    }
+    if(i>=SIM_ROUTE.length-1){ clearInterval(simTimer); simTimer=null; simEnd(); }
+  },420);
+}
+function simEnd(){
+  // give the sim realistic start/end addresses without extra network calls
+  setTrackingUI(false);
+  endMarker=L.marker(WAYPOINTS.at(-1),{icon:abIcon('B','#BA0517')}).addTo(map)
+    .bindPopup('<b>End</b><br>GST Road, Meenambakkam, Chennai');
+  if(startMarker) startMarker.bindPopup('<b>Start</b><br>Anna Salai, T. Nagar, Chennai');
+  const km=+dist.toFixed(1);
+  const allowance=RATES.base+km*RATES.perKm+visitsDone*RATES.perVisit;
+  $('sAllow').textContent='₹'+allowance.toFixed(0);
+  $('live').textContent='completed';
+  $('now').innerHTML='Ended at <b>GST Road, Meenambakkam</b> · '+km+' km · '+visitsDone+' visits · '+mins
+    +' min · allowance <b>₹'+allowance.toFixed(0)+'</b>.';
+  map.fitBounds(L.latLngBounds(WAYPOINTS).pad(0.12));
+}
+
+$('btnStart').onclick=startReal;
+$('btnSim').onclick=startSim;
+$('btnEnd').onclick=endTrip;
+$('btnVisit').onclick=logVisit;
+$('btnEndVisit').onclick=endVisit;
+</script>
+</body>
+</html>
