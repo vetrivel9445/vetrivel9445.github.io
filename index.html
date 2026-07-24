@@ -2926,6 +2926,15 @@ import { GLTFLoader } from './vendor/GLTFLoader.js';
   const boosterMat=new THREE.MeshBasicMaterial({ color:0x45cdf7, transparent:true, opacity:0.6, blending:THREE.AdditiveBlending, depthWrite:false });
   const booster=sph(0.5,boosterMat); booster.position.set(0,-0.4,-0.7); booster.scale.set(1,1,0.5); mech.add(booster);
 
+  // JET TRAIL — a fading exhaust ribbon in world space that chases the thrusters
+  const TRAIL=18, trail=[];
+  for(let i=0;i<TRAIL;i++){
+    const f=1-i/TRAIL;
+    const m=new THREE.MeshBasicMaterial({ color:(i<6?0xbfefff:0x45cdf7), transparent:true, opacity:0.5*f, blending:THREE.AdditiveBlending, depthWrite:false });
+    const s=sph(0.02+0.24*f, m, 12, 10); s.visible=false; scene.add(s); trail.push(s);
+  }
+  const _thWorld=new THREE.Vector3();
+
   /* ---------- optional GLTF character (drop models/character.glb) ---------- */
   const CHARACTER_URL='models/character.glb';
   const WALK_CLIP=/fly|walk|run|idle/i;
@@ -2955,18 +2964,24 @@ import { GLTFLoader } from './vendor/GLTFLoader.js';
   addEventListener('scroll',onScroll,{passive:true}); onScroll();
   addEventListener('click',e=>{ const near = innerWidth<860 ? true : e.clientX>innerWidth*0.55; if(near && e.clientY<innerHeight*0.9) roll=1; });
 
-  let baseX=2.9, baseY=-0.2, scaleN=0.78;
+  let baseX=2.9, baseY=-0.2, scaleN=0.78, isMobile=false;
   function resize(){ camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth,innerHeight);
-    const mob=innerWidth<860; baseX=mob?0:2.9; baseY=mob?1.4:-0.2; scaleN=mob?0.5:0.78;
+    isMobile=innerWidth<860; baseX=isMobile?0:2.9; baseY=isMobile?1.4:-0.2; scaleN=isMobile?0.48:0.68;
     mech.scale.setScalar(scaleN); charWrap.scale.setScalar(scaleN); }
   addEventListener('resize',resize); resize();
+
+  // desktop flight path — the robot weaves across the screen as you scroll
+  const PATH=[[0,3.0],[0.17,-3.1],[0.35,3.3],[0.52,-2.7],[0.70,3.1],[0.85,-2.5],[1.0,0.0]];
+  function pathX(p){ for(let i=0;i<PATH.length-1;i++){ const a=PATH[i],b=PATH[i+1];
+    if(p<=b[0]){ const u=(p-a[0])/((b[0]-a[0])||1); const e=u*u*(3-2*u); return a[1]+(b[1]-a[1])*e; } }
+    return PATH[PATH.length-1][1]; }
 
   const clock=new THREE.Clock(); let elapsed=0, lastSp=sp;
   function animate(){
     const dt=Math.min(clock.getDelta(),0.05); elapsed+=dt; const t=elapsed;
     const dSp=Math.abs(sp-lastSp); lastSp=sp;
     const active=modelReady?charWrap:mech;
-    const thrust = 0.5 + Math.min(dSp*120, 2.2);   // jets flare when you scroll
+    const thrust = 0.45 + Math.min(dSp*90, 1.05);   // jets flare when you scroll (capped)
 
     if(modelReady){ if(mixer) mixer.update(dt*(0.55+Math.min(dSp*80,5))); }
     else {
@@ -2978,21 +2993,32 @@ import { GLTFLoader } from './vendor/GLTFLoader.js';
       armL.rotation.x = 0.3; armR.rotation.x = 0.3;
       legL.rotation.x = 0.25 + Math.sin(t*1.2)*0.05; legR.rotation.x = 0.25 - Math.sin(t*1.2)*0.05;
       torso.rotation.z = Math.sin(t*1.0)*0.03;
-      // thruster flames flicker + stretch with thrust
-      const fl = 0.7 + Math.abs(Math.sin(t*22))*0.3;
+      // thruster flames flicker + stretch with thrust (bigger, punchier)
+      const fl = 0.85 + Math.abs(Math.sin(t*22))*0.35;
       [thrL,thrR].forEach((th,i)=>{ const p=fl*(i?1:0.92);
-        th.fO.scale.set(1, thrust*p, 1); th.fI.scale.set(1, thrust*p*1.1, 1);
-        th.fO.material.opacity=0.6+thrust*0.15; });
-      booster.scale.set(1+thrust*0.2,1+thrust*0.2,0.5); booster.material.opacity=0.4+thrust*0.2;
+        th.fO.scale.set(1, thrust*p*1.0, 1); th.fI.scale.set(1, thrust*p*1.15, 1);
+        th.fO.material.opacity=0.6+thrust*0.12; });
+      booster.scale.set(1+thrust*0.2,1+thrust*0.2,0.5); booster.material.opacity=0.4+thrust*0.15;
     }
 
-    // shared: fly pose — hover bob, bank toward cursor, climb + tilt with scroll
-    active.position.x = baseX + mx*0.3;
-    active.position.y = baseY + Math.sin(t*1.3)*0.18 - sp*0.3 + thrust*0.15;
+    // shared: fly pose — smooth hover, fly across the screen with scroll, bank
+    const targetX = (isMobile ? baseX : pathX(sp)) + mx*0.3;
+    const hover = Math.sin(t*1.3)*0.16 + Math.sin(t*0.72)*0.09;   // organic double-sine float
+    const targetY = baseY + hover - sp*0.25 + thrust*0.12;
+    const dx = targetX - active.position.x;                       // horizontal velocity → banking
+    active.position.x += dx * 0.055;                              // glide smoothly toward the path point
+    active.position.y += (targetY - active.position.y) * 0.12;
     active.rotation.y = mx*0.5 + sp*Math.PI*1.1;
-    active.rotation.z = -mx*0.25;                       // bank when steering
-    active.rotation.x = -my*0.15 - 0.12 - Math.min(dSp*30,0.3);  // nose-down flight lean
+    active.rotation.z = clamp(-dx*0.18, -0.5, 0.5) - mx*0.2;      // bank into the direction of flight
+    active.rotation.x = -my*0.15 - 0.12 - Math.min(dSp*30,0.3);   // nose-down flight lean
     if(roll>0){ roll=Math.max(0,roll-0.02); active.rotation.z += roll*Math.PI*2; }
+
+    // jet trail — fading exhaust ribbon that chases the thrusters (world space)
+    _thWorld.set(0,-2.0,0); active.localToWorld(_thWorld);
+    trail[0].position.copy(_thWorld);
+    for(let i=1;i<TRAIL;i++) trail[i].position.lerp(trail[i-1].position, 0.34);
+    const trailOn = !modelReady;
+    for(let i=0;i<TRAIL;i++){ trail[i].visible=trailOn; if(trailOn){ const f=1-i/TRAIL; trail[i].material.opacity=(0.08+thrust*0.10)*f; } }
 
     particles.rotation.y += 0.0006; particles.rotation.x = sp*0.3;
     camera.position.x += (mx*0.7 - camera.position.x)*0.05;
