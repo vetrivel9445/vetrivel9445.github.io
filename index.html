@@ -1661,6 +1661,8 @@ html[data-skin="aurora"] .aurora-bg{
 
 <!-- CLICK VFX (particle burst + shockwave ring) -->
 <canvas id="vfx-canvas" aria-hidden="true"></canvas>
+<!-- subtle diagonal light sweep that fires when a new section enters -->
+<div class="section-sweep" id="sectionSweep" aria-hidden="true"></div>
 
 <!-- ANIMATED BACKGROUND CANVAS -->
 <canvas id="bg-canvas"></canvas>
@@ -2288,6 +2290,14 @@ catch (e) { await handleError(this, e); }</code></pre>
 
 /* VFX canvas — click burst + ripple, sits above everything, never blocks input */
 #vfx-canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:9998;}
+/* section transition — a thin diagonal light sweep, never blocks input */
+.section-sweep{position:fixed;inset:0;pointer-events:none;z-index:9997;opacity:0;
+  background:linear-gradient(115deg,transparent 38%,color-mix(in srgb,var(--accent) 22%,transparent) 47%,
+    color-mix(in srgb,var(--accent2) 26%,transparent) 50%,transparent 62%);
+  background-size:280% 100%;background-position:120% 0;}
+.section-sweep.on{animation:sweepAcross .72s cubic-bezier(.4,0,.2,1);}
+@keyframes sweepAcross{0%{opacity:0;background-position:120% 0;}25%{opacity:1;}100%{opacity:0;background-position:-40% 0;}}
+@media (prefers-reduced-motion: reduce){ .section-sweep{display:none;} }
 
 /* Motion graphics: per-letter reveal for section eyebrows */
 .sec-eye .ch{display:inline-block;opacity:0;transform:translateY(0.5em) rotateX(-40deg);
@@ -3048,9 +3058,13 @@ import { GLTFLoader } from './vendor/GLTFLoader.js';
     for(let i=0;i<TRAIL;i++){ trail[i].visible=trailOn; if(trailOn){ const f=1-i/TRAIL; trail[i].material.opacity=(0.08+thrust*0.10)*f; } }
 
     particles.rotation.y += 0.0006; particles.rotation.x = sp*0.3;
+    // scroll-driven camera travel — the scene reads like a journey down the page
+    const camZ = 10 + Math.sin(sp*Math.PI)*2.6;          // dolly out through the middle, back in
+    const camBaseY = Math.sin(sp*Math.PI*2)*0.55;        // gentle vertical drift per section
     camera.position.x += (mx*0.7 - camera.position.x)*0.05;
-    camera.position.y += (-my*0.4 - camera.position.y)*0.05;
-    camera.lookAt(0,0.2,0);
+    camera.position.y += (camBaseY - my*0.4 - camera.position.y)*0.05;
+    camera.position.z += (camZ - camera.position.z)*0.04;
+    camera.lookAt(mx*0.5, 0.2 + camBaseY*0.5, 0);
     renderer.render(scene,camera);
     requestAnimationFrame(animate);
   }
@@ -3321,6 +3335,27 @@ import { GLTFLoader } from './vendor/GLTFLoader.js';
 
   // restore preference (stays silent until a click actually resumes audio — browsers require a gesture)
   try{ if(localStorage.getItem('vk-sound')==='1'){ btn.textContent='🔊'; btn.title='Sound on — click to activate'; } }catch(e){}
+})();
+</script>
+
+<!-- ═══════ SECTION TRANSITION SWEEP — fires a light sweep on entering a new section ═══════ -->
+<script>
+(function(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const sweep = document.getElementById('sectionSweep');
+  const sections = [...document.querySelectorAll('section[id]')];
+  if(!sweep || !sections.length) return;
+  let current = '';
+  function fire(){ sweep.classList.remove('on'); void sweep.offsetWidth; sweep.classList.add('on'); }
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting && e.target.id !== current){
+        current = e.target.id;
+        if(window.scrollY > 40) fire();   // don't sweep on the initial hero paint
+      }
+    });
+  }, { threshold: 0.55 });
+  sections.forEach(s=>io.observe(s));
 })();
 </script>
 </body>
