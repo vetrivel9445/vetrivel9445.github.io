@@ -12,24 +12,18 @@
 <script>
 /* Set theme before first paint to avoid a flash of the wrong theme */
 (function(){
-  function timeTheme(){
-    var h = new Date().getHours();
-    if(h>=5 && h<12) return 'morning';
-    if(h>=12 && h<17) return 'afternoon';
-    if(h>=17 && h<20) return 'evening';
-    return 'night';
+  function sysTheme(){
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
-  try{
-    var mode = localStorage.getItem('vk-theme') || 'auto';
-    var resolved = mode==='auto' ? timeTheme() : mode;
-    document.documentElement.setAttribute('data-theme', resolved);
-    document.documentElement.setAttribute('data-theme-mode', mode);
-    document.documentElement.setAttribute('data-skin', 'aurora');
-  }catch(e){
-    document.documentElement.setAttribute('data-theme', timeTheme());
-    document.documentElement.setAttribute('data-theme-mode', 'auto');
-    document.documentElement.setAttribute('data-skin', 'aurora');
-  }
+  var mode='auto', resolved;
+  try{ mode = localStorage.getItem('vk-theme') || 'auto'; }catch(e){}
+  // migrate old time-of-day values to the new dark/light system
+  if(mode!=='light' && mode!=='dark' && mode!=='auto') mode='auto';
+  resolved = mode==='auto' ? sysTheme() : mode;
+  var el=document.documentElement;
+  el.setAttribute('data-theme', resolved);
+  el.setAttribute('data-theme-mode', mode);
+  el.setAttribute('data-skin', 'aurora');
 })();
 </script>
 <style>
@@ -1391,32 +1385,63 @@ body.is-loading{overflow:hidden;height:100vh;}
 ════════════════════════════════════════════════════════════ -->
 <style id="aurora-skin">
 html[data-skin="aurora"]{
-  --bg:#06060f; --bg2:#0a0a1a;
+  /* ── DARK MODE (default) — two-colour premium: violet + cyan on ink ── */
+  --bg:#080711; --bg2:#0d0b1a;
   --surface:rgba(255,255,255,0.05); --surface2:rgba(255,255,255,0.09);
-  --border:rgba(255,255,255,0.12); --border2:rgba(167,139,250,0.42);
-  --text:#E7E4F7; --muted:#9C97C8; --heading:#FFFFFF; --white:#FFFFFF;
-  --panel:rgba(18,16,38,0.42);
-  --green:#3FD0C9;
-  /* Premium aurora — deep indigo-violet + teal on near-black. No hot pinks / ambers. */
-  --au-1:#6C5CE7; --au-2:#22B8CF; --au-3:#8E7BFF; --au-4:#2D3A8C;
-  --accent:#A99BFF; --accent2:#3FD0C9;
-  /* retint the "sf" tokens the components already gradient with */
-  --sf-blue:#6C5CE7; --sf-sky:#8E7BFF; --sf-teal:#22B8CF; --sf-indigo:#4C4FB0; --sf-cloud:#171633;
-  --space-glow:rgba(108,92,231,0.26);
+  --border:rgba(255,255,255,0.11); --border2:rgba(109,94,246,0.45);
+  --text:#E9E7F7; --muted:#9A94BE; --heading:#FFFFFF; --white:#FFFFFF;
+  --panel:rgba(18,16,40,0.45);
+  --green:#22C7D6;
+  --au-1:#6D5EF6; --au-2:#22C7D6; --au-3:#6D5EF6; --au-4:#22C7D6;   /* only two hues */
+  --accent:#8B7DFF; --accent2:#3FD8E6;
+  --sf-blue:#6D5EF6; --sf-sky:#8B7DFF; --sf-teal:#22C7D6; --sf-indigo:#6D5EF6; --sf-cloud:#141233;
+  --space-glow:rgba(109,94,246,0.26);
 }
-/* mood variants — the theme switcher shifts the aurora hue, all kept premium */
-html[data-skin="aurora"][data-theme="evening"]{ /* amethyst */
-  --au-1:#7B5EA7; --au-2:#5A6CE0; --au-3:#9D82C8; --au-4:#3B2E63;
-  --accent:#B79BE0; --accent2:#7C8CF0; --sf-blue:#6D5DC0; --sf-sky:#9D82C8; --sf-teal:#5A6CE0;
+/* ── LIGHT MODE — same two colours, deepened for contrast on paper ── */
+html[data-skin="aurora"][data-theme="light"]{
+  --bg:#F5F6FB; --bg2:#ECEEF7;
+  --surface:rgba(109,94,246,0.05); --surface2:rgba(109,94,246,0.10);
+  --border:rgba(20,18,50,0.10); --border2:rgba(109,94,246,0.35);
+  --text:#2C2946; --muted:#6B6790; --heading:#131028; --white:#131028;
+  --panel:rgba(255,255,255,0.62);
+  --green:#0FB6C6;
+  --au-1:#6D5EF6; --au-2:#22C7D6; --au-3:#6D5EF6; --au-4:#22C7D6;
+  --accent:#5B45E0; --accent2:#0FB6C6;
+  --sf-blue:#6D5EF6; --sf-sky:#5B45E0; --sf-teal:#0FB6C6; --sf-indigo:#5B45E0; --sf-cloud:#E5E7F5;
+  --space-glow:rgba(109,94,246,0.14);
 }
-html[data-skin="aurora"][data-theme="afternoon"],
-html[data-skin="aurora"][data-theme="light"]{ /* deep ocean */
-  --au-1:#2A7FD4; --au-2:#22B8CF; --au-3:#3F8FE0; --au-4:#1E3A8A;
-  --accent:#5AB0E6; --accent2:#3FD0C9; --sf-blue:#2A7FD4; --sf-sky:#5AB0E6; --sf-teal:#22B8CF;
+/* Light-mode surfaces + backdrop */
+html[data-skin="aurora"][data-theme="light"] body{
+  background:radial-gradient(1200px 820px at 50% -12%, #ffffff 0%, #eceffa 62%) fixed, #F5F6FB !important;
 }
-html[data-skin="aurora"][data-theme="morning"]{ /* cool steel — premium, not warm */
-  --au-1:#4F63C4; --au-2:#3FB6C9; --au-3:#7686D6; --au-4:#2B3576;
-  --accent:#8FA0E6; --accent2:#3FB6C9; --sf-blue:#4F63C4; --sf-sky:#7686D6; --sf-teal:#3FB6C9;
+html[data-skin="aurora"][data-theme="light"] .aurora-bg{ filter:saturate(1) brightness(1); }
+html[data-skin="aurora"][data-theme="light"] .aurora-blob{ opacity:.20; mix-blend-mode:normal; filter:blur(110px); }
+html[data-skin="aurora"][data-theme="light"] .aurora-grain{ opacity:.02; }
+html[data-skin="aurora"][data-theme="light"] .porb{ opacity:.14; mix-blend-mode:normal; }
+html[data-skin="aurora"][data-theme="light"] .proj-card,
+html[data-skin="aurora"][data-theme="light"] .skill-row,
+html[data-skin="aurora"][data-theme="light"] .cert-card,
+html[data-skin="aurora"][data-theme="light"] .contact-card,
+html[data-skin="aurora"][data-theme="light"] .trailhead-row,
+html[data-skin="aurora"][data-theme="light"] .proof-card,
+html[data-skin="aurora"][data-theme="light"] .metrics-strip,
+html[data-skin="aurora"][data-theme="light"] .hpanel{
+  background:rgba(255,255,255,0.62) !important; border:1px solid rgba(20,18,50,0.08);
+  box-shadow:0 1px 0 rgba(255,255,255,0.7) inset, 0 22px 50px -30px rgba(30,30,80,0.35) !important;
+}
+html[data-skin="aurora"][data-theme="light"] nav .nav-inner{ background:rgba(255,255,255,0.55); }
+html[data-skin="aurora"][data-theme="light"] .btn-ghost,
+html[data-skin="aurora"][data-theme="light"] .btn-resume{
+  background:rgba(109,94,246,0.06) !important; color:var(--text) !important; border-color:var(--border2) !important;
+}
+html[data-skin="aurora"][data-theme="light"] .skill-pill,
+html[data-skin="aurora"][data-theme="light"] .proj-tag,
+html[data-skin="aurora"][data-theme="light"] .exp-chip,
+html[data-skin="aurora"][data-theme="light"] .cert-chip,
+html[data-skin="aurora"][data-theme="light"] .proof-chip,
+html[data-skin="aurora"][data-theme="light"] .marquee-item,
+html[data-skin="aurora"][data-theme="light"] .hpanel .hp-tags span{
+  background:rgba(109,94,246,0.06); border:1px solid rgba(20,18,50,0.10); color:var(--accent);
 }
 
 /* Kill the sky/sea/space world + the 2D mesh (the 3D centerpiece stays) */
@@ -1831,11 +1856,9 @@ html[data-skin="aurora"] .aurora-bg{
       <div class="theme-switcher">
         <button id="themeToggle" class="theme-toggle-btn" aria-haspopup="true" aria-expanded="false" aria-label="Change theme">🌙</button>
         <div class="theme-menu" id="themeMenu" role="menu">
-          <button class="theme-menu-item" data-theme-choice="auto" role="menuitem">⏰ Auto (time of day)</button>
-          <button class="theme-menu-item" data-theme-choice="morning" role="menuitem">🌅 Morning</button>
-          <button class="theme-menu-item" data-theme-choice="afternoon" role="menuitem">☀️ Afternoon</button>
-          <button class="theme-menu-item" data-theme-choice="evening" role="menuitem">🌇 Evening</button>
-          <button class="theme-menu-item" data-theme-choice="night" role="menuitem">🌙 Night</button>
+          <button class="theme-menu-item" data-theme-choice="light" role="menuitem">☀️ Light</button>
+          <button class="theme-menu-item" data-theme-choice="dark" role="menuitem">🌙 Dark</button>
+          <button class="theme-menu-item" data-theme-choice="auto" role="menuitem">🖥️ Auto (system)</button>
         </div>
       </div>
     </div>
@@ -2565,21 +2588,16 @@ if(strip) metricObserver.observe(strip);
 /* ── TIME-OF-DAY THEME SWITCHER ───────────────────── */
 const themeToggleBtn=document.getElementById('themeToggle');
 const themeMenu=document.getElementById('themeMenu');
-const THEME_ICONS={ morning:'🌅', afternoon:'☀️', evening:'🌇', night:'🌙' };
+const THEME_ICONS={ light:'☀️', dark:'🌙' };
+const systemPrefersDark=()=>window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-function resolveTimeTheme(){
-  const h=new Date().getHours();
-  if(h>=5 && h<12) return 'morning';
-  if(h>=12 && h<17) return 'afternoon';
-  if(h>=17 && h<20) return 'evening';
-  return 'night';
-}
+function resolveMode(mode){ return mode==='auto' ? (systemPrefersDark()?'dark':'light') : mode; }
 
 function applyTheme(mode){
-  const resolved = mode==='auto' ? resolveTimeTheme() : mode;
+  const resolved = resolveMode(mode);
   document.documentElement.setAttribute('data-theme', resolved);
   document.documentElement.setAttribute('data-theme-mode', mode);
-  themeToggleBtn.textContent = mode==='auto' ? '⏰' : (THEME_ICONS[resolved] || '🌙');
+  themeToggleBtn.textContent = mode==='auto' ? '🖥️' : (THEME_ICONS[resolved] || '🌙');
   document.querySelectorAll('.theme-menu-item').forEach(btn=>{
     btn.classList.toggle('active', btn.dataset.themeChoice===mode);
   });
@@ -2587,6 +2605,10 @@ function applyTheme(mode){
 
 let currentThemeMode = document.documentElement.getAttribute('data-theme-mode') || 'auto';
 applyTheme(currentThemeMode);
+// follow the OS theme live while in Auto
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', ()=>{
+  if(currentThemeMode==='auto') applyTheme('auto');
+});
 
 themeToggleBtn.addEventListener('click',(e)=>{
   e.stopPropagation();
