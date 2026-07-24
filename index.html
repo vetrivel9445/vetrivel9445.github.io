@@ -1368,7 +1368,7 @@ body.is-loading{overflow:hidden;height:100vh;}
 /* Cursor-tracked spotlight: a soft accent glow follows the pointer
    across any tilt card (position fed by the tilt handler via --mx/--my) */
 .tilt{--mx:50%;--my:50%;}
-.proj-card:hover,.skill-row:hover,.cert-card:hover,.contact-card:hover,.metric-cell:hover{
+.proj-card:hover,.skill-row:hover,.cert-card:hover,.contact-card:hover,.metric-cell:hover,.proof-card:hover{
   background-image:radial-gradient(420px circle at var(--mx) var(--my),
     color-mix(in srgb, var(--accent) 12%, transparent), transparent 46%);
 }
@@ -1398,6 +1398,9 @@ body.is-loading{overflow:hidden;height:100vh;}
 <div class="cursor-glow" id="cursorGlow"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 <div class="cursor-dot" id="cursorDot"></div>
+
+<!-- CLICK VFX (particle burst + shockwave ring) -->
+<canvas id="vfx-canvas" aria-hidden="true"></canvas>
 
 <!-- ANIMATED BACKGROUND CANVAS -->
 <canvas id="bg-canvas"></canvas>
@@ -1588,7 +1591,7 @@ body.is-loading{overflow:hidden;height:100vh;}
         <li><a href="#skills">Skills</a></li>
         <li><a href="#projects">Projects</a></li>
         <li><a href="#experience">Experience</a></li>
-        <li><a href="#testimonials">Praise</a></li>
+        <li><a href="#recognition">Proof</a></li>
         <li><a href="./resume/" class="nav-resume">Résumé</a></li>
         <li><a href="#contact" class="nav-cta">Hire Me</a></li>
       </ul>
@@ -1958,44 +1961,27 @@ catch (e) { await handleError(this, e); }</code></pre>
 
 <!-- ═══════ TESTIMONIALS ══════════════════════════ -->
 <style>
-/* Testimonials — motion-driven social proof carousel */
-#testimonials .tst-viewport{position:relative;overflow:hidden;border-radius:22px;
-  margin-top:8px;padding:2px;}
-#testimonials .tst-track{display:flex;transition:transform .7s cubic-bezier(0.22,1,0.36,1);will-change:transform;}
-#testimonials .tst-card{flex:0 0 100%;box-sizing:border-box;padding:6px;}
-@media(min-width:780px){ #testimonials .tst-card{flex-basis:50%;} }
-@media(min-width:1140px){ #testimonials .tst-card{flex-basis:33.3333%;} }
-.tst-inner{height:100%;background:var(--panel);border:1px solid var(--border);border-radius:20px;
-  padding:26px 24px 22px;position:relative;overflow:hidden;backdrop-filter:blur(10px);
-  transition:transform .5s cubic-bezier(0.22,1,0.36,1),border-color .4s,box-shadow .5s;}
-.tst-inner::before{content:'\201C';position:absolute;top:-18px;right:14px;font-family:Georgia,serif;
-  font-size:120px;line-height:1;color:var(--accent);opacity:.14;pointer-events:none;}
-.tst-inner::after{content:'';position:absolute;inset:0;border-radius:20px;pointer-events:none;
-  background:radial-gradient(420px 160px at var(--gx,50%) var(--gy,0%),rgba(27,150,255,.16),transparent 70%);
-  opacity:0;transition:opacity .4s;}
-.tst-inner:hover{transform:translateY(-6px);border-color:var(--border2);
-  box-shadow:0 24px 60px -28px rgba(1,118,211,.55);}
-.tst-inner:hover::after{opacity:1;}
-.tst-stars{display:flex;gap:3px;margin-bottom:14px;color:#FFB020;font-size:14px;letter-spacing:2px;}
-.tst-quote{font-size:15px;line-height:1.66;color:var(--text);margin-bottom:20px;position:relative;z-index:1;}
-.tst-who{display:flex;align-items:center;gap:13px;}
-.tst-avatar{width:46px;height:46px;flex:none;border-radius:50%;display:flex;align-items:center;justify-content:center;
-  font-family:var(--f-display);font-weight:700;font-size:16px;color:#fff;
-  background:linear-gradient(135deg,var(--sf-blue),var(--sf-teal));box-shadow:0 6px 16px rgba(1,118,211,.4);}
-.tst-name{display:block;font-family:var(--f-display);font-weight:600;font-size:14.5px;color:var(--heading);}
-.tst-role{display:block;font-size:12px;color:var(--muted);margin-top:2px;}
-.tst-nav{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:22px;}
-.tst-arrow{width:44px;height:44px;border-radius:50%;border:1px solid var(--border2);background:var(--surface);
-  color:var(--text);font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;
-  transition:transform .25s,background .3s,border-color .3s,box-shadow .3s;}
-.tst-arrow:hover{background:var(--accent);color:#fff;transform:translateY(-2px) scale(1.06);
-  box-shadow:0 10px 24px -8px rgba(1,118,211,.7);border-color:transparent;}
-.tst-arrow:active{transform:scale(.94);}
-.tst-dots{display:flex;gap:9px;}
-.tst-dot{width:9px;height:9px;border-radius:50%;border:none;background:var(--border2);cursor:pointer;padding:0;
-  transition:width .35s,background .35s;}
-.tst-dot.on{width:26px;border-radius:5px;background:linear-gradient(90deg,var(--sf-blue),var(--sf-teal));}
-@media(prefers-reduced-motion:reduce){ #testimonials .tst-track{transition:none;} }
+/* Recognition — verifiable proof wall (real, checkable metrics) */
+#recognition .proof-grid{display:grid;gap:16px;grid-template-columns:1fr;margin-top:6px;}
+@media(min-width:720px){ #recognition .proof-grid{grid-template-columns:repeat(3,1fr);} }
+.proof-card{position:relative;overflow:hidden;background:var(--panel);border:1px solid var(--border);
+  border-radius:22px;padding:26px 24px;backdrop-filter:blur(10px);}
+.proof-card .proof-ic{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-size:22px;background:var(--surface2);border:1px solid var(--border2);margin-bottom:16px;}
+.proof-big{font-family:var(--f-display);font-weight:800;font-size:40px;line-height:1;letter-spacing:-1px;
+  background:linear-gradient(120deg,var(--sf-sky),var(--sf-teal));-webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;}
+.proof-big sub{font-size:20px;vertical-align:baseline;}
+.proof-lbl{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.5;}
+.proof-sub{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px;}
+.proof-chip{font-family:var(--f-mono);font-size:11px;padding:5px 10px;border-radius:8px;background:var(--surface2);
+  color:var(--accent);border:1px solid var(--border);}
+.proof-verify{display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:12.5px;font-weight:600;
+  color:var(--accent);text-decoration:none;}
+.proof-verify::after{content:'\2197';transition:transform .3s;}
+.proof-verify:hover::after{transform:translate(2px,-2px);}
+.proof-note{margin-top:18px;font-size:12.5px;color:var(--muted);text-align:center;}
+.proof-note a{color:var(--accent);text-decoration:none;}
 
 /* Résumé buttons + magnetic micro-interaction */
 .nav-resume{position:relative;font-weight:600;color:var(--accent)!important;}
@@ -2013,63 +1999,82 @@ catch (e) { await handleError(this, e); }</code></pre>
   box-shadow:0 16px 40px -14px rgba(1,118,211,.75);}
 .btn-resume:hover svg{transform:translateY(2px);}
 .magnetic{will-change:transform;}
+
+/* VFX canvas — click burst + ripple, sits above everything, never blocks input */
+#vfx-canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:9998;}
+
+/* Motion graphics: per-letter reveal for section eyebrows */
+.sec-eye .ch{display:inline-block;opacity:0;transform:translateY(0.5em) rotateX(-40deg);
+  transition:opacity .5s ease,transform .55s cubic-bezier(.22,1,.36,1);}
+.sec-eye .ch.lit{opacity:1;transform:none;}
+/* one-shot glow pulse once the eyebrow is revealed (safe with per-letter transforms) */
+.sec-eye.shine{animation:eyeGlow 1.7s ease-out 1;}
+@keyframes eyeGlow{
+  0%{text-shadow:0 0 0 transparent;}
+  35%{text-shadow:0 0 16px color-mix(in srgb,var(--accent) 65%,transparent);}
+  100%{text-shadow:0 0 0 transparent;}
+}
+
+/* Interactive underline that draws in on hover for any inline link with .fx-link */
+.fx-link{position:relative;text-decoration:none;}
+.fx-link::after{content:'';position:absolute;left:0;bottom:-2px;width:100%;height:1.5px;border-radius:2px;
+  background:linear-gradient(90deg,var(--sf-blue),var(--sf-teal));transform:scaleX(0);transform-origin:left;
+  transition:transform .35s cubic-bezier(.22,1,.36,1);}
+.fx-link:hover::after{transform:scaleX(1);}
+
+@media(prefers-reduced-motion:reduce){
+  .sec-eye .ch{opacity:1;transform:none;transition:none;}
+  .sec-eye.shine{animation:none;}
+  #vfx-canvas{display:none;}
+}
 </style>
-<section class="sec-wrap" id="testimonials">
+<section class="sec-wrap" id="recognition">
   <div class="sec-head reveal">
-    <span class="sec-eye">Testimonials</span>
+    <span class="sec-eye">Recognition &amp; Proof</span>
     <div class="sec-rule"></div>
   </div>
-  <!-- NOTE: sample endorsements — replace names/quotes with real referees before sharing widely. -->
-  <div class="tst-viewport reveal-scale" id="tstViewport">
-    <div class="tst-track" id="tstTrack">
+  <!-- Every figure here is publicly verifiable — no invented endorsements. -->
+  <div class="proof-grid">
 
-      <div class="tst-card"><figure class="tst-inner">
-        <div class="tst-stars">★★★★★</div>
-        <blockquote class="tst-quote">Vetrivel's Apex is the cleanest I've reviewed on our team — bulkified by default, fully covered by tests, and zero governor-limit surprises in production. He ships fast without cutting corners.</blockquote>
-        <figcaption class="tst-who"><span class="tst-avatar">RK</span>
-          <span><span class="tst-name">Rajesh Kumar</span><span class="tst-role">Salesforce Technical Lead</span></span>
-        </figcaption>
-      </figure></div>
-
-      <div class="tst-card"><figure class="tst-inner">
-        <div class="tst-stars">★★★★★</div>
-        <blockquote class="tst-quote">He rebuilt our Lightning UI as a reusable component library and cut our delivery time noticeably. Thoughtful about UX, accessibility and edge cases — not just making it work, but making it right.</blockquote>
-        <figcaption class="tst-who"><span class="tst-avatar">PN</span>
-          <span><span class="tst-name">Priya Nair</span><span class="tst-role">Engineering Manager, CRM Practice</span></span>
-        </figcaption>
-      </figure></div>
-
-      <div class="tst-card"><figure class="tst-inner">
-        <div class="tst-stars">★★★★★</div>
-        <blockquote class="tst-quote">Our REST integrations were flaky until Vetrivel reworked them — idempotent, retry-safe and observable. He explains trade-offs clearly and documents everything. A genuine team multiplier.</blockquote>
-        <figcaption class="tst-who"><span class="tst-avatar">AS</span>
-          <span><span class="tst-name">Arun Selvam</span><span class="tst-role">Solution Architect</span></span>
-        </figcaption>
-      </figure></div>
-
-      <div class="tst-card"><figure class="tst-inner">
-        <div class="tst-stars">★★★★★</div>
-        <blockquote class="tst-quote">As a client stakeholder I valued how he translated fuzzy business asks into working Flows and automation. Deadlines met, demos polished, and always a step ahead on what we'd need next.</blockquote>
-        <figcaption class="tst-who"><span class="tst-avatar">MD</span>
-          <span><span class="tst-name">Meera Desai</span><span class="tst-role">Product Owner (Client)</span></span>
-        </figcaption>
-      </figure></div>
-
-      <div class="tst-card"><figure class="tst-inner">
-        <div class="tst-stars">★★★★★</div>
-        <blockquote class="tst-quote">Mentored two juniors on trigger frameworks and test strategy while still delivering his own sprint work. Calm under release pressure and relentless about quality. Would hire again in a heartbeat.</blockquote>
-        <figcaption class="tst-who"><span class="tst-avatar">SV</span>
-          <span><span class="tst-name">Suresh Venkat</span><span class="tst-role">Delivery Manager</span></span>
-        </figcaption>
-      </figure></div>
-
+    <div class="proof-card tilt reveal reveal-d1">
+      <div class="proof-ic">🎖️</div>
+      <div class="proof-big" data-count="90775">0</div>
+      <div class="proof-lbl">Trailhead points — <strong>Ranger</strong> rank on Salesforce Trailhead.</div>
+      <div class="proof-sub">
+        <span class="proof-chip">114 badges</span>
+        <span class="proof-chip">12 trails</span>
+        <span class="proof-chip">Ranger</span>
+      </div>
+      <a class="proof-verify" href="https://trailblazer.me/id/vsalesforce35" target="_blank" rel="noopener">Verify on Trailblazer</a>
     </div>
+
+    <div class="proof-card tilt reveal reveal-d2">
+      <div class="proof-ic">📜</div>
+      <div class="proof-big" data-count="2"><span>0</span><sub>×</sub></div>
+      <div class="proof-lbl">Salesforce certifications, each with a verifiable credential ID.</div>
+      <div class="proof-sub">
+        <span class="proof-chip">PD I · 3021489</span>
+        <span class="proof-chip">Admin · 2805329</span>
+      </div>
+      <a class="proof-verify" href="https://trailblazer.me/id/vsalesforce35" target="_blank" rel="noopener">Verify credentials</a>
+    </div>
+
+    <div class="proof-card tilt reveal reveal-d3">
+      <div class="proof-ic">⚡</div>
+      <div class="proof-big" data-count="3"><span>0</span><sub>+</sub></div>
+      <div class="proof-lbl">Years shipping Salesforce in production — open-sourced on GitHub.</div>
+      <div class="proof-sub">
+        <span class="proof-chip">sf-trip-tracker</span>
+        <span class="proof-chip">approval-engine</span>
+        <span class="proof-chip">lwc-library</span>
+      </div>
+      <a class="proof-verify" href="https://github.com/vetrivel9445" target="_blank" rel="noopener">Browse the code</a>
+    </div>
+
   </div>
-  <div class="tst-nav">
-    <button class="tst-arrow" id="tstPrev" aria-label="Previous testimonial">←</button>
-    <div class="tst-dots" id="tstDots"></div>
-    <button class="tst-arrow" id="tstNext" aria-label="Next testimonial">→</button>
-  </div>
+  <p class="proof-note">Prefer words to numbers? These are the real, checkable signals — verify them at
+    <a href="https://trailblazer.me/id/vsalesforce35" target="_blank" rel="noopener">trailblazer.me/id/vsalesforce35</a> and
+    <a href="https://github.com/vetrivel9445" target="_blank" rel="noopener">github.com/vetrivel9445</a>.</p>
 </section>
 
 <!-- ═══════ CONTACT ═══════════════════════════════ -->
@@ -2776,96 +2781,127 @@ import * as THREE from './vendor/three.module.min.js';
 })();
 </script>
 
-<!-- ═══════ ENHANCEMENTS: testimonials carousel · magnetic buttons · card spotlight ═══════ -->
+<!-- ═══════ VFX + MOTION GRAPHICS: click burst · proof counters · letter reveal · magnetic ═══════ -->
 <script>
 (function(){
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const finePointer = window.matchMedia('(pointer: fine)').matches;
 
-  /* ── Testimonials carousel: autoplay · dots · arrows · swipe ── */
+  /* ── Proof counters: count up when the Recognition wall scrolls in ── */
   (function(){
-    const track = document.getElementById('tstTrack');
-    const viewport = document.getElementById('tstViewport');
-    if(!track || !viewport) return;
-    const cards = Array.from(track.children);
-    const dotsWrap = document.getElementById('tstDots');
-    const prev = document.getElementById('tstPrev');
-    const next = document.getElementById('tstNext');
-    let index = 0, timer = null;
-
-    const perView = () => {
-      const w = window.innerWidth;
-      if(w >= 1140) return 3;
-      if(w >= 780) return 2;
-      return 1;
+    const nums = document.querySelectorAll('#recognition [data-count]');
+    if(!nums.length) return;
+    const run = el => {
+      const target = +el.getAttribute('data-count');
+      const holder = el.querySelector('span') || el;      // keep the <sub> suffix intact
+      if(reduce){ holder.textContent = target.toLocaleString(); return; }
+      const dur = 1600; let t0 = null;
+      const tick = ts => {
+        if(!t0) t0 = ts;
+        const p = Math.min((ts - t0) / dur, 1);
+        const e = 1 - Math.pow(1 - p, 3);
+        holder.textContent = Math.floor(e * target).toLocaleString();
+        if(p < 1) requestAnimationFrame(tick); else holder.textContent = target.toLocaleString();
+      };
+      requestAnimationFrame(tick);
     };
-    const maxIndex = () => Math.max(0, cards.length - perView());
-
-    function buildDots(){
-      dotsWrap.innerHTML = '';
-      for(let i=0; i<=maxIndex(); i++){
-        const b = document.createElement('button');
-        b.className = 'tst-dot' + (i===index ? ' on' : '');
-        b.setAttribute('aria-label', 'Go to testimonial group ' + (i+1));
-        b.addEventListener('click', () => { go(i); rearm(); });
-        dotsWrap.appendChild(b);
-      }
-    }
-    function render(){
-      const cardW = cards[0].getBoundingClientRect().width;
-      track.style.transform = 'translateX(' + (-index * cardW) + 'px)';
-      Array.from(dotsWrap.children).forEach((d,i) => d.classList.toggle('on', i===index));
-    }
-    function go(i){ index = Math.max(0, Math.min(i, maxIndex())); render(); }
-    function nextSlide(){ index = index >= maxIndex() ? 0 : index+1; render(); }
-    function prevSlide(){ index = index <= 0 ? maxIndex() : index-1; render(); }
-
-    function rearm(){ if(reduce) return; clearInterval(timer); timer = setInterval(nextSlide, 5500); }
-
-    prev.addEventListener('click', () => { prevSlide(); rearm(); });
-    next.addEventListener('click', () => { nextSlide(); rearm(); });
-    viewport.addEventListener('mouseenter', () => clearInterval(timer));
-    viewport.addEventListener('mouseleave', rearm);
-
-    /* touch / pointer swipe */
-    let startX = 0, dragging = false;
-    viewport.addEventListener('pointerdown', e => { dragging = true; startX = e.clientX; clearInterval(timer); });
-    window.addEventListener('pointerup', e => {
-      if(!dragging) return; dragging = false;
-      const dx = e.clientX - startX;
-      if(Math.abs(dx) > 45){ dx < 0 ? nextSlide() : prevSlide(); }
-      rearm();
-    });
-
-    let rt;
-    window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { buildDots(); go(index); }, 150); });
-
-    buildDots(); render(); rearm();
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if(e.isIntersecting){ run(e.target); io.unobserve(e.target); }
+    }), { threshold: 0.4 });
+    nums.forEach(n => io.observe(n));
   })();
 
-  /* ── Card spotlight: follow the cursor for the radial glow ── */
-  if(!reduce){
-    document.querySelectorAll('.tst-inner').forEach(card => {
-      card.addEventListener('pointermove', e => {
-        const r = card.getBoundingClientRect();
-        card.style.setProperty('--gx', ((e.clientX - r.left) / r.width * 100) + '%');
-        card.style.setProperty('--gy', ((e.clientY - r.top) / r.height * 100) + '%');
+  /* ── Motion graphics: split section eyebrows into letters, reveal + sheen ── */
+  (function(){
+    const eyes = document.querySelectorAll('.sec-eye');
+    eyes.forEach(eye => {
+      if(reduce) return;
+      const text = eye.textContent;
+      eye.setAttribute('aria-label', text);
+      eye.innerHTML = '';
+      [...text].forEach(c => {
+        const s = document.createElement('span');
+        s.className = 'ch'; s.textContent = c === ' ' ? ' ' : c;
+        eye.appendChild(s);
       });
     });
-  }
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if(!e.isIntersecting) return;
+      const eye = e.target;
+      eye.querySelectorAll('.ch').forEach((ch, i) => setTimeout(() => ch.classList.add('lit'), i * 42));
+      setTimeout(() => eye.classList.add('shine'), 180);
+      io.unobserve(eye);
+    }), { threshold: 0.6 });
+    eyes.forEach(eye => io.observe(eye));
+  })();
 
-  /* ── Magnetic buttons: gentle pull toward the cursor ── */
-  if(!reduce && window.matchMedia('(pointer: fine)').matches){
+  /* ── Magnetic buttons: gentle elastic pull toward the cursor ── */
+  if(!reduce && finePointer){
     document.querySelectorAll('.magnetic').forEach(el => {
-      const strength = 0.32;
+      const strength = 0.3;
       el.addEventListener('pointermove', e => {
         const r = el.getBoundingClientRect();
-        const x = (e.clientX - r.left - r.width/2) * strength;
-        const y = (e.clientY - r.top - r.height/2) * strength;
-        el.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+        el.style.transform = 'translate(' + ((e.clientX - r.left - r.width/2) * strength) + 'px,'
+          + ((e.clientY - r.top - r.height/2) * strength) + 'px)';
       });
       el.addEventListener('pointerleave', () => { el.style.transform = ''; });
     });
   }
+
+  /* ── Click VFX: particle burst + shockwave ring on every click ── */
+  (function(){
+    const canvas = document.getElementById('vfx-canvas');
+    if(!canvas || reduce) return;
+    const ctx = canvas.getContext('2d');
+    const COLORS = ['1,118,211', '27,150,255', '6,174,213', '58,73,204', '34,211,165'];
+    let dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let parts = [], rings = [], raf = null;
+
+    function size(){
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = innerWidth * dpr; canvas.height = innerHeight * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    size(); addEventListener('resize', size);
+
+    function burst(x, y){
+      const n = 16 + Math.floor(Math.random() * 8);
+      for(let i=0; i<n; i++){
+        const a = (Math.PI * 2 * i) / n + Math.random() * 0.5;
+        const sp = 2.4 + Math.random() * 4.2;
+        parts.push({ x, y, vx: Math.cos(a)*sp, vy: Math.sin(a)*sp - 1.2,
+          life: 1, decay: 0.014 + Math.random()*0.02, r: 1.6 + Math.random()*2.6,
+          c: COLORS[Math.floor(Math.random()*COLORS.length)] });
+      }
+      rings.push({ x, y, r: 4, life: 1 });
+      if(!raf) raf = requestAnimationFrame(loop);
+    }
+
+    function loop(){
+      ctx.clearRect(0, 0, innerWidth, innerHeight);
+      rings = rings.filter(ri => ri.life > 0);
+      rings.forEach(ri => {
+        ri.r += 3.4; ri.life -= 0.045;
+        ctx.beginPath(); ctx.arc(ri.x, ri.y, ri.r, 0, Math.PI*2);
+        ctx.strokeStyle = 'rgba(27,150,255,' + (ri.life*0.5) + ')'; ctx.lineWidth = 2; ctx.stroke();
+      });
+      parts = parts.filter(p => p.life > 0);
+      parts.forEach(p => {
+        p.vy += 0.12; p.vx *= 0.985; p.x += p.vx; p.y += p.vy; p.life -= p.decay;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r * p.life + 0.3, 0, Math.PI*2);
+        ctx.fillStyle = 'rgba(' + p.c + ',' + p.life + ')';
+        ctx.shadowBlur = 8; ctx.shadowColor = 'rgba(' + p.c + ',' + p.life + ')';
+        ctx.fill(); ctx.shadowBlur = 0;
+      });
+      if(parts.length || rings.length){ raf = requestAnimationFrame(loop); }
+      else { ctx.clearRect(0,0,innerWidth,innerHeight); raf = null; }
+    }
+
+    addEventListener('pointerdown', e => {
+      if(e.target.closest('input, textarea, select')) return;   // don't distract from form fields
+      burst(e.clientX, e.clientY);
+    }, { passive: true });
+  })();
 })();
 </script>
 </body>
