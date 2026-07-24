@@ -1855,6 +1855,7 @@ html[data-skin="aurora"] .aurora-bg{
         <li><a href="./resume/" class="nav-resume">Résumé</a></li>
         <li><a href="#contact" class="nav-cta">Hire Me</a></li>
       </ul>
+      <button id="soundToggle" class="theme-toggle-btn" aria-pressed="false" aria-label="Toggle sound" title="Sound off">🔇</button>
       <div class="theme-switcher">
         <button id="themeToggle" class="theme-toggle-btn" aria-haspopup="true" aria-expanded="false" aria-label="Change theme">🌙</button>
         <div class="theme-menu" id="themeMenu" role="menu">
@@ -3194,6 +3195,106 @@ import { GLTFLoader } from './vendor/GLTFLoader.js';
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
+})();
+</script>
+
+<!-- ═══════ SOUND DESIGN: synthesized ambient + scroll whoosh + UI blips (Web Audio, no files) ═══════ -->
+<script>
+(function(){
+  const btn = document.getElementById('soundToggle');
+  if(!btn) return;
+  let ctx=null, master=null, drone=[], on=false;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function ensure(){
+    if(ctx) return;
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if(!AC) return;
+    ctx = new AC();
+    master = ctx.createGain(); master.gain.value = 0; master.connect(ctx.destination);
+  }
+
+  // soft two-oscillator ambient pad (very quiet), through a lowpass
+  function startDrone(){
+    if(!ctx || drone.length) return;
+    const lp = ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=520; lp.connect(master);
+    [110, 164.81, 220].forEach((f,i)=>{
+      const o = ctx.createOscillator(); o.type = i===2?'triangle':'sine'; o.frequency.value = f;
+      const g = ctx.createGain(); g.gain.value = i===2?0.03:0.06;
+      const lfo = ctx.createOscillator(); lfo.frequency.value = 0.05 + i*0.03;
+      const lg = ctx.createGain(); lg.gain.value = 0.02; lfo.connect(lg); lg.connect(g.gain);
+      o.connect(g); g.connect(lp); o.start(); lfo.start(); drone.push(o, lfo);
+    });
+  }
+  function stopDrone(){ drone.forEach(o=>{ try{o.stop();}catch(e){} }); drone=[]; }
+
+  // short tonal blip (UI feedback)
+  function blip(freq, dur, type, vol){
+    if(!on || !ctx) return;
+    const o=ctx.createOscillator(), g=ctx.createGain();
+    o.type=type||'sine'; o.frequency.value=freq;
+    const t=ctx.currentTime;
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol||0.12, t+0.008);
+    g.gain.exponentialRampToValueAtTime(0.0001, t+(dur||0.14));
+    o.connect(g); g.connect(master); o.start(t); o.stop(t+(dur||0.14)+0.02);
+  }
+  // filtered noise "whoosh" for scrolling / flight
+  function whoosh(intensity){
+    if(!on || !ctx) return;
+    const dur=0.5, sr=ctx.sampleRate, buf=ctx.createBuffer(1, sr*dur, sr), d=buf.getChannelData(0);
+    for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*(1-i/d.length);
+    const src=ctx.createBufferSource(); src.buffer=buf;
+    const bp=ctx.createBiquadFilter(); bp.type='bandpass'; bp.Q.value=0.8;
+    const t=ctx.currentTime; bp.frequency.setValueAtTime(300, t); bp.frequency.linearRampToValueAtTime(1400+intensity*1200, t+dur);
+    const g=ctx.createGain(); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(Math.min(0.06+intensity*0.05,0.14), t+0.05);
+    g.gain.exponentialRampToValueAtTime(0.0001, t+dur);
+    src.connect(bp); bp.connect(g); g.connect(master); src.start(t); src.stop(t+dur);
+  }
+
+  function setOn(state){
+    on = state;
+    btn.textContent = on ? '🔊' : '🔇';
+    btn.setAttribute('aria-pressed', String(on));
+    btn.title = on ? 'Sound on' : 'Sound off';
+    try{ localStorage.setItem('vk-sound', on?'1':'0'); }catch(e){}
+    if(on){ ensure(); if(ctx && ctx.state==='suspended') ctx.resume(); startDrone();
+      master.gain.cancelScheduledValues(ctx.currentTime);
+      master.gain.linearRampToValueAtTime(0.9, ctx.currentTime+0.4);
+      blip(660,0.12,'triangle',0.1);
+    } else if(ctx){
+      master.gain.cancelScheduledValues(ctx.currentTime);
+      master.gain.linearRampToValueAtTime(0, ctx.currentTime+0.3);
+      setTimeout(stopDrone, 400);
+    }
+  }
+  btn.addEventListener('click', ()=> setOn(!on));
+
+  /* ── scroll whoosh: the "sound after scrolling down" ── */
+  let lastY = scrollY, acc = 0, cool = 0;
+  addEventListener('scroll', ()=>{
+    if(!on) { lastY = scrollY; return; }
+    const dy = Math.abs(scrollY - lastY); lastY = scrollY; acc += dy;
+    const now = performance.now();
+    if(acc > 600 && now - cool > 650){ whoosh(clamp(acc/2500,0,1)); acc = 0; cool = now; }
+  }, { passive:true });
+  const clamp=(v,a,b)=>Math.max(a,Math.min(v,b));
+
+  /* ── UI blips on the primary interactive elements ── */
+  document.querySelectorAll('.nav-links a, .btn-glow, .btn-resume, .nav-cta, .proj-link, .tst-arrow, #themeToggle').forEach(el=>{
+    el.addEventListener('mouseenter', ()=> blip(880, 0.06, 'sine', 0.05));
+  });
+  addEventListener('pointerdown', e=>{ if(e.target.closest('a,button')) blip(523.25, 0.10, 'triangle', 0.09); }, { passive:true });
+
+  /* ── soft chime when a section title reveals (ties sound to scroll animation) ── */
+  const notes=[392,440,494,523,587,659];
+  let ni=0;
+  const chimeObs = new IntersectionObserver(es=>es.forEach(e=>{
+    if(e.isIntersecting){ blip(notes[ni++ % notes.length], 0.5, 'sine', 0.06); chimeObs.unobserve(e.target); }
+  }), { threshold:0.9 });
+  if(!reduce) document.querySelectorAll('.sec-eye').forEach(el=>chimeObs.observe(el));
+
+  // restore preference (stays silent until a click actually resumes audio — browsers require a gesture)
+  try{ if(localStorage.getItem('vk-sound')==='1'){ btn.textContent='🔊'; btn.title='Sound on — click to activate'; } }catch(e){}
 })();
 </script>
 </body>
