@@ -2816,6 +2816,7 @@ if(isFinePointer && !reducedMotion){
      no CDN; silent fallback without WebGL or with reduced-motion. -->
 <script type="module">
 import * as THREE from './vendor/three.module.min.js';
+import { GLTFLoader } from './vendor/GLTFLoader.js';
 
 (function(){
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -2906,6 +2907,38 @@ import * as THREE from './vendor/three.module.min.js';
   }
   const legL = makeLeg(-1), legR = makeLeg(1);
 
+  /* ---------- optional GLTF character ----------
+     Drop a rigged model at models/character.glb (with a walk/idle clip)
+     and it replaces the primitive mech automatically. Configure the path
+     and which clip to treat as the walk here. */
+  const CHARACTER_URL = 'models/character.glb';
+  const WALK_CLIP = /walk|run|idle/i;      // first clip matching this drives the scroll-walk
+  let modelReady = false, mixer = null, walkAction = null;
+  const charWrap = new THREE.Group();       // gets the same cursor/scroll transforms as the mech
+  charWrap.position.set(2.9, -0.4, 0);
+  scene.add(charWrap);
+
+  new GLTFLoader().load(CHARACTER_URL, (gltf)=>{
+    const model = gltf.scene;
+    // normalise: centre on origin and scale so it stands ~4 units tall
+    const box = new THREE.Box3().setFromObject(model);
+    const size = new THREE.Vector3(); box.getSize(size);
+    const center = new THREE.Vector3(); box.getCenter(center);
+    const h = size.y || 1;
+    const k = 4.0 / h;
+    model.scale.setScalar(k);
+    model.position.set(-center.x*k, -box.min.y*k - 2.0, -center.z*k); // feet near y=-2, centred
+    charWrap.add(model);
+
+    if(gltf.animations && gltf.animations.length){
+      mixer = new THREE.AnimationMixer(model);
+      const clip = gltf.animations.find(a=>WALK_CLIP.test(a.name)) || gltf.animations[0];
+      walkAction = mixer.clipAction(clip); walkAction.play();
+    }
+    mech.visible = false;                    // hand over from the primitive mech
+    modelReady = true;
+  }, undefined, ()=>{ /* no model provided — keep the primitive mech */ });
+
   /* ---------- particle field ---------- */
   const N = 650, ppos = new Float32Array(N*3);
   for(let i=0;i<N;i++){ const r=7+Math.random()*11, th=Math.random()*Math.PI*2, ph=Math.acos(2*Math.random()-1);
@@ -2933,6 +2966,7 @@ import * as THREE from './vendor/three.module.min.js';
     const mob = innerWidth < 860;
     baseX = mob ? 0 : 2.9; baseY = mob ? 1.1 : -0.4; scaleN = mob ? 0.5 : 0.82;
     mech.scale.setScalar(scaleN);
+    charWrap.scale.setScalar(scaleN);
   }
   addEventListener('resize', resize); resize();
 
@@ -2942,53 +2976,52 @@ import * as THREE from './vendor/three.module.min.js';
   mo.observe(document.documentElement, { attributes:true, attributeFilter:['data-theme'] });
 
   const clock = new THREE.Clock();
-  let stride = 0, lastSp = sp;
+  let stride = 0, lastSp = sp, elapsed = 0;
   function animate(){
-    const t = clock.getElapsedTime();
-
-    // walking cadence is driven by how much you scroll; idle = slow march
+    const dt = Math.min(clock.getDelta(), 0.05);
+    elapsed += dt; const t = elapsed;
     const scrollDelta = Math.abs(sp - lastSp); lastSp = sp;
-    const speed = 2.2 + scrollDelta * 900;        // scroll faster → step faster
-    stride += (0.6 + Math.min(scrollDelta*60, 6)) * 0.06 + 0.012;
-    const s = Math.sin(stride), c = Math.cos(stride);
 
-    // legs alternate (hip swing + knee bend), arms counter-swing
-    legL.hip.rotation.x = s*0.6;  legL.knee.rotation.x = Math.max(0, -s)*0.9 + 0.1;
-    legR.hip.rotation.x = -s*0.6; legR.knee.rotation.x = Math.max(0,  s)*0.9 + 0.1;
-    legL.foot.rotation.x = -legL.knee.rotation.x*0.5; legR.foot.rotation.x = -legR.knee.rotation.x*0.5;
-    armL.shoulder.rotation.x = -s*0.5; armL.elbow.rotation.x = (0.3 + Math.max(0,s)*0.5);
-    armR.shoulder.rotation.x =  s*0.5; armR.elbow.rotation.x = (0.3 + Math.max(0,-s)*0.5);
-    // subtle torso counter-rotation + bob to sell the walk
-    torso.rotation.y = c*0.06 + mx*0.35;
-    torso.rotation.z = s*0.03;
-    torso.position.y = Math.abs(s)*0.08;
+    // the active character: loaded GLTF model, else the primitive mech
+    const active = modelReady ? charWrap : mech;
 
-    // head tracks cursor
-    head.rotation.y += (mx*1.0 - head.rotation.y)*0.08;
-    head.rotation.x += (-my*0.7 - head.rotation.x)*0.08;
-    eyeL.position.x = -0.2 + mx*0.03; eyeR.position.x = 0.2 + mx*0.03;
-
-    // whole mech: face the cursor, lean into the walk, slow turn with scroll
-    mech.position.x = baseX; 
-    mech.position.y = baseY + Math.sin(t*1.0)*0.06 - sp*0.4;
-    mech.rotation.y = mx*0.4 + sp*Math.PI*0.9;
-    mech.rotation.x = -my*0.12 + Math.min(scrollDelta*40,0.25);   // lean forward when scrolling
-
-    // Transformers reconfigure burst on click: quick spin + arms flare + glow
-    if(transform > 0){
-      transform = Math.max(0, transform - 0.02);
-      const e2 = transform;
-      mech.rotation.y += e2*Math.PI*2;
-      armL.shoulder.rotation.z =  e2*1.1; armR.shoulder.rotation.z = -e2*1.1;
-      armL.shoulder.rotation.x -= e2*1.2; armR.shoulder.rotation.x -= e2*1.2;
-      core.scale.setScalar(1 + e2*1.6);
-      accentC.color.copy(cyan).lerp(new THREE.Color(0xffffff), e2);
+    if(modelReady){
+      // scroll drives the walk clip's playback (base amble + scroll boost)
+      if(mixer) mixer.update(dt * (0.55 + Math.min(scrollDelta*80, 5)));
     } else {
-      armL.shoulder.rotation.z = 0; armR.shoulder.rotation.z = 0;
-      core.scale.setScalar(1 + Math.sin(t*2)*0.12);
+      // ---- primitive mech walk cycle ----
+      stride += (0.6 + Math.min(scrollDelta*60, 6)) * 0.06 + 0.012;
+      const s = Math.sin(stride), c = Math.cos(stride);
+      legL.hip.rotation.x = s*0.6;  legL.knee.rotation.x = Math.max(0, -s)*0.9 + 0.1;
+      legR.hip.rotation.x = -s*0.6; legR.knee.rotation.x = Math.max(0,  s)*0.9 + 0.1;
+      legL.foot.rotation.x = -legL.knee.rotation.x*0.5; legR.foot.rotation.x = -legR.knee.rotation.x*0.5;
+      armL.shoulder.rotation.x = -s*0.5; armL.elbow.rotation.x = (0.3 + Math.max(0,s)*0.5);
+      armR.shoulder.rotation.x =  s*0.5; armR.elbow.rotation.x = (0.3 + Math.max(0,-s)*0.5);
+      torso.rotation.y = c*0.06 + mx*0.35; torso.rotation.z = s*0.03; torso.position.y = Math.abs(s)*0.08;
+      head.rotation.y += (mx*1.0 - head.rotation.y)*0.08;
+      head.rotation.x += (-my*0.7 - head.rotation.x)*0.08;
+      eyeL.position.x = -0.2 + mx*0.03; eyeR.position.x = 0.2 + mx*0.03;
+      if(transform > 0){
+        armL.shoulder.rotation.z =  transform*1.1; armR.shoulder.rotation.z = -transform*1.1;
+        armL.shoulder.rotation.x -= transform*1.2; armR.shoulder.rotation.x -= transform*1.2;
+        core.scale.setScalar(1 + transform*1.6);
+        accentC.color.copy(cyan).lerp(new THREE.Color(0xffffff), transform);
+      } else {
+        armL.shoulder.rotation.z = 0; armR.shoulder.rotation.z = 0;
+        core.scale.setScalar(1 + Math.sin(t*2)*0.12);
+      }
+      bulb.scale.setScalar(0.8 + Math.abs(Math.sin(t*2.2))*0.6);
     }
 
-    bulbPulse(t);
+    // shared transforms (apply to whichever character is active):
+    // face the cursor, hover, lean into the walk, turn with scroll
+    active.position.x = baseX;
+    active.position.y = baseY + Math.sin(t*1.0)*0.06 - sp*0.4;
+    active.rotation.y = mx*0.4 + sp*Math.PI*0.9;
+    active.rotation.x = -my*0.12 + Math.min(scrollDelta*40,0.25);
+    // click reconfigure: quick spin (works for both)
+    if(transform > 0){ transform = Math.max(0, transform - 0.02); active.rotation.y += transform*Math.PI*2; }
+
     particles.rotation.y += 0.0006; particles.rotation.x = sp*0.35;
     camera.position.x += (mx*0.7 - camera.position.x)*0.05;
     camera.position.y += (-my*0.4 - camera.position.y)*0.05;
@@ -2996,7 +3029,6 @@ import * as THREE from './vendor/three.module.min.js';
     renderer.render(scene,camera);
     requestAnimationFrame(animate);
   }
-  function bulbPulse(t){ bulb.scale.setScalar(0.8 + Math.abs(Math.sin(t*2.2))*0.6); }
   animate();
   document.documentElement.classList.add('has-three');
 })();
