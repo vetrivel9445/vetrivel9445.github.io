@@ -2936,17 +2936,40 @@ import { GLTFLoader } from './vendor/GLTFLoader.js';
   }
   const _thWorld=new THREE.Vector3();
 
-  /* ---------- optional GLTF character (drop models/character.glb) ---------- */
+  /* ---------- rigged GLTF character (models/character.glb) ----------
+     Plays a different clip per section as you scroll — the reference's
+     "character reacts through the page" behaviour. */
   const CHARACTER_URL='models/character.glb';
-  const WALK_CLIP=/fly|walk|run|idle/i;
-  let modelReady=false, mixer=null;
+  let modelReady=false, mixer=null, actions={}, curName='', curAction=null;
   const charWrap=new THREE.Group(); charWrap.position.copy(mech.position); scene.add(charWrap);
+
+  function pick(list){ for(const n of list){ if(actions[n]) return n; } return Object.keys(actions)[0]||''; }
+  function play(name, fade){
+    if(!actions[name] || curName===name) return;
+    const next=actions[name]; next.reset(); next.enabled=true; next.setEffectiveWeight(1); next.fadeIn(fade||0.45); next.play();
+    if(curAction) curAction.fadeOut(fade||0.45);
+    curAction=next; curName=name;
+  }
+  // scroll progress → an available clip (mapped by intent, with fallbacks)
+  function sceneClip(p){
+    if(p<0.10) return pick(['Wave','ThumbsUp','Idle']);       // hero: greet
+    if(p<0.26) return pick(['Walking','Running','Idle']);     // skills: walk
+    if(p<0.42) return pick(['ThumbsUp','Yes','Wave','Idle']); // projects: approve
+    if(p<0.58) return pick(['Running','Walking','Idle']);     // capabilities: run
+    if(p<0.74) return pick(['Idle','Standing']);              // experience: idle
+    if(p<0.90) return pick(['Yes','ThumbsUp','Idle']);        // proof: yes
+    return pick(['Dance','Jump','Idle']);                     // contact: dance
+  }
+
   new GLTFLoader().load(CHARACTER_URL,(gltf)=>{
     const model=gltf.scene, b=new THREE.Box3().setFromObject(model), sz=new THREE.Vector3(),c=new THREE.Vector3();
     b.getSize(sz); b.getCenter(c); const k=4.0/(sz.y||1);
     model.scale.setScalar(k); model.position.set(-c.x*k,-b.min.y*k-2.0,- c.z*k); charWrap.add(model);
-    if(gltf.animations&&gltf.animations.length){ mixer=new THREE.AnimationMixer(model);
-      const clip=gltf.animations.find(a=>WALK_CLIP.test(a.name))||gltf.animations[0]; mixer.clipAction(clip).play(); }
+    if(gltf.animations&&gltf.animations.length){
+      mixer=new THREE.AnimationMixer(model);
+      gltf.animations.forEach(cl=>{ const a=mixer.clipAction(cl); a.setLoop(THREE.LoopRepeat); actions[cl.name]=a; });
+      play(sceneClip(sp), 0);
+    }
     mech.visible=false; modelReady=true;
   }, undefined, ()=>{});
 
@@ -2984,7 +3007,10 @@ import { GLTFLoader } from './vendor/GLTFLoader.js';
     const active=modelReady?charWrap:mech;
     const thrust = 0.45 + Math.min(dSp*90, 1.05);   // jets flare when you scroll (capped)
 
-    if(modelReady){ if(mixer) mixer.update(dt*(0.55+Math.min(dSp*80,5))); }
+    if(modelReady){
+      play(sceneClip(sp));            // swap the clip when you enter a new section
+      if(mixer) mixer.update(dt);     // natural playback speed
+    }
     else {
       // flying idle: head tracks cursor, arms/legs sway, thrusters flicker
       head.rotation.y += (mx*0.55 - head.rotation.y)*0.08;
