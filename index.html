@@ -2949,9 +2949,10 @@ import { GLTFLoader } from './vendor/GLTFLoader.js';
   /* ---------- rigged GLTF character (models/character.glb) ----------
      Plays a different clip per section as you scroll — the reference's
      "character reacts through the page" behaviour. */
-  const CHARACTER_URL='models/character.glb';
-  let modelReady=false, mixer=null, actions={}, curName='', curAction=null;
+  const CHARACTER_URL='models/hologram.glb';   // a different (humanoid) character, shown as a hologram
+  let modelReady=false, mixer=null, actions={}, curName='', curAction=null, hologram=false;
   const charWrap=new THREE.Group(); charWrap.position.copy(mech.position); scene.add(charWrap);
+  const podGroup=new THREE.Group(); charWrap.add(podGroup);   // holo-pod parts float with the character
 
   function pick(list){ for(const n of list){ if(actions[n]) return n; } return Object.keys(actions)[0]||''; }
   function play(name, fade){
@@ -2971,10 +2972,32 @@ import { GLTFLoader } from './vendor/GLTFLoader.js';
     return pick(['Dance','Jump','Idle']);                     // contact: dance
   }
 
+  let holoFlicker=null;
   new GLTFLoader().load(CHARACTER_URL,(gltf)=>{
     const model=gltf.scene, b=new THREE.Box3().setFromObject(model), sz=new THREE.Vector3(),c=new THREE.Vector3();
-    b.getSize(sz); b.getCenter(c); const k=4.0/(sz.y||1);
-    model.scale.setScalar(k); model.position.set(-c.x*k,-b.min.y*k-2.0,- c.z*k); charWrap.add(model);
+    b.getSize(sz); b.getCenter(c); const k=4.2/(sz.y||1);
+    model.scale.setScalar(k); model.position.set(-c.x*k,-b.min.y*k-2.1,- c.z*k); charWrap.add(model);
+
+    // ── holographic look: cyan wireframe skin (deforms with the skeleton) ──
+    const wire = new THREE.MeshBasicMaterial({ color:0x5fe6ff, wireframe:true, transparent:true, opacity:0.6, blending:THREE.AdditiveBlending, depthWrite:false });
+    holoFlicker = wire;
+    model.traverse(o=>{ if(o.isMesh){ o.material = wire; o.castShadow=false; } });
+    hologram = true;
+
+    // ── the pod: glowing base rings + a translucent containment column ──
+    const holoC = 0x45cdf7;
+    const ringMat = new THREE.MeshBasicMaterial({ color:holoC, transparent:true, opacity:0.85, blending:THREE.AdditiveBlending, depthWrite:false });
+    const base = new THREE.Mesh(new THREE.CylinderGeometry(1.7,1.95,0.35,40), new THREE.MeshBasicMaterial({ color:0x0a2740, transparent:true, opacity:0.5 }));
+    base.position.y=-2.15; podGroup.add(base);
+    const ring1 = new THREE.Mesh(new THREE.TorusGeometry(1.7,0.05,10,60), ringMat); ring1.rotation.x=Math.PI/2; ring1.position.y=-1.98; podGroup.add(ring1);
+    const ring2 = new THREE.Mesh(new THREE.TorusGeometry(1.5,0.03,10,60), ringMat.clone()); ring2.rotation.x=Math.PI/2; ring2.position.y=-1.9; podGroup.add(ring2);
+    const col = new THREE.Mesh(new THREE.CylinderGeometry(1.55,1.55,5.2,40,1,true),
+      new THREE.MeshBasicMaterial({ color:holoC, transparent:true, opacity:0.06, side:THREE.DoubleSide, blending:THREE.AdditiveBlending, depthWrite:false }));
+    col.position.y=0.5; podGroup.add(col);
+    const glowDisc = new THREE.Mesh(new THREE.CircleGeometry(1.55,40), new THREE.MeshBasicMaterial({ color:holoC, transparent:true, opacity:0.18, blending:THREE.AdditiveBlending, depthWrite:false }));
+    glowDisc.rotation.x=-Math.PI/2; glowDisc.position.y=-1.96; podGroup.add(glowDisc);
+    podGroup._ring1=ring1; podGroup._ring2=ring2;
+
     if(gltf.animations&&gltf.animations.length){
       mixer=new THREE.AnimationMixer(model);
       gltf.animations.forEach(cl=>{ const a=mixer.clipAction(cl); a.setLoop(THREE.LoopRepeat); actions[cl.name]=a; });
@@ -3038,24 +3061,41 @@ import { GLTFLoader } from './vendor/GLTFLoader.js';
       booster.scale.set(1+thrust*0.2,1+thrust*0.2,0.5); booster.material.opacity=0.4+thrust*0.15;
     }
 
-    // shared: fly pose — smooth hover, fly across the screen with scroll, bank
-    const targetX = (isMobile ? baseX : pathX(sp)) + mx*0.3;
-    const hover = Math.sin(t*1.3)*0.16 + Math.sin(t*0.72)*0.09;   // organic double-sine float
-    const targetY = baseY + hover - sp*0.25 + thrust*0.12;
-    const dx = targetX - active.position.x;                       // horizontal velocity → banking
-    active.position.x += dx * 0.055;                              // glide smoothly toward the path point
-    active.position.y += (targetY - active.position.y) * 0.12;
-    active.rotation.y = mx*0.5 + sp*Math.PI*1.1;
-    active.rotation.z = clamp(-dx*0.18, -0.5, 0.5) - mx*0.2;      // bank into the direction of flight
-    active.rotation.x = -my*0.15 - 0.12 - Math.min(dSp*30,0.3);   // nose-down flight lean
-    if(roll>0){ roll=Math.max(0,roll-0.02); active.rotation.z += roll*Math.PI*2; }
+    if(hologram){
+      // ── holographic figure standing in its pod: gentle turntable + float ──
+      const hover = Math.sin(t*1.1)*0.09;
+      active.position.x += (baseX - active.position.x)*0.06;
+      active.position.y += ((baseY+0.1) + hover - active.position.y)*0.08;
+      active.rotation.y += (mx*0.5 + 0.3 - active.rotation.y) * 0.04 + 0.004;  // slow turntable, nudged by cursor
+      active.rotation.z += (0 - active.rotation.z)*0.1;
+      active.rotation.x += (-my*0.08 - active.rotation.x)*0.06;
+      if(roll>0){ roll=Math.max(0,roll-0.02); active.rotation.y += roll*Math.PI*2; }
+      // pod rings pulse + spin, hologram flickers
+      if(podGroup._ring1){ podGroup._ring1.rotation.z += 0.01; podGroup._ring2.rotation.z -= 0.014;
+        const g=0.75+Math.abs(Math.sin(t*2.0))*0.25; podGroup._ring1.material.opacity=g; }
+      if(holoFlicker) holoFlicker.opacity = 0.45 + Math.abs(Math.sin(t*3.1))*0.18 + (Math.random()<0.03?0.2:0);
+    } else {
+      // ── flying robot: smooth hover, fly across the screen with scroll, bank ──
+      const targetX = (isMobile ? baseX : pathX(sp)) + mx*0.3;
+      const hover = Math.sin(t*1.3)*0.16 + Math.sin(t*0.72)*0.09;
+      const targetY = baseY + hover - sp*0.25 + thrust*0.12;
+      const dx = targetX - active.position.x;
+      active.position.x += dx * 0.055;
+      active.position.y += (targetY - active.position.y) * 0.12;
+      active.rotation.y = mx*0.5 + sp*Math.PI*1.1;
+      active.rotation.z = clamp(-dx*0.18, -0.5, 0.5) - mx*0.2;
+      active.rotation.x = -my*0.15 - 0.12 - Math.min(dSp*30,0.3);
+      if(roll>0){ roll=Math.max(0,roll-0.02); active.rotation.z += roll*Math.PI*2; }
+    }
 
-    // jet trail — fading exhaust ribbon that chases the thrusters (world space)
-    _thWorld.set(0,-2.0,0); active.localToWorld(_thWorld);
-    trail[0].position.copy(_thWorld);
-    for(let i=1;i<TRAIL;i++) trail[i].position.lerp(trail[i-1].position, 0.34);
+    // jet trail — only for the flying robot fallback
     const trailOn = !modelReady;
-    for(let i=0;i<TRAIL;i++){ trail[i].visible=trailOn; if(trailOn){ const f=1-i/TRAIL; trail[i].material.opacity=(0.08+thrust*0.10)*f; } }
+    if(trailOn){
+      _thWorld.set(0,-2.0,0); active.localToWorld(_thWorld);
+      trail[0].position.copy(_thWorld);
+      for(let i=1;i<TRAIL;i++) trail[i].position.lerp(trail[i-1].position, 0.34);
+      for(let i=0;i<TRAIL;i++){ trail[i].visible=true; const f=1-i/TRAIL; trail[i].material.opacity=(0.08+thrust*0.10)*f; }
+    } else { for(let i=0;i<TRAIL;i++) trail[i].visible=false; }
 
     particles.rotation.y += 0.0006; particles.rotation.x = sp*0.3;
     // scroll-driven camera travel — the scene reads like a journey down the page
