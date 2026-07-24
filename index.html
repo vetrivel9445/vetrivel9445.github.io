@@ -1551,6 +1551,54 @@ html[data-skin="aurora"] footer{ border-top:1px solid var(--border); }
 @media (prefers-reduced-motion: reduce){
   html[data-skin="aurora"] .aurora-blob{ animation:none !important; }
 }
+
+/* ── Parallax depth orbs in the aurora field ── */
+html[data-skin="aurora"] .porb{
+  position:absolute; border-radius:50%; pointer-events:none; will-change:transform;
+  background:radial-gradient(circle at 35% 35%, rgba(255,255,255,.5), transparent 60%),
+    radial-gradient(circle at 50% 50%, color-mix(in srgb,var(--accent) 60%,transparent), transparent 70%);
+  box-shadow:0 0 40px color-mix(in srgb,var(--accent) 40%,transparent);
+  opacity:.28; mix-blend-mode:screen;
+}
+html[data-skin="aurora"] .porb.p1{ width:120px; height:120px; left:8%;  top:120vh; }
+html[data-skin="aurora"] .porb.p2{ width:64px;  height:64px;  right:12%; top:200vh; opacity:.4; }
+html[data-skin="aurora"] .porb.p3{ width:180px; height:180px; left:70%; top:320vh; }
+html[data-skin="aurora"] .porb.p4{ width:40px;  height:40px;  left:22%; top:430vh; opacity:.5; }
+
+/* ── Scroll-velocity reactive aurora: the whole field brightens with wheel speed ── */
+html[data-skin="aurora"] .aurora-bg{
+  filter:saturate(1.02) brightness(calc(1 + var(--scrollBoost, 0) * 0.4));
+  transition:filter .18s ease;
+}
+
+/* ── Horizontal scroll-scrubbed "Capabilities" band ── */
+.hscroll{ position:relative; height:360vh; }
+.hscroll-sticky{ position:sticky; top:0; height:100vh; overflow:hidden; display:flex; flex-direction:column; justify-content:center; }
+.hscroll-head{ display:flex; align-items:center; gap:16px; padding:0 6vw 26px; }
+.hscroll-hint{ font-family:var(--f-mono); font-size:12px; letter-spacing:.2em; color:var(--muted); text-transform:uppercase;
+  animation:hintPulse 1.8s ease-in-out infinite; }
+@keyframes hintPulse{ 0%,100%{opacity:.4; transform:translateX(0);} 50%{opacity:1; transform:translateX(6px);} }
+.hscroll-track{ display:flex; gap:28px; padding:0 6vw; width:max-content; will-change:transform; }
+.hpanel{ position:relative; flex:0 0 auto; width:min(78vw,440px); min-height:52vh; padding:34px 32px;
+  border-radius:26px; background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.10);
+  backdrop-filter:blur(20px) saturate(1.2); -webkit-backdrop-filter:blur(20px) saturate(1.2);
+  box-shadow:0 1px 0 rgba(255,255,255,.10) inset, 0 30px 70px -30px rgba(0,0,0,.8);
+  display:flex; flex-direction:column; overflow:hidden; }
+.hpanel::before{ content:''; position:absolute; inset:0; opacity:.5; pointer-events:none;
+  background:radial-gradient(600px 260px at 100% 0%, color-mix(in srgb,var(--accent) 20%,transparent), transparent 60%); }
+.hpanel .hp-no{ font-family:var(--f-mono); font-size:13px; letter-spacing:.2em; color:var(--accent); margin-bottom:auto; }
+.hpanel h3{ font-family:var(--f-display); font-weight:800; font-size:clamp(24px,3vw,34px); color:var(--heading);
+  margin:24px 0 12px; letter-spacing:-.5px; }
+.hpanel p{ font-size:15px; line-height:1.6; color:var(--text); }
+.hpanel .hp-tags{ display:flex; flex-wrap:wrap; gap:8px; margin-top:20px; }
+.hpanel .hp-tags span{ font-family:var(--f-mono); font-size:11px; padding:5px 11px; border-radius:999px;
+  background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); color:var(--accent); }
+/* Fallback when JS/scroll-motion is off or reduced-motion: plain vertical stack */
+@media (prefers-reduced-motion: reduce){
+  .hscroll{ height:auto; } .hscroll-sticky{ position:static; height:auto; padding:40px 0; }
+  .hscroll-track{ flex-wrap:wrap; transform:none !important; } .hpanel{ min-height:auto; width:min(92vw,440px); }
+  .hscroll-hint{ display:none; }
+}
 </style>
 </head>
 <body class="is-loading">
@@ -1562,6 +1610,11 @@ html[data-skin="aurora"] footer{ border-top:1px solid var(--border); }
   <span class="aurora-blob a3"></span>
   <span class="aurora-blob a4"></span>
   <span class="aurora-grain"></span>
+  <!-- parallax depth orbs — drift at different scroll speeds -->
+  <span class="porb p1" data-parallax="0.18"></span>
+  <span class="porb p2" data-parallax="0.40"></span>
+  <span class="porb p3" data-parallax="0.26"></span>
+  <span class="porb p4" data-parallax="0.55"></span>
 </div>
 
 <!-- ═══════ PRELOADER ═══════ -->
@@ -2065,6 +2118,33 @@ catch (e) { await handleError(this, e); }</code></pre>
       </div>
     </div>
 
+  </div>
+</section>
+
+<!-- ═══════ CAPABILITIES — scroll-scrubbed horizontal band ═══════ -->
+<section class="hscroll" id="capabilities" aria-label="Capabilities">
+  <div class="hscroll-sticky">
+    <div class="hscroll-head">
+      <span class="sec-eye">What I build</span>
+      <span class="hscroll-hint">scroll →</span>
+    </div>
+    <div class="hscroll-track" id="hTrack">
+      <article class="hpanel"><div class="hp-no">01</div><h3>Apex Engineering</h3>
+        <p>Bulkified triggers, batch &amp; queueable jobs, trigger-handler frameworks — zero governor-limit violations in production.</p>
+        <div class="hp-tags"><span>Apex</span><span>SOQL</span><span>Async</span></div></article>
+      <article class="hpanel"><div class="hp-no">02</div><h3>Lightning Web Components</h3>
+        <p>Reusable, dependency-free LWCs for App pages and Experience Cloud — accessible, fast, and documented.</p>
+        <div class="hp-tags"><span>LWC</span><span>Jest</span><span>SLDS</span></div></article>
+      <article class="hpanel"><div class="hp-no">03</div><h3>Automation &amp; Flows</h3>
+        <p>Screen, record-triggered and scheduled Flows plus approval processes — declarative where it belongs, code where it counts.</p>
+        <div class="hp-tags"><span>Flows</span><span>Approvals</span></div></article>
+      <article class="hpanel"><div class="hp-no">04</div><h3>Integrations</h3>
+        <p>REST/SOAP, Named Credentials and Platform Events — idempotent, retry-safe pipelines that survive real-world failure.</p>
+        <div class="hp-tags"><span>REST</span><span>Platform Events</span><span>empApi</span></div></article>
+      <article class="hpanel"><div class="hp-no">05</div><h3>DevOps &amp; Quality</h3>
+        <p>90%+ Apex coverage, Git branching, and clean release trains — shipping without drama, every deployment.</p>
+        <div class="hp-tags"><span>Git</span><span>SFDX</span><span>Tests</span></div></article>
+    </div>
   </div>
 </section>
 
@@ -3083,6 +3163,48 @@ import * as THREE from './vendor/three.module.min.js';
       burst(e.clientX, e.clientY);
     }, { passive: true });
   })();
+})();
+</script>
+
+<!-- ═══════ SCROLL MOTION: smooth inertia · velocity aurora · parallax · horizontal scrub ═══════ -->
+<script>
+(function(){
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce) return;                       // honour reduced-motion — no scroll effects
+
+  const clamp = (v,min,max) => Math.max(min, Math.min(v,max));
+  const lerp  = (a,b,t) => a + (b-a) * t;
+
+  // Effects read NATIVE scroll — no scroll hijacking, so anchor links,
+  // keyboard, back-to-top and the scrollbar all keep working normally.
+  const players = [...document.querySelectorAll('[data-parallax]')].map(el => ({ el, s:parseFloat(el.dataset.parallax)||0.2 }));
+  const cap = document.getElementById('capabilities');
+  const track = document.getElementById('hTrack');
+  let prevY = scrollY, boostEased = 0;
+
+  function frame(){
+    const y = scrollY;
+    const vel = y - prevY; prevY = y;
+
+    // scroll-velocity → aurora brightens with wheel speed (eased so it fades smoothly)
+    boostEased = lerp(boostEased, clamp(Math.abs(vel)/34, 0, 1), 0.2);
+    document.documentElement.style.setProperty('--scrollBoost', boostEased.toFixed(3));
+
+    // parallax depth orbs drift up at different speeds
+    for(const p of players){ p.el.style.transform = 'translate3d(0,' + (-y * p.s).toFixed(1) + 'px,0)'; }
+
+    // horizontal scroll-scrub for the Capabilities band (wheel drives sideways motion)
+    if(cap && track){
+      const rect = cap.getBoundingClientRect();
+      const span = cap.offsetHeight - innerHeight;
+      const prog = clamp(-rect.top / (span || 1), 0, 1);
+      const dist = Math.max(0, track.scrollWidth - innerWidth + innerWidth * 0.02);
+      track.style.transform = 'translate3d(' + (-prog * dist).toFixed(1) + 'px,0,0)';
+    }
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
 })();
 </script>
 </body>
