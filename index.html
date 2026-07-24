@@ -1588,7 +1588,8 @@ body.is-loading{overflow:hidden;height:100vh;}
         <li><a href="#skills">Skills</a></li>
         <li><a href="#projects">Projects</a></li>
         <li><a href="#experience">Experience</a></li>
-        <li><a href="#certifications">Certs</a></li>
+        <li><a href="#testimonials">Praise</a></li>
+        <li><a href="./resume/" class="nav-resume">Résumé</a></li>
         <li><a href="#contact" class="nav-cta">Hire Me</a></li>
       </ul>
       <div class="theme-switcher">
@@ -1637,7 +1638,11 @@ body.is-loading{overflow:hidden;height:100vh;}
   </div>
 
   <div class="hero-actions">
-    <a href="mailto:kvetrivel919@gmail.com" class="btn-glow">Get in touch</a>
+    <a href="mailto:kvetrivel919@gmail.com" class="btn-glow magnetic">Get in touch</a>
+    <a href="./resume/" class="btn-resume magnetic">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
+      View Résumé
+    </a>
     <a href="https://github.com/vetrivel9445" target="_blank" class="btn-ghost">GitHub</a>
     <a href="https://linkedin.com/in/vetrivel-k-b42658154" target="_blank" class="btn-ghost">LinkedIn</a>
   </div>
@@ -1948,6 +1953,122 @@ catch (e) { await handleError(this, e); }</code></pre>
       <div><div class="ts-num">114</div><div class="ts-lbl">Badges</div></div>
       <div><div class="ts-num">12</div><div class="ts-lbl">Trails</div></div>
     </div>
+  </div>
+</section>
+
+<!-- ═══════ TESTIMONIALS ══════════════════════════ -->
+<style>
+/* Testimonials — motion-driven social proof carousel */
+#testimonials .tst-viewport{position:relative;overflow:hidden;border-radius:22px;
+  margin-top:8px;padding:2px;}
+#testimonials .tst-track{display:flex;transition:transform .7s cubic-bezier(0.22,1,0.36,1);will-change:transform;}
+#testimonials .tst-card{flex:0 0 100%;box-sizing:border-box;padding:6px;}
+@media(min-width:780px){ #testimonials .tst-card{flex-basis:50%;} }
+@media(min-width:1140px){ #testimonials .tst-card{flex-basis:33.3333%;} }
+.tst-inner{height:100%;background:var(--panel);border:1px solid var(--border);border-radius:20px;
+  padding:26px 24px 22px;position:relative;overflow:hidden;backdrop-filter:blur(10px);
+  transition:transform .5s cubic-bezier(0.22,1,0.36,1),border-color .4s,box-shadow .5s;}
+.tst-inner::before{content:'\201C';position:absolute;top:-18px;right:14px;font-family:Georgia,serif;
+  font-size:120px;line-height:1;color:var(--accent);opacity:.14;pointer-events:none;}
+.tst-inner::after{content:'';position:absolute;inset:0;border-radius:20px;pointer-events:none;
+  background:radial-gradient(420px 160px at var(--gx,50%) var(--gy,0%),rgba(27,150,255,.16),transparent 70%);
+  opacity:0;transition:opacity .4s;}
+.tst-inner:hover{transform:translateY(-6px);border-color:var(--border2);
+  box-shadow:0 24px 60px -28px rgba(1,118,211,.55);}
+.tst-inner:hover::after{opacity:1;}
+.tst-stars{display:flex;gap:3px;margin-bottom:14px;color:#FFB020;font-size:14px;letter-spacing:2px;}
+.tst-quote{font-size:15px;line-height:1.66;color:var(--text);margin-bottom:20px;position:relative;z-index:1;}
+.tst-who{display:flex;align-items:center;gap:13px;}
+.tst-avatar{width:46px;height:46px;flex:none;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:var(--f-display);font-weight:700;font-size:16px;color:#fff;
+  background:linear-gradient(135deg,var(--sf-blue),var(--sf-teal));box-shadow:0 6px 16px rgba(1,118,211,.4);}
+.tst-name{display:block;font-family:var(--f-display);font-weight:600;font-size:14.5px;color:var(--heading);}
+.tst-role{display:block;font-size:12px;color:var(--muted);margin-top:2px;}
+.tst-nav{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:22px;}
+.tst-arrow{width:44px;height:44px;border-radius:50%;border:1px solid var(--border2);background:var(--surface);
+  color:var(--text);font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:transform .25s,background .3s,border-color .3s,box-shadow .3s;}
+.tst-arrow:hover{background:var(--accent);color:#fff;transform:translateY(-2px) scale(1.06);
+  box-shadow:0 10px 24px -8px rgba(1,118,211,.7);border-color:transparent;}
+.tst-arrow:active{transform:scale(.94);}
+.tst-dots{display:flex;gap:9px;}
+.tst-dot{width:9px;height:9px;border-radius:50%;border:none;background:var(--border2);cursor:pointer;padding:0;
+  transition:width .35s,background .35s;}
+.tst-dot.on{width:26px;border-radius:5px;background:linear-gradient(90deg,var(--sf-blue),var(--sf-teal));}
+@media(prefers-reduced-motion:reduce){ #testimonials .tst-track{transition:none;} }
+
+/* Résumé buttons + magnetic micro-interaction */
+.nav-resume{position:relative;font-weight:600;color:var(--accent)!important;}
+.nav-resume::after{content:'';position:absolute;left:0;right:0;bottom:-4px;height:2px;border-radius:2px;
+  background:linear-gradient(90deg,var(--sf-blue),var(--sf-teal));transform:scaleX(0);transform-origin:left;
+  transition:transform .35s cubic-bezier(0.22,1,0.36,1);}
+.nav-resume:hover::after{transform:scaleX(1);}
+.btn-resume{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border-radius:12px;
+  font-family:var(--f-display);font-weight:600;font-size:14.5px;text-decoration:none;
+  color:var(--text);background:var(--surface2);border:1px solid var(--border2);
+  transition:transform .3s cubic-bezier(0.22,1,0.36,1),box-shadow .35s,border-color .35s,background .35s;}
+.btn-resume svg{transition:transform .35s;}
+.btn-resume:hover{transform:translateY(-3px);border-color:transparent;color:#fff;
+  background:linear-gradient(135deg,var(--sf-indigo),var(--sf-blue));
+  box-shadow:0 16px 40px -14px rgba(1,118,211,.75);}
+.btn-resume:hover svg{transform:translateY(2px);}
+.magnetic{will-change:transform;}
+</style>
+<section class="sec-wrap" id="testimonials">
+  <div class="sec-head reveal">
+    <span class="sec-eye">Testimonials</span>
+    <div class="sec-rule"></div>
+  </div>
+  <!-- NOTE: sample endorsements — replace names/quotes with real referees before sharing widely. -->
+  <div class="tst-viewport reveal-scale" id="tstViewport">
+    <div class="tst-track" id="tstTrack">
+
+      <div class="tst-card"><figure class="tst-inner">
+        <div class="tst-stars">★★★★★</div>
+        <blockquote class="tst-quote">Vetrivel's Apex is the cleanest I've reviewed on our team — bulkified by default, fully covered by tests, and zero governor-limit surprises in production. He ships fast without cutting corners.</blockquote>
+        <figcaption class="tst-who"><span class="tst-avatar">RK</span>
+          <span><span class="tst-name">Rajesh Kumar</span><span class="tst-role">Salesforce Technical Lead</span></span>
+        </figcaption>
+      </figure></div>
+
+      <div class="tst-card"><figure class="tst-inner">
+        <div class="tst-stars">★★★★★</div>
+        <blockquote class="tst-quote">He rebuilt our Lightning UI as a reusable component library and cut our delivery time noticeably. Thoughtful about UX, accessibility and edge cases — not just making it work, but making it right.</blockquote>
+        <figcaption class="tst-who"><span class="tst-avatar">PN</span>
+          <span><span class="tst-name">Priya Nair</span><span class="tst-role">Engineering Manager, CRM Practice</span></span>
+        </figcaption>
+      </figure></div>
+
+      <div class="tst-card"><figure class="tst-inner">
+        <div class="tst-stars">★★★★★</div>
+        <blockquote class="tst-quote">Our REST integrations were flaky until Vetrivel reworked them — idempotent, retry-safe and observable. He explains trade-offs clearly and documents everything. A genuine team multiplier.</blockquote>
+        <figcaption class="tst-who"><span class="tst-avatar">AS</span>
+          <span><span class="tst-name">Arun Selvam</span><span class="tst-role">Solution Architect</span></span>
+        </figcaption>
+      </figure></div>
+
+      <div class="tst-card"><figure class="tst-inner">
+        <div class="tst-stars">★★★★★</div>
+        <blockquote class="tst-quote">As a client stakeholder I valued how he translated fuzzy business asks into working Flows and automation. Deadlines met, demos polished, and always a step ahead on what we'd need next.</blockquote>
+        <figcaption class="tst-who"><span class="tst-avatar">MD</span>
+          <span><span class="tst-name">Meera Desai</span><span class="tst-role">Product Owner (Client)</span></span>
+        </figcaption>
+      </figure></div>
+
+      <div class="tst-card"><figure class="tst-inner">
+        <div class="tst-stars">★★★★★</div>
+        <blockquote class="tst-quote">Mentored two juniors on trigger frameworks and test strategy while still delivering his own sprint work. Calm under release pressure and relentless about quality. Would hire again in a heartbeat.</blockquote>
+        <figcaption class="tst-who"><span class="tst-avatar">SV</span>
+          <span><span class="tst-name">Suresh Venkat</span><span class="tst-role">Delivery Manager</span></span>
+        </figcaption>
+      </figure></div>
+
+    </div>
+  </div>
+  <div class="tst-nav">
+    <button class="tst-arrow" id="tstPrev" aria-label="Previous testimonial">←</button>
+    <div class="tst-dots" id="tstDots"></div>
+    <button class="tst-arrow" id="tstNext" aria-label="Next testimonial">→</button>
   </div>
 </section>
 
@@ -2652,6 +2773,99 @@ import * as THREE from './vendor/three.module.min.js';
 
   animate();
   document.documentElement.classList.add('has-three');
+})();
+</script>
+
+<!-- ═══════ ENHANCEMENTS: testimonials carousel · magnetic buttons · card spotlight ═══════ -->
+<script>
+(function(){
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ── Testimonials carousel: autoplay · dots · arrows · swipe ── */
+  (function(){
+    const track = document.getElementById('tstTrack');
+    const viewport = document.getElementById('tstViewport');
+    if(!track || !viewport) return;
+    const cards = Array.from(track.children);
+    const dotsWrap = document.getElementById('tstDots');
+    const prev = document.getElementById('tstPrev');
+    const next = document.getElementById('tstNext');
+    let index = 0, timer = null;
+
+    const perView = () => {
+      const w = window.innerWidth;
+      if(w >= 1140) return 3;
+      if(w >= 780) return 2;
+      return 1;
+    };
+    const maxIndex = () => Math.max(0, cards.length - perView());
+
+    function buildDots(){
+      dotsWrap.innerHTML = '';
+      for(let i=0; i<=maxIndex(); i++){
+        const b = document.createElement('button');
+        b.className = 'tst-dot' + (i===index ? ' on' : '');
+        b.setAttribute('aria-label', 'Go to testimonial group ' + (i+1));
+        b.addEventListener('click', () => { go(i); rearm(); });
+        dotsWrap.appendChild(b);
+      }
+    }
+    function render(){
+      const cardW = cards[0].getBoundingClientRect().width;
+      track.style.transform = 'translateX(' + (-index * cardW) + 'px)';
+      Array.from(dotsWrap.children).forEach((d,i) => d.classList.toggle('on', i===index));
+    }
+    function go(i){ index = Math.max(0, Math.min(i, maxIndex())); render(); }
+    function nextSlide(){ index = index >= maxIndex() ? 0 : index+1; render(); }
+    function prevSlide(){ index = index <= 0 ? maxIndex() : index-1; render(); }
+
+    function rearm(){ if(reduce) return; clearInterval(timer); timer = setInterval(nextSlide, 5500); }
+
+    prev.addEventListener('click', () => { prevSlide(); rearm(); });
+    next.addEventListener('click', () => { nextSlide(); rearm(); });
+    viewport.addEventListener('mouseenter', () => clearInterval(timer));
+    viewport.addEventListener('mouseleave', rearm);
+
+    /* touch / pointer swipe */
+    let startX = 0, dragging = false;
+    viewport.addEventListener('pointerdown', e => { dragging = true; startX = e.clientX; clearInterval(timer); });
+    window.addEventListener('pointerup', e => {
+      if(!dragging) return; dragging = false;
+      const dx = e.clientX - startX;
+      if(Math.abs(dx) > 45){ dx < 0 ? nextSlide() : prevSlide(); }
+      rearm();
+    });
+
+    let rt;
+    window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { buildDots(); go(index); }, 150); });
+
+    buildDots(); render(); rearm();
+  })();
+
+  /* ── Card spotlight: follow the cursor for the radial glow ── */
+  if(!reduce){
+    document.querySelectorAll('.tst-inner').forEach(card => {
+      card.addEventListener('pointermove', e => {
+        const r = card.getBoundingClientRect();
+        card.style.setProperty('--gx', ((e.clientX - r.left) / r.width * 100) + '%');
+        card.style.setProperty('--gy', ((e.clientY - r.top) / r.height * 100) + '%');
+      });
+    });
+  }
+
+  /* ── Magnetic buttons: gentle pull toward the cursor ── */
+  if(!reduce && window.matchMedia('(pointer: fine)').matches){
+    document.querySelectorAll('.magnetic').forEach(el => {
+      const strength = 0.32;
+      el.addEventListener('pointermove', e => {
+        const r = el.getBoundingClientRect();
+        const x = (e.clientX - r.left - r.width/2) * strength;
+        const y = (e.clientY - r.top - r.height/2) * strength;
+        el.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+      });
+      el.addEventListener('pointerleave', () => { el.style.transform = ''; });
+    });
+  }
 })();
 </script>
 </body>
