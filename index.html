@@ -2089,7 +2089,31 @@ html[data-skin="aurora"] .aurora-bg{
     <span class="sec-eye">Projects</span>
     <div class="sec-rule"></div>
   </div>
-  <div class="projects-grid">
+
+  <!-- projects carousel (prev/next slider) -->
+  <style>
+  #projects .projects-grid{display:flex!important;gap:22px;overflow-x:auto;scroll-snap-type:x mandatory;
+    scroll-behavior:smooth;padding:6px 2px 18px;margin:0;scrollbar-width:none;-ms-overflow-style:none;}
+  #projects .projects-grid::-webkit-scrollbar{display:none;}
+  #projects .projects-grid .proj-card{flex:0 0 min(560px,86vw);scroll-snap-align:start;grid-column:auto!important;}
+  #projects .proj-carousel-nav{display:flex;align-items:center;gap:14px;margin-bottom:8px;}
+  #projects .pc-btn{width:46px;height:46px;border-radius:50%;border:1px solid var(--border2);background:var(--surface);
+    color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+    transition:transform .25s,background .3s,border-color .3s,box-shadow .3s,opacity .3s;}
+  #projects .pc-btn:hover:not(:disabled){background:var(--accent);color:#fff;transform:translateY(-2px) scale(1.05);
+    box-shadow:0 10px 24px -8px color-mix(in srgb,var(--accent) 70%,transparent);border-color:transparent;}
+  #projects .pc-btn:disabled{opacity:.35;cursor:not-allowed;}
+  #projects .pc-count{font-family:var(--f-mono);font-size:12.5px;color:var(--muted);letter-spacing:.1em;}
+  #projects .pc-count b{color:var(--accent);}
+  #projects .pc-hint{margin-left:auto;font-family:var(--f-mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);}
+  </style>
+  <div class="proj-carousel-nav reveal">
+    <button class="pc-btn" id="pcPrev" aria-label="Previous project">←</button>
+    <button class="pc-btn" id="pcNext" aria-label="Next project">→</button>
+    <span class="pc-count"><b id="pcCur">1</b> / <span id="pcTot">6</span></span>
+    <span class="pc-hint">drag / swipe →</span>
+  </div>
+  <div class="projects-grid" id="projTrack">
 
     <div class="proj-card tilt featured reveal-scale">
       <div class="proj-type">LWC · Leaflet · Platform Events</div>
@@ -2217,6 +2241,44 @@ catch (e) { await handleError(this, e); }</code></pre>
     </div>
 
   </div>
+  <script>
+  (function(){
+    var track=document.getElementById('projTrack');
+    if(!track)return;
+    var prev=document.getElementById('pcPrev'),next=document.getElementById('pcNext');
+    var curEl=document.getElementById('pcCur'),totEl=document.getElementById('pcTot');
+    var cards=function(){return track.querySelectorAll('.proj-card');};
+    totEl.textContent=cards().length;
+    function step(){var c=track.querySelector('.proj-card');return c?c.offsetWidth+22:track.clientWidth;}
+    function nearestIndex(){
+      var list=cards(),best=0,bd=1e9;
+      for(var i=0;i<list.length;i++){var d=Math.abs(list[i].offsetLeft-track.scrollLeft);if(d<bd){bd=d;best=i;}}
+      return best;
+    }
+    function sync(){
+      var i=nearestIndex();
+      curEl.textContent=i+1;
+      prev.disabled=track.scrollLeft<=2;
+      next.disabled=track.scrollLeft>=track.scrollWidth-track.clientWidth-2;
+    }
+    prev.addEventListener('click',function(){track.scrollBy({left:-step(),behavior:'smooth'});});
+    next.addEventListener('click',function(){track.scrollBy({left:step(),behavior:'smooth'});});
+    var raf;track.addEventListener('scroll',function(){cancelAnimationFrame(raf);raf=requestAnimationFrame(sync);},{passive:true});
+    window.addEventListener('resize',sync);
+    /* drag-to-scroll (desktop) */
+    var down=false,sx=0,sl=0,moved=false;
+    track.addEventListener('pointerdown',function(e){
+      if(e.pointerType==='mouse'){down=true;sx=e.clientX;sl=track.scrollLeft;moved=false;track.style.cursor='grabbing';}
+    });
+    track.addEventListener('pointermove',function(e){
+      if(!down)return;var dx=e.clientX-sx;if(Math.abs(dx)>4)moved=true;track.scrollLeft=sl-dx;
+    });
+    function endDrag(){down=false;track.style.cursor='';}
+    track.addEventListener('pointerup',endDrag);track.addEventListener('pointerleave',endDrag);
+    track.addEventListener('click',function(e){if(moved){e.preventDefault();e.stopPropagation();}},true);
+    sync();
+  })();
+  </script>
 </section>
 
 <!-- ═══════ CAPABILITIES — scroll-scrubbed horizontal band ═══════ -->
@@ -2489,16 +2551,27 @@ catch (e) { await handleError(this, e); }</code></pre>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         Send message
       </button>
-      <span class="cform-note">Opens your email app, pre-filled — or reach me directly below.</span>
-      <span class="cform-ok" id="cformOk">✓ Opening your email app…</span>
+      <span class="cform-note">Delivered straight to my inbox — I reply within a day.</span>
+      <span class="cform-ok" id="cformOk">✓ Message sent — thank you!</span>
     </div>
   </form>
   <script>
   (function(){
     const f=document.getElementById('contactForm'); if(!f) return;
+    // Web3Forms delivers the submission to kvetrivel919@gmail.com (the address the key is registered to).
+    // Get a free key at https://web3forms.com (enter kvetrivel919@gmail.com) and paste it below.
+    const W3F_KEY='YOUR_WEB3FORMS_ACCESS_KEY';
     const ok=document.getElementById('cformOk');
+    const btn=f.querySelector('.cform-send');
+    const btnHTML=btn.innerHTML;
     const setErr=(k,m)=>{ const e=f.querySelector('.err[data-for="'+k+'"]'); if(e) e.textContent=m||''; };
-    f.addEventListener('submit',ev=>{
+    function mailtoFallback(name,email,msg){
+      const subject=encodeURIComponent('Portfolio enquiry from '+name);
+      const body=encodeURIComponent(msg+'\n\n— '+name+' ('+email+')');
+      window.location.href='mailto:kvetrivel919@gmail.com?subject='+subject+'&body='+body;
+    }
+    function showOk(text){ ok.textContent=text; ok.classList.add('show'); setTimeout(()=>ok.classList.remove('show'),6000); }
+    f.addEventListener('submit',async ev=>{
       ev.preventDefault();
       const name=f.name.value.trim(), email=f.email.value.trim(), msg=f.message.value.trim();
       let bad=false;
@@ -2507,10 +2580,23 @@ catch (e) { await handleError(this, e); }</code></pre>
       if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ setErr('email','Enter a valid email.'); bad=true; }
       if(msg.length<10){ setErr('message','A little more detail, please (10+ chars).'); bad=true; }
       if(bad) return;
-      const subject=encodeURIComponent('Portfolio enquiry from '+name);
-      const body=encodeURIComponent(msg+'\n\n— '+name+' ('+email+')');
-      window.location.href='mailto:kvetrivel919@gmail.com?subject='+subject+'&body='+body;
-      ok.classList.add('show'); setTimeout(()=>ok.classList.remove('show'), 6000);
+      // No key configured yet → open the pre-filled email app so nothing is lost.
+      if(!W3F_KEY || W3F_KEY==='YOUR_WEB3FORMS_ACCESS_KEY'){ mailtoFallback(name,email,msg); showOk('✓ Opening your email app…'); return; }
+      btn.disabled=true; btn.innerHTML='Sending…';
+      try{
+        const res=await fetch('https://api.web3forms.com/submit',{
+          method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'},
+          body:JSON.stringify({
+            access_key:W3F_KEY, subject:'Portfolio enquiry from '+name,
+            from_name:name, name:name, email:email, replyto:email, message:msg,
+            to:'kvetrivel919@gmail.com'
+          })
+        });
+        const data=await res.json();
+        if(data.success){ f.reset(); showOk('✓ Message sent — thank you!'); }
+        else { mailtoFallback(name,email,msg); showOk('✓ Opening your email app…'); }
+      }catch(e){ mailtoFallback(name,email,msg); showOk('✓ Opening your email app…'); }
+      finally{ btn.disabled=false; btn.innerHTML=btnHTML; }
     });
   })();
   </script>
@@ -3100,7 +3186,10 @@ import { GLTFLoader } from './vendor/GLTFLoader.js';
   /* ---------- rigged GLTF character (models/character.glb) ----------
      Plays a different clip per section as you scroll — the reference's
      "character reacts through the page" behaviour. */
-  const CHARACTER_URL='models/hologram.glb';   // a different (humanoid) character, shown as a hologram
+  // Drop your own 3D cartoon avatar at models/avatar.glb (e.g. a Ready Player Me export)
+  // and it automatically becomes the character in the pod — keeping its real colours,
+  // not the cyan wireframe. If the file isn't there, we fall back to the hologram figure.
+  let CHARACTER_URL='models/hologram.glb', AVATAR_URL='models/avatar.glb', useAvatar=false;
   let modelReady=false, mixer=null, actions={}, curName='', curAction=null, hologram=false;
   const charWrap=new THREE.Group(); charWrap.position.copy(mech.position); scene.add(charWrap);
   const podGroup=new THREE.Group(); charWrap.add(podGroup);   // holo-pod parts float with the character
@@ -3123,16 +3212,27 @@ import { GLTFLoader } from './vendor/GLTFLoader.js';
     return pick(['Dance','Jump','Idle']);                     // contact: dance
   }
 
-  let holoFlicker=null;
+  let holoFlicker=null, labGroup=null, emotes=[];
+  // Prefer a personal avatar if one has been added; otherwise use the default hologram figure.
+  fetch(AVATAR_URL,{method:'HEAD'}).then(r=>{ if(r.ok){ CHARACTER_URL=AVATAR_URL; useAvatar=true; } })
+    .catch(()=>{}).then(loadCharacter);
+  function loadCharacter(){
   new GLTFLoader().load(CHARACTER_URL,(gltf)=>{
     const model=gltf.scene, b=new THREE.Box3().setFromObject(model), sz=new THREE.Vector3(),c=new THREE.Vector3();
     b.getSize(sz); b.getCenter(c); const k=4.2/(sz.y||1);
     model.scale.setScalar(k); model.position.set(-c.x*k,-b.min.y*k-2.1,- c.z*k); charWrap.add(model);
 
-    // ── holographic look: cyan wireframe skin (deforms with the skeleton) ──
-    const wire = new THREE.MeshBasicMaterial({ color:0x5fe6ff, wireframe:true, transparent:true, opacity:0.6, blending:THREE.AdditiveBlending, depthWrite:false });
-    holoFlicker = wire;
-    model.traverse(o=>{ if(o.isMesh){ o.material = wire; o.castShadow=false; } });
+    if(useAvatar){
+      // your own cartoon avatar — keep its real materials so it reads as a 3D you,
+      // just lift it a touch so the lit render pops against the pod glow.
+      model.traverse(o=>{ if(o.isMesh){ o.castShadow=false; o.frustumCulled=false;
+        if(o.material){ o.material.transparent=false; o.material.depthWrite=true; } } });
+    } else {
+      // ── holographic look: cyan wireframe skin (deforms with the skeleton) ──
+      const wire = new THREE.MeshBasicMaterial({ color:0x5fe6ff, wireframe:true, transparent:true, opacity:0.6, blending:THREE.AdditiveBlending, depthWrite:false });
+      holoFlicker = wire;
+      model.traverse(o=>{ if(o.isMesh){ o.material = wire; o.castShadow=false; } });
+    }
     hologram = true;
 
     // ── the pod: glowing base rings + a translucent containment column ──
@@ -3149,13 +3249,75 @@ import { GLTFLoader } from './vendor/GLTFLoader.js';
     glowDisc.rotation.x=-Math.PI/2; glowDisc.position.y=-1.96; podGroup.add(glowDisc);
     podGroup._ring1=ring1; podGroup._ring2=ring2;
 
+    // ── original low-poly lab props: holo-screens + server rack + machines around the pod ──
+    labGroup = new THREE.Group(); charWrap.add(labGroup);
+    const edgeMat = new THREE.MeshBasicMaterial({ color:holoC, transparent:true, opacity:0.55, blending:THREE.AdditiveBlending, depthWrite:false });
+    const paneMat = new THREE.MeshBasicMaterial({ color:holoC, transparent:true, opacity:0.10, side:THREE.DoubleSide, blending:THREE.AdditiveBlending, depthWrite:false });
+    const warmMat = new THREE.MeshBasicMaterial({ color:0xff8a2b, transparent:true, opacity:0.6, blending:THREE.AdditiveBlending, depthWrite:false });
+    // a floating holo-screen: a glowing frame + faint pane + scan bars
+    function holoScreen(w,h){
+      const g=new THREE.Group();
+      const pane=new THREE.Mesh(new THREE.PlaneGeometry(w,h), paneMat.clone()); g.add(pane);
+      const frame=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(w,h)), edgeMat.clone()); g.add(frame);
+      for(let i=0;i<3;i++){ const bar=new THREE.Mesh(new THREE.PlaneGeometry(w*0.82,0.03), edgeMat.clone());
+        bar.position.set(0, h*0.28 - i*h*0.24, 0.01); bar.material.opacity=0.35; g.add(bar); }
+      g._pane=pane; return g;
+    }
+    const scL=holoScreen(2.2,1.4); scL.position.set(-3.7,0.2,-1.1); scL.rotation.y=0.5; labGroup.add(scL);
+    const scR=holoScreen(1.9,1.2); scR.position.set(3.6,0.8,-1.3); scR.rotation.y=-0.5; labGroup.add(scR);
+    const scT=holoScreen(1.5,0.95); scT.position.set(3.4,-0.9,-0.4); scT.rotation.y=-0.6; labGroup.add(scT);
+    // a server rack (box outline + blinking status lights)
+    const rack=new THREE.Group(); rack.position.set(-3.5,-1.4,-0.6); rack.rotation.y=0.35;
+    rack.add(new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(1.1,1.7,0.8)), edgeMat.clone()));
+    const leds=[];
+    for(let i=0;i<5;i++){ const led=new THREE.Mesh(new THREE.CircleGeometry(0.045,8), (i%2?warmMat:edgeMat).clone());
+      led.position.set(-0.35+i*0.16,0.6,0.41); rack.add(led); leds.push(led); }
+    rack._leds=leds; labGroup.add(rack);
+    // a small machine pod on the other side (cylinder outline + glow core)
+    const mach=new THREE.Group(); mach.position.set(3.4,-1.5,-0.2); mach.rotation.y=-0.3;
+    mach.add(new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.CylinderGeometry(0.55,0.7,1.3,10)), edgeMat.clone()));
+    const core=new THREE.Mesh(new THREE.SphereGeometry(0.22,12,10), warmMat.clone()); core.position.y=0.1; mach.add(core);
+    mach._core=core; labGroup.add(mach);
+    labGroup._screens=[scL,scR,scT]; labGroup._rack=rack; labGroup._mach=mach;
+
+    // ── emote sprites: hearts + speech bubbles that float up near the hologram ──
+    function emoteTexture(kind){
+      const cv=document.createElement('canvas'); cv.width=cv.height=128; const x=cv.getContext('2d');
+      x.clearRect(0,0,128,128);
+      if(kind==='heart'){
+        x.fillStyle='#ff5d8f'; x.beginPath();
+        x.moveTo(64,110); x.bezierCurveTo(8,70,20,22,64,44); x.bezierCurveTo(108,22,120,70,64,110); x.fill();
+      } else if(kind==='star'){
+        x.fillStyle='#ffcf4d'; x.beginPath();
+        for(let i=0;i<10;i++){ const r=i%2?24:52,a=Math.PI/5*i-Math.PI/2; const px=64+Math.cos(a)*r,py=64+Math.sin(a)*r;
+          i?x.lineTo(px,py):x.moveTo(px,py); } x.closePath(); x.fill();
+      } else { // speech bubble
+        x.fillStyle='#5fe6ff'; x.strokeStyle='#5fe6ff'; x.lineWidth=6;
+        x.beginPath(); x.roundRect(18,24,92,60,16); x.fill();
+        x.beginPath(); x.moveTo(42,84); x.lineTo(34,108); x.lineTo(60,84); x.closePath(); x.fill();
+        x.fillStyle='#08202e'; [42,64,86].forEach(cx=>{ x.beginPath(); x.arc(cx,54,6,0,7); x.fill(); });
+      }
+      const tx=new THREE.Texture(cv); tx.needsUpdate=true; return tx;
+    }
+    const emoteTex={ heart:emoteTexture('heart'), star:emoteTexture('star'), talk:emoteTexture('talk') };
+    for(let i=0;i<7;i++){
+      const kinds=['heart','talk','star','heart','talk']; const kind=kinds[i%kinds.length];
+      const sp=new THREE.Sprite(new THREE.SpriteMaterial({ map:emoteTex[kind], transparent:true, opacity:0, depthWrite:false, blending:THREE.NormalBlending }));
+      sp.scale.setScalar(0.55); sp._t = -i*0.9; sp._x=(Math.random()-0.5)*2.4; sp._spd=0.4+Math.random()*0.25; sp._sw=Math.random()*6.28;
+      charWrap.add(sp); emotes.push(sp);
+    }
+
     if(gltf.animations&&gltf.animations.length){
       mixer=new THREE.AnimationMixer(model);
       gltf.animations.forEach(cl=>{ const a=mixer.clipAction(cl); a.setLoop(THREE.LoopRepeat); actions[cl.name]=a; });
       play(sceneClip(sp), 0);
     }
     mech.visible=false; modelReady=true;
-  }, undefined, ()=>{});
+  }, undefined, (err)=>{
+    // avatar failed to load → fall back to the hologram figure once
+    if(useAvatar){ useAvatar=false; CHARACTER_URL='models/hologram.glb'; loadCharacter(); }
+  });
+  }
 
   /* ---------- particle field ---------- */
   const N=650, pp=new Float32Array(N*3);
@@ -3225,6 +3387,22 @@ import { GLTFLoader } from './vendor/GLTFLoader.js';
       if(podGroup._ring1){ podGroup._ring1.rotation.z += 0.01; podGroup._ring2.rotation.z -= 0.014;
         const g=0.75+Math.abs(Math.sin(t*2.0))*0.25; podGroup._ring1.material.opacity=g; }
       if(holoFlicker) holoFlicker.opacity = 0.45 + Math.abs(Math.sin(t*3.1))*0.18 + (Math.random()<0.03?0.2:0);
+      // lab props: screens breathe + drift, rack LEDs blink, machine core pulses
+      if(labGroup){
+        labGroup._screens.forEach((s,i)=>{ s.position.y += Math.sin(t*0.8+i*1.7)*0.0012;
+          s._pane.material.opacity = 0.07 + Math.abs(Math.sin(t*1.3+i))*0.06; s.rotation.z=Math.sin(t*0.5+i)*0.02; });
+        labGroup._rack._leds.forEach((l,i)=>{ l.material.opacity = 0.3+Math.abs(Math.sin(t*(2+i*0.6)+i))*0.6; });
+        const cr=labGroup._mach._core; const cp=0.85+Math.abs(Math.sin(t*2.2))*0.5; cr.scale.setScalar(cp); cr.material.opacity=0.4+Math.abs(Math.sin(t*2.2))*0.4;
+        labGroup.rotation.y += (mx*0.12 - labGroup.rotation.y)*0.03;
+      }
+      // emote sprites: rise from the pod, sway, fade in then out, then recycle
+      emotes.forEach(sp=>{ sp._t += dt*sp._spd;
+        if(sp._t>3.2){ sp._t=-Math.random()*0.6; sp._x=(Math.random()-0.5)*2.4; sp._sw=Math.random()*6.28; }
+        const p=sp._t; const vis=p>0?Math.min(p*1.6,1)*Math.max(0,1-(p-1.8)/1.4):0;
+        sp.material.opacity=Math.max(0,vis)*0.92;
+        sp.position.set(sp._x + Math.sin(p*2+sp._sw)*0.35, -1.6 + p*1.35, 0.4);
+        sp.scale.setScalar(0.42+Math.min(p,1)*0.2);
+      });
     } else {
       // ── flying robot: smooth hover, fly across the screen with scroll, bank ──
       const targetX = (isMobile ? baseX : pathX(sp)) + mx*0.3;
