@@ -3223,6 +3223,7 @@ import { GLTFLoader } from './vendor/GLTFLoader.js';
     b.getSize(sz); b.getCenter(c); const k=4.2/(sz.y||1);
     model.scale.setScalar(k); model.position.set(-c.x*k,-b.min.y*k-2.1,- c.z*k); charWrap.add(model);
     model._y0=model.position.y;   // rest Y (feet at tank floor); the dive animates around this
+    model.rotation.y=Math.PI;     // face the camera (front view), not its back
 
     // The character LANDS solid on top of the tank, then dives in and turns
     // holographic on scroll. So we keep its real materials for the solid phase
@@ -3252,9 +3253,13 @@ import { GLTFLoader } from './vendor/GLTFLoader.js';
 
     // ── the liquid the character dives into: a translucent cyan body + a rippling surface ──
     const LIQ_TOP=1.4;                                   // y of the liquid surface
-    const liqBody = new THREE.Mesh(new THREE.CylinderGeometry(1.5,1.5,LIQ_TOP-(-2.1),40,1,true),
-      new THREE.MeshBasicMaterial({ color:0x2fb6e6, transparent:true, opacity:0.14, side:THREE.DoubleSide, blending:THREE.AdditiveBlending, depthWrite:false }));
+    const liqBody = new THREE.Mesh(new THREE.CylinderGeometry(1.52,1.52,LIQ_TOP-(-2.1),40,1,true),
+      new THREE.MeshBasicMaterial({ color:0x2fb6e6, transparent:true, opacity:0.2, side:THREE.DoubleSide, blending:THREE.AdditiveBlending, depthWrite:false }));
     liqBody.position.y=(LIQ_TOP+(-2.1))/2; podGroup.add(liqBody);
+    // a solid-ish inner fill so the submerged part of the body reads as 'under water'
+    const liqFill = new THREE.Mesh(new THREE.CylinderGeometry(1.5,1.5,LIQ_TOP-(-2.1),40),
+      new THREE.MeshBasicMaterial({ color:0x1b7fb8, transparent:true, opacity:0.16, depthWrite:false }));
+    liqFill.position.y=(LIQ_TOP+(-2.1))/2; podGroup.add(liqFill);
     const liqSurf = new THREE.Mesh(new THREE.CircleGeometry(1.5,40),
       new THREE.MeshBasicMaterial({ color:0x6fe6ff, transparent:true, opacity:0.28, side:THREE.DoubleSide, blending:THREE.AdditiveBlending, depthWrite:false }));
     liqSurf.rotation.x=-Math.PI/2; liqSurf.position.y=LIQ_TOP; podGroup.add(liqSurf);
@@ -3347,7 +3352,27 @@ import { GLTFLoader } from './vendor/GLTFLoader.js';
   addEventListener('mousemove',e=>{ mx=e.clientX/innerWidth-0.5; my=e.clientY/innerHeight-0.5; },{passive:true});
   function onScroll(){ const max=Math.max(1,document.documentElement.scrollHeight-innerHeight); sp=clamp(scrollY/max,0,1); }
   addEventListener('scroll',onScroll,{passive:true}); onScroll();
-  addEventListener('click',e=>{ const near = innerWidth<860 ? true : e.clientX>innerWidth*0.55; if(near && e.clientY<innerHeight*0.9) roll=1; });
+  addEventListener('click',e=>{ if(dragMoved){ dragMoved=false; return; }   // ignore the click that ends a drag
+    const near = innerWidth<860 ? true : e.clientX>innerWidth*0.55; if(near && e.clientY<innerHeight*0.9) roll=1; });
+
+  // ── drag the character to rotate it in 3D (orbit its yaw/pitch, with release inertia) ──
+  let dragging=false, dragYaw=0, dragPitch=0, yawV=0, pitchV=0, lpx=0, lpy=0, dragMoved=false;
+  function overCharacter(e){
+    if(e.target && e.target.closest && e.target.closest('a,button,input,textarea,select,label,.magnetic,#themeMenu,.proj-card,.pc-btn')) return false;
+    return innerWidth<860 ? false : (e.clientX > innerWidth*0.48);   // right side where the figure sits (desktop)
+  }
+  addEventListener('pointerdown',e=>{ if(!modelReady||e.pointerType==='touch'||!overCharacter(e)) return;
+    dragging=true; dragMoved=false; lpx=e.clientX; lpy=e.clientY; yawV=0; pitchV=0;
+    document.body.style.cursor='grabbing'; document.body.style.userSelect='none'; });
+  addEventListener('pointermove',e=>{
+    if(!dragging){ if(modelReady) document.body.style.cursor = overCharacter(e)?'grab':''; return; }
+    e.preventDefault();
+    const dx=e.clientX-lpx, dy=e.clientY-lpy; lpx=e.clientX; lpy=e.clientY;
+    if(Math.abs(dx)+Math.abs(dy)>2) dragMoved=true;
+    yawV=dx*0.011; pitchV=dy*0.007;
+    dragYaw += yawV; dragPitch = clamp(dragPitch + pitchV, -0.7, 0.7); });
+  function endDrag(){ dragging=false; document.body.style.cursor=''; document.body.style.userSelect=''; }
+  addEventListener('pointerup',endDrag); addEventListener('pointercancel',endDrag);
 
   let baseX=2.9, baseY=-0.2, scaleN=0.78, isMobile=false;
   function resize(){ camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth,innerHeight);
@@ -3362,7 +3387,7 @@ import { GLTFLoader } from './vendor/GLTFLoader.js';
     return PATH[PATH.length-1][1]; }
 
   // ── the "land on top → dive into the tank → turn holographic" sequence ──
-  const LAND_TOP=3.3;                 // how far above the tank the figure stands when landed
+  const LAND_TOP=1.05;                // rest height: character stands IMMERSED (≈waist-deep) in the liquid
   const DIVE_A=0.045, DIVE_B=0.16;    // scroll range over which it leaps in
   const smooth01=(x)=>{ x=clamp(x,0,1); return x*x*(3-2*x); };
 
@@ -3401,20 +3426,22 @@ import { GLTFLoader } from './vendor/GLTFLoader.js';
       active.position.y += ((baseY+0.1) + hover - active.position.y)*0.08;
       active.rotation.z += (0 - active.rotation.z)*0.1;
       active.rotation.x += (-my*0.08 - active.rotation.x)*0.06;
+      active.rotation.y += (0 - active.rotation.y)*0.06;   // pod/tank stays put; the model itself rotates
 
-      // dive progress: 0 = landed on top (hero), 1 = fully submerged & holographic
+      // dive progress: 0 = immersed & facing front (hero), 1 = fully submerged & holographic
       const dive = smooth01((sp - DIVE_A)/(DIVE_B - DIVE_A));
+      // release inertia + a whisper of idle drift so it feels alive when you're not dragging
+      if(!dragging){ dragYaw += yawV; yawV*=0.94; dragPitch=clamp(dragPitch+pitchV,-0.7,0.7); pitchV*=0.9;
+        if(Math.abs(yawV)<0.0004) dragYaw += 0.0015; }
+      if(roll>0){ roll=Math.max(0,roll-0.02); dragYaw += roll*0.32; }   // click = quick spin
       if(charModel){
         const y0 = charModel._y0;
-        const hop = Math.sin(clamp(dive,0,0.5)*Math.PI*2)*0.7;   // crouch-and-leap before the plunge
-        const bob = Math.sin(t*1.7)*0.06*(1-dive);               // idle bob while perched on top
-        charModel.position.y += (y0 + LAND_TOP*(1-dive) + hop + bob - charModel.position.y)*0.18;
-        charModel.rotation.x += (dive*(1-dive)*4*0.9 - charModel.rotation.x)*0.2; // forward tuck mid-dive
+        const bob = Math.sin(t*1.4)*0.05*(1-dive);                      // gentle float while immersed
+        charModel.position.y += (y0 + LAND_TOP*(1-dive) + bob - charModel.position.y)*0.14;
+        const tuck = dive*(1-dive)*4*0.7;                               // slight forward tuck as it sinks
+        charModel.rotation.y += (Math.PI + dragYaw + mx*0.25 - charModel.rotation.y)*0.18;   // face front + your drag
+        charModel.rotation.x += (tuck + dragPitch - my*0.05 - charModel.rotation.x)*0.18;
       }
-      // turntable: still while landed, spins up once it's in the tank
-      const spin = 0.004*dive;
-      active.rotation.y += (mx*0.5 + 0.3 - active.rotation.y) * 0.04 + spin;
-      if(roll>0){ roll=Math.max(0,roll-0.02); active.rotation.y += roll*Math.PI*2; }
 
       // material: solid on top → cyan wireframe hologram once it breaks the surface (with hysteresis)
       if(setHolo){
