@@ -908,6 +908,18 @@ body.is-loading{overflow:hidden;height:100vh;}
 }
 @keyframes preloaderSpin{to{transform:rotate(360deg);}}
 @keyframes preloaderPulse{0%,100%{opacity:1;}50%{opacity:0.45;}}
+.intro-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;width:min(340px,80vw);}
+.intro-name{margin-top:8px;font-family:var(--f-display,'Sora',sans-serif);font-weight:800;letter-spacing:.12em;
+  font-size:22px;color:var(--heading);
+  background:linear-gradient(120deg,var(--au-1,#6D5EF6),var(--au-2,#22C7D6));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.intro-role{font-family:var(--f-mono,monospace);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);}
+.intro-track{width:100%;height:3px;border-radius:3px;background:var(--border);overflow:hidden;margin-top:10px;}
+.intro-track i{display:block;height:100%;width:0;border-radius:3px;
+  background:linear-gradient(90deg,var(--au-1,#6D5EF6),var(--au-2,#22C7D6));box-shadow:0 0 12px var(--accent,#8B7DFF);transition:width .2s ease;}
+.intro-status{display:flex;justify-content:space-between;width:100%;font-family:var(--f-mono,monospace);font-size:11px;
+  letter-spacing:.1em;color:var(--muted);}
+#introPct{color:var(--accent2,#3FD8E6);font-variant-numeric:tabular-nums;}
+@media(prefers-reduced-motion:reduce){ .preloader-ring{animation:none;} }
 
 /* ═══════════════════════════════════════════
    SCROLL PROGRESS BAR
@@ -1645,9 +1657,15 @@ html[data-skin="aurora"] .aurora-bg{
 
 <!-- ═══════ PRELOADER ═══════ -->
 <div id="preloader" aria-hidden="true">
-  <div class="preloader-mark">
-    <div class="preloader-ring"></div>
-    <div class="preloader-logo">vk()</div>
+  <div class="intro-wrap">
+    <div class="preloader-mark">
+      <div class="preloader-ring"></div>
+      <div class="preloader-logo">vk()</div>
+    </div>
+    <div class="intro-name">VETRIVEL&nbsp;K</div>
+    <div class="intro-role">Salesforce Developer · Portfolio</div>
+    <div class="intro-track"><i id="introFill"></i></div>
+    <div class="intro-status"><span id="introMsg">Initialising</span><span id="introPct">0%</span></div>
   </div>
 </div>
 
@@ -2767,14 +2785,29 @@ setInterval(()=>{
   if(currentThemeMode==='auto') applyTheme('auto');
 }, 5*60*1000);
 
-/* ── PRELOADER ────────────────────────────────────── */
-window.addEventListener('load',()=>{
+/* ── INTRO / PRELOADER: animated boot-up, then reveal ─────────────── */
+(function(){
   const preloader=document.getElementById('preloader');
-  setTimeout(()=>{
-    preloader.classList.add('hidden');
-    document.body.classList.remove('is-loading');
-  },400);
-});
+  const fill=document.getElementById('introFill'), pct=document.getElementById('introPct'), msg=document.getElementById('introMsg');
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const stages=[[28,'Loading scene'],[58,'Warming shaders'],[84,'Compositing UI'],[100,'Ready']];
+  const DUR=2200; let si=0, done=false, t0=null;
+  function finish(){ if(done) return; done=true;
+    preloader.classList.add('hidden'); document.body.classList.remove('is-loading'); }
+  function tick(ts){
+    if(reduce){ if(fill)fill.style.width='100%'; if(pct)pct.textContent='100%'; setTimeout(finish,300); return; }
+    if(t0===null) t0=ts;
+    const e=Math.min((ts-t0)/DUR,1);
+    const p=(1-Math.pow(1-e,2))*100;                    // ease-out over a fixed ~2.2s
+    if(fill) fill.style.width=p.toFixed(0)+'%';
+    if(pct) pct.textContent=Math.round(p)+'%';
+    while(si<stages.length && p>=stages[si][0]){ if(msg) msg.textContent=stages[si][1]; si++; }
+    if(e>=1){ if(fill)fill.style.width='100%'; if(pct)pct.textContent='100%'; setTimeout(finish,380); }
+    else requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);       // start immediately (don't wait for full load)
+  setTimeout(finish, 6000);          // hard safety: never trap the user
+})();
 
 /* ── SCROLL PROGRESS BAR ──────────────────────────── */
 const scrollProgressEl=document.getElementById('scrollProgress');
