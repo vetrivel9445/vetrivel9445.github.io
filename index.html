@@ -3213,6 +3213,7 @@ import { GLTFLoader } from './vendor/GLTFLoader.js';
   }
 
   let holoFlicker=null, labGroup=null, emotes=[];
+  let setHolo=null, holoOn=false, charModel=null, liquid=null, splash=null, landT=0;
   // Prefer a personal avatar if one has been added; otherwise use the default hologram figure.
   fetch(AVATAR_URL,{method:'HEAD'}).then(r=>{ if(r.ok){ CHARACTER_URL=AVATAR_URL; useAvatar=true; } })
     .catch(()=>{}).then(loadCharacter);
@@ -3221,18 +3222,18 @@ import { GLTFLoader } from './vendor/GLTFLoader.js';
     const model=gltf.scene, b=new THREE.Box3().setFromObject(model), sz=new THREE.Vector3(),c=new THREE.Vector3();
     b.getSize(sz); b.getCenter(c); const k=4.2/(sz.y||1);
     model.scale.setScalar(k); model.position.set(-c.x*k,-b.min.y*k-2.1,- c.z*k); charWrap.add(model);
+    model._y0=model.position.y;   // rest Y (feet at tank floor); the dive animates around this
 
-    if(useAvatar){
-      // your own cartoon avatar — keep its real materials so it reads as a 3D you,
-      // just lift it a touch so the lit render pops against the pod glow.
-      model.traverse(o=>{ if(o.isMesh){ o.castShadow=false; o.frustumCulled=false;
-        if(o.material){ o.material.transparent=false; o.material.depthWrite=true; } } });
-    } else {
-      // ── holographic look: cyan wireframe skin (deforms with the skeleton) ──
-      const wire = new THREE.MeshBasicMaterial({ color:0x5fe6ff, wireframe:true, transparent:true, opacity:0.6, blending:THREE.AdditiveBlending, depthWrite:false });
-      holoFlicker = wire;
-      model.traverse(o=>{ if(o.isMesh){ o.material = wire; o.castShadow=false; } });
-    }
+    // The character LANDS solid on top of the tank, then dives in and turns
+    // holographic on scroll. So we keep its real materials for the solid phase
+    // and prepare a cyan wireframe to swap in once it hits the liquid.
+    const wire = new THREE.MeshBasicMaterial({ color:0x5fe6ff, wireframe:true, transparent:true, opacity:0.6, blending:THREE.AdditiveBlending, depthWrite:false });
+    holoFlicker = wire;
+    const origMats=new Map();
+    model.traverse(o=>{ if(o.isMesh){ o.castShadow=false; o.frustumCulled=false; origMats.set(o,o.material); } });
+    setHolo=(on)=>{ if(on===holoOn) return; holoOn=on;
+      model.traverse(o=>{ if(o.isMesh) o.material = on ? wire : origMats.get(o); }); };
+    charModel=model;
     hologram = true;
 
     // ── the pod: glowing base rings + a translucent containment column ──
@@ -3248,6 +3249,20 @@ import { GLTFLoader } from './vendor/GLTFLoader.js';
     const glowDisc = new THREE.Mesh(new THREE.CircleGeometry(1.55,40), new THREE.MeshBasicMaterial({ color:holoC, transparent:true, opacity:0.18, blending:THREE.AdditiveBlending, depthWrite:false }));
     glowDisc.rotation.x=-Math.PI/2; glowDisc.position.y=-1.96; podGroup.add(glowDisc);
     podGroup._ring1=ring1; podGroup._ring2=ring2;
+
+    // ── the liquid the character dives into: a translucent cyan body + a rippling surface ──
+    const LIQ_TOP=1.4;                                   // y of the liquid surface
+    const liqBody = new THREE.Mesh(new THREE.CylinderGeometry(1.5,1.5,LIQ_TOP-(-2.1),40,1,true),
+      new THREE.MeshBasicMaterial({ color:0x2fb6e6, transparent:true, opacity:0.14, side:THREE.DoubleSide, blending:THREE.AdditiveBlending, depthWrite:false }));
+    liqBody.position.y=(LIQ_TOP+(-2.1))/2; podGroup.add(liqBody);
+    const liqSurf = new THREE.Mesh(new THREE.CircleGeometry(1.5,40),
+      new THREE.MeshBasicMaterial({ color:0x6fe6ff, transparent:true, opacity:0.28, side:THREE.DoubleSide, blending:THREE.AdditiveBlending, depthWrite:false }));
+    liqSurf.rotation.x=-Math.PI/2; liqSurf.position.y=LIQ_TOP; podGroup.add(liqSurf);
+    // an expanding splash ring, hidden until the character breaks the surface
+    const splashRing = new THREE.Mesh(new THREE.RingGeometry(0.2,0.34,40),
+      new THREE.MeshBasicMaterial({ color:0x9ff2ff, transparent:true, opacity:0, side:THREE.DoubleSide, blending:THREE.AdditiveBlending, depthWrite:false }));
+    splashRing.rotation.x=-Math.PI/2; splashRing.position.y=LIQ_TOP+0.02; podGroup.add(splashRing);
+    liquid={ top:LIQ_TOP, surf:liqSurf, body:liqBody }; splash={ ring:splashRing, t:99 };
 
     // ── original low-poly lab props: holo-screens + server rack + machines around the pod ──
     labGroup = new THREE.Group(); charWrap.add(labGroup);
@@ -3346,6 +3361,11 @@ import { GLTFLoader } from './vendor/GLTFLoader.js';
     if(p<=b[0]){ const u=(p-a[0])/((b[0]-a[0])||1); const e=u*u*(3-2*u); return a[1]+(b[1]-a[1])*e; } }
     return PATH[PATH.length-1][1]; }
 
+  // ── the "land on top → dive into the tank → turn holographic" sequence ──
+  const LAND_TOP=3.3;                 // how far above the tank the figure stands when landed
+  const DIVE_A=0.045, DIVE_B=0.16;    // scroll range over which it leaps in
+  const smooth01=(x)=>{ x=clamp(x,0,1); return x*x*(3-2*x); };
+
   const clock=new THREE.Clock(); let elapsed=0, lastSp=sp;
   function animate(){
     const dt=Math.min(clock.getDelta(),0.05); elapsed+=dt; const t=elapsed;
@@ -3375,18 +3395,46 @@ import { GLTFLoader } from './vendor/GLTFLoader.js';
     }
 
     if(hologram){
-      // ── holographic figure standing in its pod: gentle turntable + float ──
+      // ── the pod itself stays put; the character lands on top, then dives in ──
       const hover = Math.sin(t*1.1)*0.09;
       active.position.x += (baseX - active.position.x)*0.06;
       active.position.y += ((baseY+0.1) + hover - active.position.y)*0.08;
-      active.rotation.y += (mx*0.5 + 0.3 - active.rotation.y) * 0.04 + 0.004;  // slow turntable, nudged by cursor
       active.rotation.z += (0 - active.rotation.z)*0.1;
       active.rotation.x += (-my*0.08 - active.rotation.x)*0.06;
+
+      // dive progress: 0 = landed on top (hero), 1 = fully submerged & holographic
+      const dive = smooth01((sp - DIVE_A)/(DIVE_B - DIVE_A));
+      if(charModel){
+        const y0 = charModel._y0;
+        const hop = Math.sin(clamp(dive,0,0.5)*Math.PI*2)*0.7;   // crouch-and-leap before the plunge
+        const bob = Math.sin(t*1.7)*0.06*(1-dive);               // idle bob while perched on top
+        charModel.position.y += (y0 + LAND_TOP*(1-dive) + hop + bob - charModel.position.y)*0.18;
+        charModel.rotation.x += (dive*(1-dive)*4*0.9 - charModel.rotation.x)*0.2; // forward tuck mid-dive
+      }
+      // turntable: still while landed, spins up once it's in the tank
+      const spin = 0.004*dive;
+      active.rotation.y += (mx*0.5 + 0.3 - active.rotation.y) * 0.04 + spin;
       if(roll>0){ roll=Math.max(0,roll-0.02); active.rotation.y += roll*Math.PI*2; }
-      // pod rings pulse + spin, hologram flickers
+
+      // material: solid on top → cyan wireframe hologram once it breaks the surface (with hysteresis)
+      if(setHolo){
+        if(!holoOn && dive>0.62){ setHolo(true); if(splash) splash.t=0; }   // splash on entry
+        else if(holoOn && dive<0.5){ setHolo(false); }                       // scroll back up → solid again
+      }
+      // liquid: rippling surface + an expanding splash ring when the character enters
+      if(liquid){
+        liquid.surf.material.opacity = 0.20 + Math.abs(Math.sin(t*1.4))*0.12;
+        liquid.surf.scale.set(1+Math.sin(t*1.8)*0.03, 1, 1+Math.cos(t*1.6)*0.03);
+        liquid.body.material.opacity = 0.10 + dive*0.06;
+      }
+      if(splash){ splash.t += dt; const st=splash.t;
+        if(st<0.85){ const e=st/0.85; splash.ring.material.opacity=(1-e)*0.85; const s=0.3+e*4.2; splash.ring.scale.set(s,s,s); }
+        else splash.ring.material.opacity=0; }
+
+      // pod rings pulse + spin, hologram flickers (only meaningful once holographic)
       if(podGroup._ring1){ podGroup._ring1.rotation.z += 0.01; podGroup._ring2.rotation.z -= 0.014;
         const g=0.75+Math.abs(Math.sin(t*2.0))*0.25; podGroup._ring1.material.opacity=g; }
-      if(holoFlicker) holoFlicker.opacity = 0.45 + Math.abs(Math.sin(t*3.1))*0.18 + (Math.random()<0.03?0.2:0);
+      if(holoFlicker && holoOn) holoFlicker.opacity = 0.45 + Math.abs(Math.sin(t*3.1))*0.18 + (Math.random()<0.03?0.2:0);
       // lab props: screens breathe + drift, rack LEDs blink, machine core pulses
       if(labGroup){
         labGroup._screens.forEach((s,i)=>{ s.position.y += Math.sin(t*0.8+i*1.7)*0.0012;
