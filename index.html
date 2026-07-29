@@ -3186,7 +3186,10 @@ import { GLTFLoader } from './vendor/GLTFLoader.js';
   /* ---------- rigged GLTF character (models/character.glb) ----------
      Plays a different clip per section as you scroll — the reference's
      "character reacts through the page" behaviour. */
-  const CHARACTER_URL='models/hologram.glb';   // a different (humanoid) character, shown as a hologram
+  // Drop your own 3D cartoon avatar at models/avatar.glb (e.g. a Ready Player Me export)
+  // and it automatically becomes the character in the pod — keeping its real colours,
+  // not the cyan wireframe. If the file isn't there, we fall back to the hologram figure.
+  let CHARACTER_URL='models/hologram.glb', AVATAR_URL='models/avatar.glb', useAvatar=false;
   let modelReady=false, mixer=null, actions={}, curName='', curAction=null, hologram=false;
   const charWrap=new THREE.Group(); charWrap.position.copy(mech.position); scene.add(charWrap);
   const podGroup=new THREE.Group(); charWrap.add(podGroup);   // holo-pod parts float with the character
@@ -3210,15 +3213,26 @@ import { GLTFLoader } from './vendor/GLTFLoader.js';
   }
 
   let holoFlicker=null, labGroup=null, emotes=[];
+  // Prefer a personal avatar if one has been added; otherwise use the default hologram figure.
+  fetch(AVATAR_URL,{method:'HEAD'}).then(r=>{ if(r.ok){ CHARACTER_URL=AVATAR_URL; useAvatar=true; } })
+    .catch(()=>{}).then(loadCharacter);
+  function loadCharacter(){
   new GLTFLoader().load(CHARACTER_URL,(gltf)=>{
     const model=gltf.scene, b=new THREE.Box3().setFromObject(model), sz=new THREE.Vector3(),c=new THREE.Vector3();
     b.getSize(sz); b.getCenter(c); const k=4.2/(sz.y||1);
     model.scale.setScalar(k); model.position.set(-c.x*k,-b.min.y*k-2.1,- c.z*k); charWrap.add(model);
 
-    // ── holographic look: cyan wireframe skin (deforms with the skeleton) ──
-    const wire = new THREE.MeshBasicMaterial({ color:0x5fe6ff, wireframe:true, transparent:true, opacity:0.6, blending:THREE.AdditiveBlending, depthWrite:false });
-    holoFlicker = wire;
-    model.traverse(o=>{ if(o.isMesh){ o.material = wire; o.castShadow=false; } });
+    if(useAvatar){
+      // your own cartoon avatar — keep its real materials so it reads as a 3D you,
+      // just lift it a touch so the lit render pops against the pod glow.
+      model.traverse(o=>{ if(o.isMesh){ o.castShadow=false; o.frustumCulled=false;
+        if(o.material){ o.material.transparent=false; o.material.depthWrite=true; } } });
+    } else {
+      // ── holographic look: cyan wireframe skin (deforms with the skeleton) ──
+      const wire = new THREE.MeshBasicMaterial({ color:0x5fe6ff, wireframe:true, transparent:true, opacity:0.6, blending:THREE.AdditiveBlending, depthWrite:false });
+      holoFlicker = wire;
+      model.traverse(o=>{ if(o.isMesh){ o.material = wire; o.castShadow=false; } });
+    }
     hologram = true;
 
     // ── the pod: glowing base rings + a translucent containment column ──
@@ -3299,7 +3313,11 @@ import { GLTFLoader } from './vendor/GLTFLoader.js';
       play(sceneClip(sp), 0);
     }
     mech.visible=false; modelReady=true;
-  }, undefined, ()=>{});
+  }, undefined, (err)=>{
+    // avatar failed to load → fall back to the hologram figure once
+    if(useAvatar){ useAvatar=false; CHARACTER_URL='models/hologram.glb'; loadCharacter(); }
+  });
+  }
 
   /* ---------- particle field ---------- */
   const N=650, pp=new Float32Array(N*3);
